@@ -23,8 +23,8 @@
   "dependencies": {
     "@electron-toolkit/preload": "^3.0.1",
     "@electron-toolkit/utils": "^3.0.0",
-    "axios": "^1.7.7",
     "electron-updater": "^6.1.7",
+    "ky": "^1.7.2",
     "lucide-svelte": "^0.447.0",
     "nodejs-file-downloader": "^4.13.0"
   },

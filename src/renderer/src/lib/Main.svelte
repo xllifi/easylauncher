@@ -1,26 +1,34 @@
 <script lang="ts">
   import StatusBar from './components/StatusBar.svelte'
+  let statusBar
 
   let ipc = window.electron.ipcRenderer
 
-  let downloadText: string, downloadProgress: number
-
   let buttonsLocked = []
+
+  function lockHandler(id, lock = true) {
+    if (lock) {
+      buttonsLocked.push(id)
+    } else {
+      let index = buttonsLocked.indexOf(id)
+      if (index >= 0) {
+        buttonsLocked.splice(index, 1)
+      }
+    }
+  }
 
   function startDownload(): void {
     if (!buttonsLocked.includes('download')) {
-      buttonsLocked.push('download')
-      downloadText = `Загрузка начинается...`
-      setTimeout(() => {
-        ipc.send('download')
-      }, 500)
+      lockHandler('download')
+      statusBar.downloadStatus()
+      setTimeout(() => { ipc.send('download') }, 500)
     }
   }
+  ipc.on('download-fail', () => {
+    lockHandler('download', false)
+  })
   ipc.on('download-end', () => {
-    let i = buttonsLocked.indexOf('download')
-    if (i >= 0) {
-      buttonsLocked.splice(i, 1)
-    }
+    lockHandler('download', false)
   })
 </script>
 
@@ -33,4 +41,4 @@
 <p>Download</p>
 <button on:click|self={startDownload}>Start</button>
 
-<StatusBar text={downloadText} progress={downloadProgress}/>
+<StatusBar bind:this={statusBar}/>

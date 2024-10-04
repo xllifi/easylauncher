@@ -1,26 +1,41 @@
 <script lang="ts">
-  export let text, progress
-
   let ipc = window.electron.ipcRenderer
+  
+  let text, progress
+  let hide = true
+  let fillcolor = '5f5'
 
-  ipc.on('downloadprogress', async (_event, { name, percent }) => {
+  export function downloadStatus() {
+    text = 'Загрузка начинается...'
+    progress = 0
+    fillcolor = '5f5'
+    hide = false
+  }
+  ipc.on('download-progress', async (_event, { name, percent }) => {
     console.log(percent)
     progress = Math.round(percent)
     text = `Прогресс загрузки «${name}» - ${progress}%`
   })
+  ipc.on('download-fail', (_event, {error}) => {
+    text = `Ошибка: ${error}`
+    progress = 100
+    fillcolor = 'f55'
+  })
   ipc.on('download-end', () => {
+    fillcolor = 'fff'
     setTimeout(() => {
-      text = ''
+      hide = true
       setTimeout(() => {
         progress = undefined
+        fillcolor = '5f5'
       }, 500)
-    }, 500)
+    }, 600)
   })
 </script>
 
 <div class="progressbarwrapper">
-  <div class="progressbar" class:hidden={text == undefined || text == ''}>
-    <clipPath class="fill" id="fill" style="width: {progress == null ? 0 : progress}%;"></clipPath>
+  <div class="progressbar" class:hidden={hide}>
+    <clipPath class="fill" id="fill" style="width: {progress == null ? 0 : progress}%; background-color: #{fillcolor};"></clipPath>
     <p class="label over-fill" style="clip-path: polygon(0% 0%, 0% 100%, {progress == null ? 0 : progress}% 100%, {progress == null ? 0 : progress}% 0%);">{text}</p>
     <p class="label over-bg">{text}</p>
   </div>
@@ -62,6 +77,7 @@
       width: 100%;
       text-align: center;
       transition: clip-path 200ms ease-in-out;
+      text-wrap: nowrap;
 
       &.over-bg {
         color: var(--color-text-primary);
@@ -72,16 +88,15 @@
         z-index: 2;
       }
     }
-
     .fill {
-      content: '';
       left: 0;
       position: absolute;
       height: 100%;
-      background-color: #5f5;
       z-index: 1;
 
-      transition: width 200ms ease-in-out;
+      transition:
+        width 200ms ease-in-out,
+        background-color 200ms;
     }
   }
 </style>

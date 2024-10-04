@@ -1,11 +1,10 @@
-import axios from 'axios'
 import { app } from 'electron'
 import { readFileSync } from 'fs'
 import Downloader from 'nodejs-file-downloader'
 import { mainWindow } from '.'
+import ky, { HTTPError } from 'ky'
 
 const gameDir = app.getPath('userData') + '/.minecraft'
-console.log(gameDir)
 
 export async function initDownload(): Promise<boolean> {
   // TODO: download version meta
@@ -13,17 +12,35 @@ export async function initDownload(): Promise<boolean> {
   // TODO: download libs
   // TODO: download assets
 
-  const versionMeta = await getVersionMeta('1.21')
-  await downloadClient(versionMeta)
+  try {
+    const versionMeta = await getVersionMeta('1.21')
+    await downloadClient(versionMeta)
+  } catch (e) {
+    if (e instanceof HTTPError) {
+      console.log('AxiosError:')
+      console.log(e)
+      mainWindow.webContents.send('download-fail', { error: e.message })
+      return false
+    }
+    console.log('error:')
+    console.log(e)
+    mainWindow.webContents.send('download-fail', { error: e })
+    return false
+  }
   mainWindow.webContents.send('download-end')
-  return false
+  return true
+}
+
+function downloadProgress(percentage, name): void {
+  mainWindow.webContents.send('download-progress', {
+    name: name,
+    percent: percentage
+  })
 }
 
 async function getVersionMeta(version: string): Promise<JSON | boolean> {
-  const resp = await axios.get('https://piston-meta.mojang.com/mc/game/version_manifest_v2.json')
-  const globalMeta = await resp.data
+  const globalMeta = await ky.get('https://piston-meta.mojang.com/mc/game/version_manifest_v2.json').json()
 
-  let filePath: string
   for (const entry of globalMeta.versions) {
     if (entry.id === version) {
       const downloader = new Downloader({
@@ -31,24 +48,15 @@ async function getVersionMeta(version: string): Promise<JSON | boolean> {
         directory: gameDir + '/meta',
         fileName: version + '.json',
         cloneFiles: false,
-        onProgress: function (percentage): void {
-          mainWindow.webContents.send('downloadprogress', {
-            name: 'Метаданные',
-            percent: percentage
-          })
+        onProgress: (percentage): void => {
+          downloadProgress(percentage, 'Метаданные')
         }
       })
-      try {
-        filePath = await (await downloader.download()).filePath!
-        break
-      } catch (error) {
-        console.error('Загрузка не удалась', error)
-        return false
-      }
+      const { filePath } = await downloader.download()
+      return JSON.parse(readFileSync(filePath!).toString())
     }
   }
-
-  return JSON.parse(readFileSync(filePath!).toString())
+  return false
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -63,19 +71,11 @@ async function downloadClient(versionMeta: any): Promise<boolean> {
     directory: gameDir + '/versions/' + versionMeta.id,
     fileName: 'client.jar',
     cloneFiles: false,
-    onProgress: function (percentage): void {
-      mainWindow.webContents.send('downloadprogress', {
-        name: 'Клиент ' + versionMeta.id,
-        percent: percentage
-      })
+    onProgress: (percentage): void => {
+      downloadProgress(percentage, `Клиент ${versionMeta.id}`)
     }
   })
-  try {
-    await downloader.download()
-  } catch (error) {
-    console.error('Загрузка не удалась', error)
-    return false
-  }
+  await downloader.download()
 
   return true
 }
