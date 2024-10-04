@@ -6,7 +6,7 @@
 
   let buttonsLocked = []
 
-  function lockHandler(id, lock = true) {
+  function lockHandler(id, lock = true): void {
     if (lock) {
       buttonsLocked.push(id)
     } else {
@@ -21,7 +21,9 @@
     if (!buttonsLocked.includes('download')) {
       lockHandler('download')
       statusBar.downloadStatus()
-      setTimeout(() => { ipc.send('download') }, 500)
+      setTimeout(() => {
+        ipc.send('install')
+      }, 500)
     }
   }
   ipc.on('download-fail', () => {
@@ -32,13 +34,7 @@
   })
 </script>
 
-<form>
-  <p>Start game</p>
-  <input type="text" name="username" id="username" />
-  <button>Submit</button>
-</form>
-
-<p>Download</p>
+<p>Start (xllifi)</p>
 <button on:click|self={startDownload}>Start</button>
 
-<StatusBar bind:this={statusBar}/>
+<StatusBar bind:this={statusBar} />

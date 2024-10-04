@@ -1,27 +1,30 @@
 <script lang="ts">
   let ipc = window.electron.ipcRenderer
-  
-  let text, progress
+
+  let text, small_text, progress
   let hide = true
   let fillcolor = '5f5'
 
-  export function downloadStatus() {
+  export function downloadStatus(): void {
     text = 'Загрузка начинается...'
+    small_text = ''
     progress = 0
     fillcolor = '5f5'
     hide = false
   }
-  ipc.on('download-progress', async (_event, { name, percent }) => {
+  ipc.on('download-progress', async (_event, { message, small, percent }) => {
     console.log(percent)
-    progress = Math.round(percent)
-    text = `Прогресс загрузки «${name}» - ${progress}%`
+    text = message
+    small_text = small
+    hide = false
+    progress = percent
   })
-  ipc.on('download-fail', (_event, {error}) => {
+  ipc.on('download-fail', (_event, { error }) => {
     text = `Ошибка: ${error}`
     progress = 100
     fillcolor = 'f55'
   })
-  ipc.on('download-end', () => {
+  ipc.on('download-success', () => {
     fillcolor = 'fff'
     setTimeout(() => {
       hide = true
@@ -36,8 +39,14 @@
 <div class="progressbarwrapper">
   <div class="progressbar" class:hidden={hide}>
     <clipPath class="fill" id="fill" style="width: {progress == null ? 0 : progress}%; background-color: #{fillcolor};"></clipPath>
-    <p class="label over-fill" style="clip-path: polygon(0% 0%, 0% 100%, {progress == null ? 0 : progress}% 100%, {progress == null ? 0 : progress}% 0%);">{text}</p>
-    <p class="label over-bg">{text}</p>
+    <div class="labels top" style="clip-path: polygon(0% 0%, 0% 100%, {progress == null ? 0 : progress}% 100%, {progress == null ? 0 : progress}% 0%);">
+      <p class="primary">{text}</p>
+      <p class="secondary">{small_text}</p>
+    </div>
+    <div class="labels bottom">
+      <p class="primary">{text}</p>
+      <p class="secondary">{small_text}</p>
+    </div>
   </div>
 </div>
 
@@ -70,22 +79,36 @@
       bottom: -2rem;
     }
 
-    .label {
+    .labels {
       position: absolute;
-      font-family: Roboto Flex;
-      font-weight: 800;
       width: 100%;
       text-align: center;
+      white-space: nowrap;
       transition: clip-path 200ms ease-in-out;
-      text-wrap: nowrap;
 
-      &.over-bg {
+      display: flex;
+      align-items: center;
+
+      &.bottom {
         color: var(--color-text-primary);
         z-index: 0;
       }
-      &.over-fill {
+      &.top {
         color: var(--color-background);
         z-index: 2;
+      }
+      .primary {
+        width: 100%;
+        font-family: Unbounded;
+        font-weight: 800;
+      }
+      .secondary {
+        position: absolute;
+        font-family: Inter;
+        font-weight: 500;
+        font-size: 0.75rem;
+        left: 0.5rem;
+        vertical-align: middle;
       }
     }
     .fill {

@@ -23,10 +23,14 @@
   "dependencies": {
     "@electron-toolkit/preload": "^3.0.1",
     "@electron-toolkit/utils": "^3.0.0",
+    "@xmcl/core": "^2.13.0",
+    "@xmcl/file-transfer": "^1.0.6",
+    "@xmcl/installer": "^5.4.0",
+    "@xmcl/task": "^4.1.0",
     "electron-updater": "^6.1.7",
     "ky": "^1.7.2",
     "lucide-svelte": "^0.447.0",
-    "nodejs-file-downloader": "^4.13.0"
+    "undici": "^6.19.8"
   },
   "devDependencies": {
     "@electron-toolkit/eslint-config-prettier": "^2.0.0",
@@ -46,6 +50,7 @@
     "svelte-check": "^3.8.2",
     "tslib": "^2.6.3",
     "typescript": "^5.5.2",
+    "undici-types": "^6.19.8",
     "vite": "^5.3.1"
   }
 }

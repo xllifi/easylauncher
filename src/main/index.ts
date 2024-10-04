@@ -2,10 +2,11 @@ import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
-import { initDownload } from './download'
+import { initInstall } from './install'
 
 const isDev = !app.isPackaged
 
+export const gamePath = app.getPath('userData') + '/.minecraft/'
 export let loadingWindow, mainWindow
 
 function createWindow(): void {
@@ -110,6 +111,6 @@ ipcMain.on('quit', () => {
   mainWindow.destroy()
 })
 
-ipcMain.on('download', () => {
-  initDownload()
+ipcMain.on('install', () => {
+  initInstall('1.21')
 })
