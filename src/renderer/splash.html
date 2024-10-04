@@ -1,10 +1,31 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
-<body>
-  
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+  <body>
+    <img src="./src/assets/logo.png" alt="" />
+  </body>
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+    }
+    body {
+      -webkit-app-region: drag;
+      width: 100dvw;
+      height: 100dvh;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    img {
+      width: 90%;
+      image-rendering: pixelated;
+
+      filter: drop-shadow(0 0 10px #000);
+    }
+  </style>
 </html>

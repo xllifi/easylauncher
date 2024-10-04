@@ -2,31 +2,36 @@ import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
+import { initDownload } from './download'
 
 const isDev = !app.isPackaged
 
+export let loadingWindow, mainWindow;
+
 function createWindow(): void {
-  const loadingWindow = new BrowserWindow({
+  loadingWindow = new BrowserWindow({
     width: 600,
-    height: 400,
+    height: 200,
     resizable: false,
     fullscreenable: false,
     show: true,
-    // transparent: true,
-    // frame: false,
+    transparent: true,
+    frame: false,
     titleBarStyle: 'hidden',
-    autoHideMenuBar: true,
+    autoHideMenuBar: true
   })
 
+  loadingWindow.on('system-context-menu', (event) => event.preventDefault())
+
   // Create the browser window.
-  const mainWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 600,
     height: 400,
     resizable: false,
     fullscreenable: false,
     show: false,
     titleBarStyle: 'hidden',
-    title: 'Рофл-приложение от хлифи',
+    title: 'xlauncher',
     autoHideMenuBar: true,
     icon: icon,
     webPreferences: {
@@ -43,10 +48,6 @@ function createWindow(): void {
 
   mainWindow.on('system-context-menu', (event) => {
     event.preventDefault()
-  })
-
-  ipcMain.on('minimize', () => {
-    mainWindow.minimize()
   })
 
   mainWindow.webContents.setWindowOpenHandler((details) => {
@@ -71,7 +72,7 @@ function createWindow(): void {
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
   // Set app user model id for windows
-  electronApp.setAppUserModelId('com.electron')
+  electronApp.setAppUserModelId('ru.xllifi.launcher')
 
   // Default open or close DevTools by F12 in development
   // and ignore CommandOrControl + R in production.
@@ -81,11 +82,6 @@ app.whenReady().then(() => {
   })
 
   createWindow()
-
-  // IPC test
-  ipcMain.on('quit', () => {
-    app.quit()
-  })
 
   app.on('activate', function () {
     // On macOS it's common to re-create a window in the app when the
@@ -105,3 +101,14 @@ app.on('window-all-closed', () => {
 
 // In this file you can include the rest of your app"s specific main process
 // code. You can also put them in separate files and require them here.
+
+ipcMain.on('minimize', () => {
+  mainWindow.minimize()
+})
+ipcMain.on('quit', () => {
+  app.quit()
+})
+
+ipcMain.on('download', () => {
+  initDownload()
+})
