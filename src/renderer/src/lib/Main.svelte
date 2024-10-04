@@ -1,16 +1,26 @@
 <script lang="ts">
-  
+  import StatusBar from './components/StatusBar.svelte'
+
   let ipc = window.electron.ipcRenderer
 
-  let downloadName, downloadProgress = ''
+  let downloadText: string, downloadProgress: number
 
-  function startDownload() {
-    ipc.send('download')
+  let buttonsLocked = []
+
+  function startDownload(): void {
+    if (!buttonsLocked.includes('download')) {
+      buttonsLocked.push('download')
+      downloadText = `Загрузка начинается...`
+      setTimeout(() => {
+        ipc.send('download')
+      }, 500)
+    }
   }
-
-  ipc.on('downloadprogress', (name, percent) => {
-    downloadName = name
-    downloadProgress = percent
+  ipc.on('download-end', () => {
+    let i = buttonsLocked.indexOf('download')
+    if (i >= 0) {
+      buttonsLocked.splice(i, 1)
+    }
   })
 </script>
 
@@ -23,6 +33,4 @@
 <p>Download</p>
 <button on:click|self={startDownload}>Start</button>
 
-{#if downloadName != '' && downloadProgress != ''}
-  <p>{downloadName}: {downloadProgress}</p>
-{/if}
+<StatusBar text={downloadText} progress={downloadProgress}/>

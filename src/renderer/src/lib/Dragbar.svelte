@@ -10,19 +10,11 @@
   function minimize(): void {
     ipc.send('minimize')
   }
-
-  function iconClick(e): void {
-    if (e == KeyboardEvent) {
-        alert('keyboardevent')
-    }
-    alert('прив')
-  }
 </script>
 
 <div class="dragbar">
   <div class="text">
-    <img src={icon} alt="app icon" class="icon" on:click|stopPropagation={iconClick} on:keypress={iconClick}/>
-    <span class="divider"></span>
+    <img src={icon} alt="app icon" class="icon" />
     <p>Лаунчер</p>
   </div>
   <div class="buttons">
@@ -70,13 +62,12 @@
       align-items: center;
 
       img {
-        -webkit-app-region: no-drag;
         height: 100%;
         padding: 0.3rem;
       }
 
       p {
-        padding-left: 0.5rem;
+        padding-left: 0.2rem;
       }
     }
     .buttons {
@@ -96,19 +87,27 @@
         border: none;
         background-color: transparent;
 
-        .lucide {
+        transition: background-color 200ms ease-in-out;
+
+        :global(.lucide) {
           width: 100%;
           height: 100%;
           position: relative;
           top: 0.5px;
           right: 0.5px;
-          shape-rendering: geometricPrecision;
           color: var(--color-text-primary);
-          transition: all 100ms;
+          transition:
+            transform 200ms ease-in-out,
+            filter 400ms ease-in-out;
         }
 
-        &:hover .lucide {
+        &:hover :global(.lucide) {
+          transform: scale(1.2);
           color: #000;
+        }
+
+        &:active :global(.lucide) {
+          transform: scale(1);
         }
       }
       .close {

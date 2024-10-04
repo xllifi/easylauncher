@@ -4,7 +4,8 @@ import { readFileSync } from 'fs'
 import Downloader from 'nodejs-file-downloader'
 import { mainWindow } from '.'
 
-const launcherDir = app.getAppPath()
+const gameDir = app.getPath('userData') + '/.minecraft'
+console.log(gameDir)
 
 export async function initDownload(): Promise<boolean> {
   // TODO: download version meta
@@ -13,7 +14,8 @@ export async function initDownload(): Promise<boolean> {
   // TODO: download assets
 
   const versionMeta = await getVersionMeta('1.21')
-  downloadClient(versionMeta)
+  await downloadClient(versionMeta)
+  mainWindow.webContents.send('download-end')
   return false
 }
 
@@ -26,9 +28,15 @@ async function getVersionMeta(version: string): Promise<JSON | boolean> {
     if (entry.id === version) {
       const downloader = new Downloader({
         url: entry.url,
-        directory: launcherDir + './meta',
+        directory: gameDir + '/meta',
         fileName: version + '.json',
-        cloneFiles: false
+        cloneFiles: false,
+        onProgress: function (percentage): void {
+          mainWindow.webContents.send('downloadprogress', {
+            name: 'Метаданные',
+            percent: percentage
+          })
+        }
       })
       try {
         filePath = await (await downloader.download()).filePath!
@@ -52,8 +60,14 @@ async function downloadClient(versionMeta: any): Promise<boolean> {
 
   const downloader = new Downloader({
     url: clientDownload.url,
+    directory: gameDir + '/versions/' + versionMeta.id,
+    fileName: 'client.jar',
+    cloneFiles: false,
     onProgress: function (percentage): void {
-      mainWindow.webContents.send('downloadprogress', { name: 'Клиент', percent: percentage })
+      mainWindow.webContents.send('downloadprogress', {
+        name: 'Клиент ' + versionMeta.id,
+        percent: percentage
+      })
     }
   })
   try {

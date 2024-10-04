@@ -6,7 +6,7 @@ import { initDownload } from './download'
 
 const isDev = !app.isPackaged
 
-export let loadingWindow, mainWindow;
+export let loadingWindow, mainWindow
 
 function createWindow(): void {
   loadingWindow = new BrowserWindow({
@@ -18,7 +18,8 @@ function createWindow(): void {
     transparent: true,
     frame: false,
     titleBarStyle: 'hidden',
-    autoHideMenuBar: true
+    autoHideMenuBar: true,
+    skipTaskbar: true
   })
 
   loadingWindow.on('system-context-menu', (event) => event.preventDefault())
@@ -106,7 +107,7 @@ ipcMain.on('minimize', () => {
   mainWindow.minimize()
 })
 ipcMain.on('quit', () => {
-  app.quit()
+  mainWindow.destroy()
 })
 
 ipcMain.on('download', () => {
