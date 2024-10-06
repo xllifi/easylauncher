@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Dragbar from './lib/Dragbar.svelte'
+  import Dragbar from './lib/components/Dragbar.svelte'
   import Main from './lib/Main.svelte'
 </script>
 

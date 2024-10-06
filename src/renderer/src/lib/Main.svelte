@@ -26,10 +26,10 @@
       }, 500)
     }
   }
-  ipc.on('download-fail', () => {
+  ipc.on('fail', () => {
     lockHandler('download', false)
   })
-  ipc.on('download-end', () => {
+  ipc.on('success', () => {
     lockHandler('download', false)
   })
 </script>

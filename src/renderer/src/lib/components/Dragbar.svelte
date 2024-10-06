@@ -1,6 +1,6 @@
 <script lang="ts">
   import { MonitorX, EyeOff } from 'lucide-svelte'
-  import icon from '../../../../resources/icon.png'
+  import icon from '../../../../../resources/icon.png'
 
   let ipc = window.electron.ipcRenderer
 
@@ -26,7 +26,7 @@
 </div>
 
 <style lang="scss">
-  @import '../assets/base.scss';
+  @import '../../assets/base.scss';
 
   .dragbar {
     z-index: 100;

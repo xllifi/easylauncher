@@ -1,38 +1,75 @@
 <script lang="ts">
   let ipc = window.electron.ipcRenderer
 
-  let text, small_text, progress
+  let text, small_text, progress, finishAnimTimeout
   let hide = true
-  let fillcolor = '5f5'
+  let fillcolor = 'fa0'
+
+  async function parseMessage(taskname: string): Promise<string> {
+    console.log(taskname)
+    switch (true) {
+      case taskname === 'jar':
+        return 'Загрузка основного файла...'
+      case ['version', 'json', 'assets', 'assetIndex'].includes(taskname):
+        return 'Загрузка метаданных...'
+      case ['library', 'libraries', 'dependencies'].includes(taskname):
+        return 'Загрузка библиотек...'
+      case ['asset', 'assets'].includes(taskname):
+        return 'Загрузка ресурсов...'
+      default:
+        return 'Загрузка...'
+    }
+  }
 
   export function downloadStatus(): void {
+    hide = false
     text = 'Загрузка начинается...'
     small_text = ''
+    fillcolor = 'fa0'
     progress = 0
-    fillcolor = '5f5'
-    hide = false
   }
-  ipc.on('download-progress', async (_event, { message, small, percent }) => {
-    console.log(percent)
-    text = message
-    small_text = small
+  ipc.on('start', async (_event, { taskname }) => {
+    console.log('Got start')
     hide = false
-    progress = percent
+    text = taskname
+    small_text = ''
+    fillcolor = 'fa0'
+    progress = 0
+
+    clearTimeout(finishAnimTimeout)
   })
-  ipc.on('download-fail', (_event, { error }) => {
-    text = `Ошибка: ${error}`
+  ipc.on('update', async (_event, { taskname, small, percent }) => {
+    console.log('Got update')
+    hide = false
+    text = await parseMessage(taskname)
+    small_text = small
+    progress = percent
+    fillcolor = 'fa0'
+
+    clearTimeout(finishAnimTimeout)
+  })
+  ipc.on('fail', (_event, { message }) => {
+    console.log('Got error')
+    console.error(message)
+    text = `Ошибка: ${message}`
+    small_text = ''
     progress = 100
     fillcolor = 'f55'
   })
-  ipc.on('download-success', () => {
-    fillcolor = 'fff'
-    setTimeout(() => {
+  ipc.on('success', async (_event, { message }) => {
+    console.log('Got success')
+    hide = false
+    text = `Успех: ${message}`
+    small_text = ''
+    progress = 100
+    fillcolor = 'afa'
+    finishAnimTimeout = setTimeout(() => {
       hide = true
-      setTimeout(() => {
+      finishAnimTimeout = setTimeout(() => {
         progress = undefined
-        fillcolor = '5f5'
+        fillcolor = 'fa0'
       }, 500)
-    }, 600)
+    }, 2500)
   })
 </script>
 
@@ -68,6 +105,8 @@
     bottom: 0;
 
     background-color: #000;
+    border-radius: 0 0 0.5rem 0.5rem;
+    overflow: hidden;
 
     display: flex;
     justify-content: center;
