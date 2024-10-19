@@ -1,6 +1,5 @@
 <script lang="ts">
-  import { MonitorX, EyeOff } from 'lucide-svelte'
-  import icon from '../../../../../resources/icon.png'
+  import { X, Minus } from 'lucide-svelte'
 
   let ipc = window.electron.ipcRenderer
 
@@ -14,14 +13,13 @@
 
 <div class="dragbar">
   <div class="text">
-    <img src={icon} alt="app icon" class="icon" />
-    <p>Лаунчер</p>
+    <p>easylauncher • пре-αльфа</p>
   </div>
   <div class="buttons">
     <span class="divider"></span>
-    <button class="minimize" on:click|stopPropagation={minimize}><EyeOff /></button>
+    <button class="minimize" on:click|stopPropagation={minimize}><Minus /></button>
     <span class="divider"></span>
-    <button class="close" on:click|stopPropagation={quit}><MonitorX /></button>
+    <button class="close" on:click|stopPropagation={quit}><X /></button>
   </div>
 </div>
 
@@ -33,7 +31,7 @@
 
     position: relative;
     -webkit-app-region: drag;
-    height: 2rem;
+    height: 1.5rem;
     width: 100%;
     background-color: var(--color-background-lighter);
 
@@ -41,15 +39,15 @@
     flex-direction: row;
 
     .divider {
-      width: 1px;
-      height: 2rem;
+      width: 1.1px;
+      height: 1.5rem;
       background-color: var(--color-text-darker);
     }
     &::after {
       content: '';
       position: absolute;
       bottom: -1px;
-      height: 1px;
+      height: 1.1px;
       width: 100%;
       background-color: var(--color-text-darker);
     }
@@ -58,36 +56,33 @@
       display: inline-flex;
       flex-direction: row;
 
-      height: 2rem;
+      font-family: Inter;
+      font-weight: 500;
+
+      height: 1.5rem;
       align-items: center;
 
-      img {
-        height: 100%;
-        padding: 0.3rem;
-      }
-
-      p {
-        padding-left: 0.2rem;
-      }
+      padding-left: 0.5rem;
+      color: var(--color-text-darker);
     }
     .buttons {
       display: inline-flex;
       flex-direction: row;
       margin-left: auto;
 
-      height: 2rem;
+      height: 1.5rem;
 
       button {
         -webkit-app-region: no-drag;
         position: relative;
         width: 2rem;
-        height: 2rem;
-        padding: 0.4rem;
+        height: 1.5rem;
+        padding: 0.25rem;
 
         border: none;
         background-color: transparent;
 
-        transition: background-color 200ms ease-in-out;
+        transition: background-color 100ms;
 
         :global(.lucide) {
           width: 100%;
@@ -96,13 +91,13 @@
           top: 0.5px;
           right: 0.5px;
           color: var(--color-text-primary);
-          transition:
-            transform 200ms ease-in-out,
-            filter 400ms ease-in-out;
+          // transition:
+          //   transform 100ms ease-in-out,
+          //   filter 200ms ease-in-out;
         }
 
         &:hover :global(.lucide) {
-          transform: scale(1.2);
+          transform: scale(1.1);
           color: #000;
         }
 
@@ -113,11 +108,11 @@
       .close {
         border-radius: 0 0.5rem 0 0;
         &:hover {
-          background-color: #f55;
+          background-color: #f44c;
         }
       }
       .minimize:hover {
-        background-color: #55f;
+        background-color: #fffb;
       }
     }
   }

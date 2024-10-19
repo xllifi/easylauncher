@@ -6,7 +6,7 @@ import { startGame } from './launch'
 
 const isDev = !app.isPackaged
 
-export const gamePath = app.getPath('userData') + '/.minecraft/'
+export const gamePath = app.getPath('userData') + '/.minecraft'
 export let loadingWindow, mainWindow
 
 function createWindow(): void {
@@ -35,6 +35,8 @@ function createWindow(): void {
     titleBarStyle: 'hidden',
     title: 'xlauncher',
     autoHideMenuBar: true,
+    transparent: true,
+    frame: false,
     icon: icon,
     webPreferences: {
       preload: join(__dirname, '../preload/index.mjs'),

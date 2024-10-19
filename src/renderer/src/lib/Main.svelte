@@ -25,28 +25,26 @@
 
     lockHandler('download', true)
     statusBar.downloadStatus()
-    setTimeout(() => {
-      ipc.send('install')
-    }, 500)
+    ipc.send('install')
   }
-  ipc.on('fail', () => {
-    lockHandler('download', false)
-  })
-  ipc.on('success', () => {
+  ipc.on('close', () => {
     lockHandler('download', false)
   })
 </script>
 
 <div class="main">
-  <button on:click|self={startDownload}>Download</button>
+  <button on:click|self={startDownload} class="start">Start</button>
   <StatusBar bind:this={statusBar} />
-  <StatusFeed />
+  <!-- <StatusFeed /> -->
 </div>
 
-<style>
+<style lang="scss">
   .main {
-    display: flex;
-    flex-direction: column;
     height: 100%;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
   }
 </style>
