@@ -5,22 +5,6 @@
   let hide = true
   let fillcolor = 'fa0'
 
-  async function parseMessage(taskname: string): Promise<string> {
-    console.log(taskname)
-    switch (true) {
-      case taskname === 'jar':
-        return 'Загрузка основного файла...'
-      case ['version', 'json', 'assets', 'assetIndex'].includes(taskname):
-        return 'Загрузка метаданных...'
-      case ['library', 'libraries', 'dependencies'].includes(taskname):
-        return 'Загрузка библиотек...'
-      case ['asset', 'assets'].includes(taskname):
-        return 'Загрузка ресурсов...'
-      default:
-        return 'Загрузка...'
-    }
-  }
-
   export function downloadStatus(): void {
     hide = false
     text = 'Загрузка начинается...'
@@ -31,7 +15,7 @@
   ipc.on('start', async (_event, { taskname }) => {
     console.log('Got start')
     hide = false
-    text = taskname
+    text = `Загрузка: «${taskname}»`
     small_text = ''
     fillcolor = 'fa0'
     progress = 0
@@ -41,7 +25,7 @@
   ipc.on('update', async (_event, { taskname, small, percent }) => {
     console.log('Got update')
     hide = false
-    text = await parseMessage(taskname)
+    text = `Загрузка: «${taskname}»`
     small_text = small
     progress = percent
     fillcolor = 'fa0'
@@ -56,13 +40,13 @@
     progress = 100
     fillcolor = 'f55'
   })
-  ipc.on('success', async (_event, { message }) => {
+  ipc.on('success', async (_event, { taskname }) => {
     console.log('Got success')
     hide = false
-    text = `Успех: ${message}`
+    text = `Успех: «${taskname}»`
     small_text = ''
     progress = 100
-    fillcolor = 'afa'
+    fillcolor = '5d5'
     finishAnimTimeout = setTimeout(() => {
       hide = true
       finishAnimTimeout = setTimeout(() => {

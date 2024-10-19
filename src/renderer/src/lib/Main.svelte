@@ -1,5 +1,6 @@
 <script lang="ts">
   import StatusBar from './components/StatusBar.svelte'
+  import StatusFeed from './components/StatusFeed.svelte'
   let statusBar
 
   let ipc = window.electron.ipcRenderer
@@ -18,13 +19,15 @@
   }
 
   function startDownload(): void {
-    if (!buttonsLocked.includes('download')) {
-      lockHandler('download')
-      statusBar.downloadStatus()
-      setTimeout(() => {
-        ipc.send('install')
-      }, 500)
+    if (buttonsLocked.includes('download')) {
+      return
     }
+
+    lockHandler('download', true)
+    statusBar.downloadStatus()
+    setTimeout(() => {
+      ipc.send('install')
+    }, 500)
   }
   ipc.on('fail', () => {
     lockHandler('download', false)
@@ -34,7 +37,16 @@
   })
 </script>
 
-<p>Start (xllifi)</p>
-<button on:click|self={startDownload}>Start</button>
+<div class="main">
+  <button on:click|self={startDownload}>Download</button>
+  <StatusBar bind:this={statusBar} />
+  <StatusFeed />
+</div>
 
-<StatusBar bind:this={statusBar} />
+<style>
+  .main {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+</style>

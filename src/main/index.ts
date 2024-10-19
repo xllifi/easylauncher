@@ -2,7 +2,7 @@ import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
-import { initInstall } from './install'
+import { startGame } from './launch'
 
 const isDev = !app.isPackaged
 
@@ -37,7 +37,7 @@ function createWindow(): void {
     autoHideMenuBar: true,
     icon: icon,
     webPreferences: {
-      preload: join(__dirname, '../preload/index.js'),
+      preload: join(__dirname, '../preload/index.mjs'),
       sandbox: false,
       devTools: isDev ? true : false
     }
@@ -112,5 +112,5 @@ ipcMain.on('quit', () => {
 })
 
 ipcMain.on('install', () => {
-  initInstall('1.21')
+  startGame()
 })

@@ -1,12 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // eslint-disable-next-line prettier/prettier
-import { getVersionList, installAssetsTask, installJavaRuntimeTask, installLibrariesTask, installVersionTask, MinecraftVersion } from '@xmcl/installer'
+import { DEFAULT_RUNTIME_ALL_URL, DownloadTask, getVersionList, installAssetsTask, InstallAssetTask, installJavaRuntimeTask, installLibrariesTask, installVersionTask, MinecraftVersion } from '@xmcl/installer'
 import { MinecraftLocation, ResolvedVersion, Version } from '@xmcl/core'
 import { gamePath, mainWindow } from '.'
 import { Task, TaskContext } from '@xmcl/task'
 import { randomUUID } from 'crypto'
 import { Agent } from 'undici'
-import { existsSync } from 'fs'
+import { createWriteStream, existsSync, readFileSync, writeFile } from 'fs'
+import nodeFetch from 'node-fetch'
+import { ensureFileSync } from 'fs-extra'
+import * as fflate from 'fflate'
 
 const agent = new Agent({
   connections: 8
@@ -35,13 +38,12 @@ async function getVersionMeta(targetVersion): Promise<MinecraftVersion> {
 
 async function installAndTrack(mcDir, versionMeta): Promise<void> {
   try {
-    await submit(installVersionTask(versionMeta, mcDir, { side: 'client' }))
-    const resolvedVersion: ResolvedVersion = await Version.parse(mcDir, versionMeta.id)
-    const prevalidSizeOnly = existsSync(`${mcDir}/assets/indexes/${resolvedVersion.assets}.json`)
-    console.log(`${mcDir}/assets/indexes/${resolvedVersion.assets}.json`)
-    await submit(installLibrariesTask(resolvedVersion, { librariesDownloadConcurrency: 8, agent: { dispatcher: agent } }))
-    await submit(installAssetsTask(resolvedVersion, { assetsDownloadConcurrency: 8, prevalidSizeOnly, agent: { dispatcher: agent } }))
-    // await submit(installJavaRuntimeTask({ mani }))
+    // await submit(installVersionTask(versionMeta, mcDir, { side: 'client' }))
+    // const resolvedVersion: ResolvedVersion = await Version.parse(mcDir, versionMeta.id)
+    // const prevalidSizeOnly = existsSync(`${mcDir}/assets/indexes/${resolvedVersion.assets}.json`)
+    // await submit(installLibrariesTask(resolvedVersion, { librariesDownloadConcurrency: 8, agent: { dispatcher: agent } }))
+    // await submit(installAssetsTask(resolvedVersion, { assetsDownloadConcurrency: 8, prevalidSizeOnly, agent: { dispatcher: agent } }))
+    installJava()
   } catch (error) {
     if (error instanceof Error) {
       mainWindow.webContents.send('fail', { message: 'Несколько ошибок. Попробуйте снова.' })
@@ -51,9 +53,46 @@ async function installAndTrack(mcDir, versionMeta): Promise<void> {
   }
 }
 
+async function installJava(): Promise<void> {
+  console.log('installing java 21')
+  const metaResp: Response = await fetch('https://api.adoptium.net/v3/assets/feature_releases/21/ga?image_type=jre&os=windows&architecture=x64')
+  const meta: JSON = await metaResp.json()
+
+  // Download Java package
+  if (!existsSync(gamePath + '/java/' + 'package.zip')) {
+    let downloadCurrent: number = 0
+    let downloadTotal: number = 0
+    const resp = await nodeFetch(meta[0].binaries[0].package.link) // package URL
+    await new Promise<void>((resolve, reject) => {
+      resp.arrayBuffer()
+      downloadTotal = parseInt(resp.headers.get('content-length')!)
+      // resp.body?.on()
+      resp!.body!.on('data', (chunk) => {
+        downloadCurrent = downloadCurrent + chunk.length
+        // console.log(`total: ${downloadTotal} | downloadCurrent: ${downloadCurrent} | added: ${chunk.length}`)
+
+        ensureFileSync(gamePath + '/java/' + 'package.zip')
+
+        mainWindow.webContents.send('update', {
+          taskname: 'java',
+          small: `${((downloadCurrent / downloadTotal) * 100).toFixed(2)}%`,
+          percent: ((downloadCurrent / downloadTotal) * 100).toFixed(2)
+        })
+      })
+      resp!.body!.on('error', (error) => {
+        mainWindow.webContents.send('fail', { message: error })
+        reject(error)
+      })
+    })
+  }
+
+  // 
+}
+
 const tasks: Task<any>[] = []
 const record: Record<string, Task> = {}
 let nextUpdate = 0
+let lastTaskId = -1
 
 const createTaskListener = (uid: string): TaskContext => {
   const context = {
@@ -62,13 +101,14 @@ const createTaskListener = (uid: string): TaskContext => {
         mainWindow.webContents.send('start', { taskname: task.name })
       }
     },
-    onUpdate(task: Task<any>, chunkSize: number): void {
+    onUpdate(task: Task<DownloadTask>, chunkSize: number): void {
       console.log(`task id: ${task.id} | task name: ${task.name} | task progress: ${task.progress} | task total: ${task.total} | chunkSize: ${chunkSize}`)
       if (Date.now() >= nextUpdate) {
         nextUpdate = Date.now() + 400
         return
       }
-      if (task.name === 'asset') {
+      if (task.name === 'asset' && lastTaskId < task.id) {
+        lastTaskId = task.id
         mainWindow.webContents.send('update', {
           taskname: task.name,
           small: `${task.id} / ${task.parent?.children.length}`,
@@ -83,6 +123,7 @@ const createTaskListener = (uid: string): TaskContext => {
       }
     },
     async onFailed(task: Task<any>, error: any): Promise<void> {
+      lastTaskId = 0
       if (getActiveTask() === task) {
         mainWindow.webContents.send('fail', { message: error })
       }
@@ -98,9 +139,10 @@ const createTaskListener = (uid: string): TaskContext => {
       }
     },
     onSucceed(task: Task<any>): void {
+      lastTaskId = 0
       console.log('success for task ' + task.id)
       if (getActiveTask() === task) {
-        mainWindow.webContents.send('success', { message: task.name })
+        mainWindow.webContents.send('success', { taskname: task.name })
       }
     }
   }

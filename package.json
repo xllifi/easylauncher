@@ -5,6 +5,7 @@
   "main": "./out/main/index.js",
   "author": "xllifi",
   "license": "GPL-3.0-only",
+  "type": "module",
   "scripts": {
     "format": "prettier --plugin prettier-plugin-svelte --write .",
     "lint": "eslint . --ext .js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix",
@@ -23,15 +24,12 @@
   "dependencies": {
     "@electron-toolkit/preload": "^3.0.1",
     "@electron-toolkit/utils": "^3.0.0",
-    "@xmcl/core": "^2.13.0",
-    "@xmcl/file-transfer": "^1.0.6",
-    "@xmcl/installer": "^5.4.0",
-    "@xmcl/task": "^4.1.0",
-    "crypto": "^1.0.1",
     "electron-updater": "^6.1.7",
-    "ky": "^1.7.2",
+    "fflate": "^0.8.2",
+    "fs-extra": "^11.2.0",
     "lucide-svelte": "^0.447.0",
-    "undici": "6.19.4"
+    "minecraft-java-core": "^3.11.2",
+    "node-fetch": "^3.3.2"
   },
   "devDependencies": {
     "@electron-toolkit/eslint-config-prettier": "^2.0.0",
