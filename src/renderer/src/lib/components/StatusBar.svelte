@@ -1,4 +1,6 @@
 <script lang="ts">
+  import type { StatusBarContents } from '../types/statusbar'
+
   let ipc = window.electron.ipcRenderer
 
   let text, left_text, right_text_1, right_text_2, progress, finishAnimTimeout
@@ -6,23 +8,76 @@
   let fillcolor = 'fa0'
   let minecraft_launched = false
 
-  export function downloadStatus(): void {
+  // hide = false
+  // progress = 50
+
+  let texts = [
+    'Сверяемся с манифестом',
+    'Ищем файлы',
+    'Смотрим wiki.vg',
+    'Пишем аргументы запуска',
+    'Допиливаем лаунчер',
+    'Изучаем TypeScript',
+    'Настраиваем статистику',
+    'Придумываем тексты',
+    'Сверлим потолок',
+    'Выкручиваем лампочки',
+    'Отбираем жевачки у детей',
+    'Узнаём, что такое Minecraft',
+    'Взламываем Пентагон',
+    'Влияем на выборы США',
+    'Исследуем ваш компьютер',
+    'Налаживаем контакт с ФСБ',
+    'Закрашиваем теги Балласов',
+    'Форматируем диски',
+    'Раздаём торренты',
+    'Выживаем на кладбище'
+  ]
+  let displayText = texts[Math.floor(Math.random() * texts.length)]
+  setInterval(() => {
+    displayText = texts[Math.floor(Math.random() * texts.length)]
+  }, 2500)
+
+  async function parseContents(opts: StatusBarContents): Promise<void> {
+    text = opts.text ? opts.text : ''
+    left_text = opts.left_text ? opts.left_text : ''
+    right_text_1 = opts.right_text_1 ? opts.right_text_1 : ''
+    right_text_2 = opts.right_text_2 ? opts.right_text_2 : ''
+    fillcolor = opts.fillcolor ? opts.fillcolor : ''
+    progress = opts.progress ? opts.progress : 0
+  }
+  async function unsetContents(): Promise<void> {
+    hide = true
+    setTimeout(() => {
+      text = ''
+      left_text = ''
+      right_text_1 = ''
+      right_text_2 = ''
+      fillcolor = ''
+      progress = 0
+    }, 400)
+  }
+
+  export function sendStatus(opts: StatusBarContents): void {
     hide = false
-    text = 'Ищем файлы...'
-    left_text = ''
-    fillcolor = 'fa0'
-    progress = 0
+    parseContents(opts)
+
+    if (opts.hide_after_secs) {
+      setTimeout(() => {
+        unsetContents()
+      }, opts.hide_after_secs * 1000)
+    }
   }
   ipc.on('start', async () => {
     console.log('Got start')
     hide = false
-    text = `Сверяемся с манифестом...`
+    text = ''
     left_text = ''
     right_text_1 = ''
     right_text_2 = ''
     fillcolor = 'fa0'
     progress = 0
-    
+
     clearTimeout(finishAnimTimeout)
   })
   ipc.on('extract', (_event, { extract }) => {
@@ -79,6 +134,20 @@
   })
   ipc.on('close', () => {
     minecraft_launched = false
+    hide = false
+    text = `Minecraft закрыт!`
+    left_text = ''
+    right_text_1 = ''
+    right_text_2 = ''
+    progress = 100
+    fillcolor = 'd44'
+    finishAnimTimeout = setTimeout(() => {
+      hide = true
+      finishAnimTimeout = setTimeout(() => {
+        progress = undefined
+        fillcolor = 'fa0'
+      }, 500)
+    }, 2500)
   })
 </script>
 
@@ -86,12 +155,12 @@
   <div class="progressbar" class:hidden={hide}>
     <clipPath class="fill" id="fill" style="width: {progress == null ? 0 : progress}%; background-color: #{fillcolor};"></clipPath>
     <div class="labels top" style="clip-path: polygon(0% 0%, 0% 100%, {progress == null ? 0 : progress}% 100%, {progress == null ? 0 : progress}% 0%);">
-      <p class="primary">{text}</p>
+      <p class="primary">{text == '' ? displayText + '...' : text}</p>
       <p class="secondary left">{left_text}</p>
       <p class="secondary right">{right_text_1} {right_text_1 == '' ? '' : '•'} {right_text_2}</p>
     </div>
     <div class="labels bottom">
-      <p class="primary">{text}</p>
+      <p class="primary">{text == '' ? displayText + '...' : text}</p>
       <p class="secondary left">{left_text}</p>
       <p class="secondary right">{right_text_1} {right_text_1 == '' ? '' : '•'} {right_text_2}</p>
     </div>
@@ -112,13 +181,14 @@
     height: 2rem;
 
     position: absolute;
-    bottom: .5rem;
-    right: .5rem;
-    left: .5rem;
+    bottom: calc(0.5rem + 1px);
+    right: 0.5rem;
+    left: 0.5rem;
 
     background-color: #000;
     border-radius: 0.2rem;
     overflow: hidden;
+    box-shadow: 0 2px 8px #000;
 
     display: flex;
     justify-content: center;
@@ -128,6 +198,7 @@
 
     &.hidden {
       bottom: -2rem;
+      box-shadow: 0 0 0 #0000;
     }
 
     .labels {
@@ -145,7 +216,7 @@
         z-index: 0;
       }
       &.top {
-        color: var(--color-background);
+        color: #000;
         z-index: 2;
       }
       .primary {
@@ -177,6 +248,11 @@
       transition:
         width 200ms ease-in-out,
         background-color 200ms;
+    }
+  }
+  @media (min-width: 500px) {
+    .progressbarwrapper {
+      width: 500px;
     }
   }
 </style>

@@ -27,10 +27,12 @@ function createWindow(): void {
 
   // Create the browser window.
   mainWindow = new BrowserWindow({
+    minWidth: 400,
+    minHeight: 360,
     width: 600,
     height: 400,
-    resizable: false,
-    fullscreenable: false,
+    // resizable: false,
+    // fullscreenable: false,
     show: false,
     titleBarStyle: 'hidden',
     title: 'xlauncher',
@@ -113,6 +115,6 @@ ipcMain.on('quit', () => {
   mainWindow.destroy()
 })
 
-ipcMain.on('install', () => {
-  startGame()
+ipcMain.on('install', (_event, { username }) => {
+  startGame(username)
 })

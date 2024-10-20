@@ -41,7 +41,7 @@
     .divider {
       width: 1.1px;
       height: 1.5rem;
-      background-color: var(--color-text-darker);
+      background-color: var(--color-border);
     }
     &::after {
       content: '';
@@ -49,7 +49,7 @@
       bottom: -1px;
       height: 1.1px;
       width: 100%;
-      background-color: var(--color-text-darker);
+      background-color: var(--color-border);
     }
 
     .text {
@@ -63,7 +63,7 @@
       align-items: center;
 
       padding-left: 0.5rem;
-      color: var(--color-text-darker);
+      color: var(--color-border);
     }
     .buttons {
       display: inline-flex;

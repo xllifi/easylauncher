@@ -1,16 +1,16 @@
 import { LaunchOPTS } from 'minecraft-java-core/build/Launch'
 import { gamePath, mainWindow } from '.'
 import { Mojang, Launch } from 'minecraft-java-core'
-import { ensureDir } from 'fs-extra'
 
 const launch = new Launch()
 
-export async function startGame(): Promise<void> {
+export async function startGame(username: string): Promise<void> {
   const ipc = mainWindow.webContents
   const opt: LaunchOPTS = {
-    authenticator: await Mojang.login('xllifi'),
+    authenticator: await Mojang.login(username),
     timeout: 10000,
     path: gamePath,
+    instance: 'something somewhere',
     version: '1.21',
     detached: false,
     downloadFileMultiple: 8,
@@ -18,7 +18,7 @@ export async function startGame(): Promise<void> {
     mcp: null,
 
     loader: {
-      path: undefined,
+      path: 'load',
       type: 'fabric',
       build: 'latest',
       enable: true
@@ -31,8 +31,8 @@ export async function startGame(): Promise<void> {
     GAME_ARGS: [],
 
     java: {
-      path: null,
-      version: null,
+      path: undefined,
+      version: undefined,
       type: 'jre'
     },
 
@@ -54,6 +54,7 @@ export async function startGame(): Promise<void> {
 
   launch.on('extract', (extract) => {
     console.log(`Extract: ${extract}`)
+    ipc.send('extract', { extract })
   })
 
   launch.on('progress', (progress, size, element) => {
