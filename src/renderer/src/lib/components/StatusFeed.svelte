@@ -40,7 +40,7 @@
     }
   }
   function debugAddEntry(): void {
-    pushEntry({ title: 'Заголовок в две строчки и ещё', description: 'Описание записи' })
+    pushEntry({ title: 'Здесь водятся драконы!', description: 'В сборке могут быть ошибки. Пожалуйста, сообщите о них по кнопке в заголовке окна (WIP).' })
   }
   debugAddEntry()
 </script>
