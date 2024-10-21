@@ -110,10 +110,10 @@
         h3 {
           font-family: Unbounded;
           font-weight: 500;
-          font-size: 1.3rem;
+          font-size: 1.15rem;
           font-style: italic;
-          line-height: 0.9;
-          margin: 0.2rem 0;
+          line-height: 1;
+          margin: 0.1rem 0;
 
           transform: translateX(-2px);
         }
