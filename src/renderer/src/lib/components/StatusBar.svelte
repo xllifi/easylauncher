@@ -9,7 +9,8 @@
   let minecraft_launched = false
 
   // hide = false
-  // progress = 50
+  // text = 'looooooooooooooooooong text'
+  // progress = 100
 
   let texts = [
     'Сверяемся с манифестом',
@@ -28,9 +29,9 @@
     'Форматируем диски',
     'Раздаём торренты'
   ]
-  let displayText = texts[Math.round(Math.random() * texts.length)]
+  let displayText = texts[Math.floor(Math.random() * texts.length)]
   setInterval(() => {
-    displayText = texts[Math.round(Math.random() * texts.length)]
+    displayText = texts[Math.floor(Math.random() * texts.length)]
   }, 2500)
 
   async function parseContents(opts: StatusBarContents): Promise<void> {
@@ -151,8 +152,8 @@
     <clipPath class="fill" id="fill" style="width: {progress == null ? 0 : progress}%; background-color: #{fillcolor};"></clipPath>
     <div class="labels top" style="clip-path: polygon(0% 0%, 0% 100%, {progress == null ? 0 : progress}% 100%, {progress == null ? 0 : progress}% 0%);">
       <p class="primary">{text == '' ? displayText + '...' : text}</p>
-      <p class="secondary left">{left_text}</p>
-      <p class="secondary right">{right_text_1} {right_text_1 == '' ? '' : '•'} {right_text_2}</p>
+      <p class="secondary left" style="filter: drop-shadow(0 0 2px #{fillcolor}) drop-shadow(0 0 2px #{fillcolor});">{left_text}</p>
+      <p class="secondary right" style="filter: drop-shadow(0 0 2px #{fillcolor}) drop-shadow(0 0 2px #{fillcolor});">{right_text_1} {right_text_1 == '' ? '' : '•'} {right_text_2}</p>
     </div>
     <div class="labels bottom">
       <p class="primary">{text == '' ? displayText + '...' : text}</p>
@@ -209,10 +210,17 @@
       &.bottom {
         color: var(--color-text-primary);
         z-index: 0;
+        .secondary {
+          filter: drop-shadow(0 0 2px #000) drop-shadow(0 0 2px #000);
+        }
       }
       &.top {
         color: #000;
         z-index: 2;
+        .secondary {
+          font-weight: 900;
+          paint-order: stroke fill;
+        }
       }
       .primary {
         width: 100%;
@@ -245,9 +253,9 @@
         background-color 200ms;
     }
   }
-  @media (min-width: 500px) {
+  @media (min-width: 600px) {
     .progressbarwrapper {
-      width: 500px;
+      width: 600px;
     }
   }
 </style>

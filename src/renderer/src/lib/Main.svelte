@@ -26,7 +26,7 @@
       return
     }
 
-    if (!/[a-zA-Z0-9_]{3,16}/.test(username)) {
+    if (!/^([a-zA-Z0-9_]){3,16}$/.test(username)) {
       console.log('bad username! ' + username)
       let opts: StatusFeedEntry = {
         title: 'Никнейм некорректен!',
