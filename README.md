@@ -1,4 +1,4 @@
-# rofl
+# easylauncher
 
 An Electron application with Svelte and TypeScript
 

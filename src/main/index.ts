@@ -35,7 +35,7 @@ function createWindow(): void {
     // fullscreenable: false,
     show: false,
     titleBarStyle: 'hidden',
-    title: 'xlauncher',
+    title: 'easylauncher',
     autoHideMenuBar: true,
     transparent: true,
     frame: false,
