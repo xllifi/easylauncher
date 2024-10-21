@@ -122,6 +122,7 @@
           line-height: 1.2;
           max-width: 16rem;
           text-wrap: balance;
+          white-space: pre-line;
         }
 
         button {
