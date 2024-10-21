@@ -115,6 +115,6 @@ ipcMain.on('quit', () => {
   mainWindow.destroy()
 })
 
-ipcMain.on('install', (_event, { username }) => {
+ipcMain.on('launch', (_event, { username }) => {
   startGame(username)
 })

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { StatusBarContents } from '../types/statusbar'
+  import type { StatusBarContents } from '../types/statusbar.d'
 
   let ipc = window.electron.ipcRenderer
 
@@ -22,20 +22,15 @@
     'Придумываем тексты',
     'Сверлим потолок',
     'Выкручиваем лампочки',
-    'Отбираем жевачки у детей',
     'Узнаём, что такое Minecraft',
     'Взламываем Пентагон',
-    'Влияем на выборы США',
     'Исследуем ваш компьютер',
-    'Налаживаем контакт с ФСБ',
-    'Закрашиваем теги Балласов',
     'Форматируем диски',
-    'Раздаём торренты',
-    'Выживаем на кладбище'
+    'Раздаём торренты'
   ]
-  let displayText = texts[Math.floor(Math.random() * texts.length)]
+  let displayText = texts[Math.round(Math.random() * texts.length)]
   setInterval(() => {
-    displayText = texts[Math.floor(Math.random() * texts.length)]
+    displayText = texts[Math.round(Math.random() * texts.length)]
   }, 2500)
 
   async function parseContents(opts: StatusBarContents): Promise<void> {

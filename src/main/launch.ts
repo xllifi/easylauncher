@@ -10,7 +10,7 @@ export async function startGame(username: string): Promise<void> {
     authenticator: await Mojang.login(username),
     timeout: 10000,
     path: gamePath,
-    instance: 'something somewhere',
+    instance: 'main',
     version: '1.21',
     detached: false,
     downloadFileMultiple: 8,
@@ -108,6 +108,10 @@ export async function startGame(username: string): Promise<void> {
   })
 
   launch.on('error', (err) => {
+    ipc.send('feed-push', {
+      title: 'Ошибка!',
+      description: `${err.message.toString()}<br>Эта ошибка может быть не критичной, но пожалуйста, сообщите нам о ней!\nЕсли Minecraft долго не запускается - перезапустите лаунчер.`
+    })
     console.log(`Error: ${err}`) // TODO: add error feed / status feed
   })
 }

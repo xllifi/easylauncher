@@ -28,7 +28,7 @@
     "fflate": "^0.8.2",
     "fs-extra": "^11.2.0",
     "lucide-svelte": "^0.447.0",
-    "minecraft-java-core": "^3.11.2",
+    "minecraft-java-core": "C:\\Code\\minecraft-java-core",
     "node-fetch": "^3.3.2"
   },
   "devDependencies": {

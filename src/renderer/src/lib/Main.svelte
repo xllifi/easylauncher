@@ -1,8 +1,9 @@
 <script lang="ts">
   import StatusBar from './components/StatusBar.svelte'
   import StatusFeed from './components/StatusFeed.svelte'
-  import type { StatusBarContents } from './types/statusbar'
-  let statusBar
+  import type { StatusBarContents } from './types/statusbar.d'
+  import type { StatusFeedEntry } from './types/statusfeed'
+  let statusBar, statusFeed
   let username: string = ''
 
   let ipc = window.electron.ipcRenderer
@@ -19,42 +20,39 @@
     }
   }
 
-  function startDownload(): void {
-    console.log('starting download')
-    if (buttonsLocked.includes('download')) {
-      console.log('download already')
+  function launchGame(): void {
+    console.log('starting launch')
+    if (buttonsLocked.includes('launch')) {
       return
     }
 
     if (!/[a-zA-Z0-9_]{3,16}/.test(username)) {
       console.log('bad username! ' + username)
-      let opts: StatusBarContents = {
-        text: 'Никнейм некорректен!',
-        fillcolor: 'd44',
-        progress: 100,
-        hide_after_secs: 3
+      let opts: StatusFeedEntry = {
+        title: 'Никнейм некорректен!',
+        description: 'Никнейм должен быть не короче 3 символов и не длиннее 16, а также содержать только латинские символы, цифры и символ _'
       }
-      statusBar.sendStatus(opts)
+      statusFeed.pushEntry(opts)
       return
     }
 
-    lockHandler('download', true)
+    lockHandler('launch', true)
     let opts: StatusBarContents = {
       fillcolor: 'fa0'
     }
     statusBar.sendStatus(opts)
-    ipc.send('install', { username })
+    ipc.send('launch', { username })
   }
   ipc.on('close', () => {
-    lockHandler('download', false)
+    lockHandler('launch', false)
   })
 </script>
 
 <div class="main">
   <input bind:value={username} placeholder="Никнейм" />
-  <button on:click|self={startDownload} class="start">Start</button>
+  <button on:click|self={launchGame} class="start">Start</button>
   <StatusBar bind:this={statusBar} />
-  <!-- <StatusFeed /> -->
+  <StatusFeed bind:this={statusFeed} />
 </div>
 
 <style lang="scss">
