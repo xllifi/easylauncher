@@ -4,7 +4,12 @@
   import type { StatusFeedEntry } from '../types/statusfeed.d'
   import { X } from 'lucide-svelte'
 
-  let entries: StatusFeedEntry[] = []
+  let list: StatusFeedEntry[] = []
+  let listElement
+
+  async function scrollToBottom(el: Element): Promise<void> {
+    el.scroll({ top: el.scrollHeight, behavior: 'smooth' })
+  }
 
   let ipc = window.electron.ipcRenderer
   ipc.on('feed-push', (_event, { title, description, hide_after_secs }) => {
@@ -17,38 +22,45 @@
     pushEntry(opts)
   })
   export function pushEntry(entry: StatusFeedEntry): void {
-    let entryID = entries.length >= 1 ? entries[entries.length - 1].id + 1 : 0
+    let entryID = list.length >= 1 ? list[list.length - 1].id + 1 : 0
     entry = {
       ...entry,
       id: entryID
     }
-    entries = [...entries, entry]
-    console.log(entries)
+    list = [...list, entry]
+    console.log(list)
     console.log(`Added entry with ID ${entryID}`)
 
     setTimeout(() => {
-      const list = document.querySelector('div#status_feed')
-      list.scrollTo({ top: list.scrollHeight, behavior: 'smooth' })
+      scrollToBottom(listElement)
     }, 200)
   }
   function removeEntry(id?: number): void {
-    const index: number = entries.indexOf(entries.filter((x) => x.id == id)[0])
+    const index: number = list.indexOf(list.filter((x) => x.id == id)[0])
     console.log(`Removing entry with ID ${id}`)
     if (index > -1) {
-      entries.splice(index, 1)
-      entries = entries
+      list.splice(index, 1)
+      list = list
     }
   }
   function debugAddEntry(): void {
-    pushEntry({ title: 'Здесь водятся драконы!', description: 'В сборке могут быть ошибки. Пожалуйста, сообщите о них по кнопке в заголовке окна (WIP).' })
+    setTimeout(() => {
+      pushEntry({ title: 'Здесь водятся драконы!', description: 'В сборке могут быть ошибки. Пожалуйста, сообщите о них по кнопке в заголовке окна (WIP).' })
+      pushEntry({ title: 'Здесь водятся драконы!', description: 'В сборке могут быть ошибки. Пожалуйста, сообщите о них по кнопке в заголовке окна (WIP).' })
+      pushEntry({ title: 'Здесь водятся драконы!', description: 'В сборке могут быть ошибки. Пожалуйста, сообщите о них по кнопке в заголовке окна (WIP).' })
+      pushEntry({ title: 'Здесь водятся драконы!', description: 'В сборке могут быть ошибки. Пожалуйста, сообщите о них по кнопке в заголовке окна (WIP).' })
+      setTimeout(() => {
+        pushEntry({ title: 'Здесь водятся драконы!', description: 'В сборке могут быть ошибки. Пожалуйста, сообщите о них по кнопке в заголовке окна (WIP).' })
+      }, 500)
+    }, 500)
   }
   debugAddEntry()
 </script>
 
-<div class="status-feed" id="status_feed">
+<div class="status-feed" bind:this={listElement}>
   <!-- <button on:click|self={debugAddEntry}>add entry</button> -->
   <ul>
-    {#each entries as { title, description, id } (id)}
+    {#each list as { title, description, id } (id)}
       <li in:slide={{ delay: 0, duration: 200, easing: sineOut }} out:slide={{ duration: 150, easing: sineOut }}>
         <h3>{title}</h3>
         <p>{description}</p>
@@ -68,13 +80,13 @@
 <style lang="scss">
   .status-feed {
     width: 16rem;
-    max-height: calc(100dvh - 2.5rem);
+    max-height: calc(100dvh - 1.5rem - 3px);
     overflow-y: scroll;
     overflow-x: hidden;
     right: 0;
     bottom: 1px;
     position: fixed;
-    margin: 0.5rem;
+    margin: 0 0.5rem;
     flex-grow: 1;
 
     &::-webkit-scrollbar {
@@ -91,21 +103,19 @@
     ul {
       list-style: none;
       padding: 0;
+      padding-bottom: 0.5rem;
 
       display: flex;
       flex-flow: column;
 
       li {
-        border-radius: 0.2rem;
-        background-color: #f55c;
+        border-radius: 0.4rem;
+        background: radial-gradient(ellipse at 30% 12%, #f55c, #f550 70%);
+        background-color: #f557;
         backdrop-filter: blur(5px);
 
         padding: 0.4rem 0.6rem;
         margin-top: 0.5rem;
-
-        &:first-of-type {
-          margin-top: 0;
-        }
 
         h3 {
           font-family: Unbounded;
@@ -113,7 +123,7 @@
           font-size: 1.15rem;
           font-style: italic;
           line-height: 1;
-          margin: 0.1rem 0;
+          margin: 0.15rem 0;
 
           transform: translateX(-2px);
         }
@@ -125,22 +135,25 @@
           white-space: pre-line;
         }
 
-        button {
+        .close {
           position: absolute;
           top: 0;
           right: 0;
-          width: 24px;
-          height: 24px;
+          width: 28px;
+          height: 28px;
 
           padding: 0;
-          margin: 0;
+          margin: 0.25rem;
 
           display: flex;
-          justify-items: center;
+          justify-content: center;
           align-items: center;
 
-          background: transparent;
+          border-radius: 0.3rem;
+          background: #f550;
           border: none;
+          transition: background-color 100ms;
+          cursor: pointer;
 
           :global(.lucide) {
             width: 24px;
@@ -150,9 +163,12 @@
             transition: transform 100ms;
           }
 
-          &:hover :global(.lucide) {
-            transform: scale(1.2);
-            opacity: 1;
+          &:hover {
+            background-color: #f555;
+
+            :global(.lucide) {
+              opacity: 1;
+            }
           }
         }
       }

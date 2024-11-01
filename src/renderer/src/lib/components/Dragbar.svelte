@@ -112,7 +112,7 @@
         }
       }
       .minimize:hover {
-        background-color: #fffb;
+        background-color: #fffc;
       }
     }
   }
