@@ -1,11 +1,14 @@
 <script lang="ts">
-  import { slide } from 'svelte/transition'
-  import { sineOut } from 'svelte/easing'
+  import { fly } from 'svelte/transition'
+  import { sineIn, sineOut } from 'svelte/easing'
   import type { StatusFeedEntry } from '../types/statusfeed.d'
   import { X } from 'lucide-svelte'
+  import { flip } from 'svelte/animate'
 
   let list: StatusFeedEntry[] = []
   let listElement
+
+  let flipDelay = 0
 
   async function scrollToBottom(el: Element): Promise<void> {
     el.scroll({ top: el.scrollHeight, behavior: 'smooth' })
@@ -22,20 +25,22 @@
     pushEntry(opts)
   })
   export function pushEntry(entry: StatusFeedEntry): void {
-    let entryID = list.length >= 1 ? list[list.length - 1].id + 1 : 0
+    flipDelay = 0
+    let entryID = list.length > 0 ? list[0].id + 1 : 0
     entry = {
       ...entry,
       id: entryID
     }
-    list = [...list, entry]
+    list = [entry, ...list]
     console.log(list)
     console.log(`Added entry with ID ${entryID}`)
 
     setTimeout(() => {
       scrollToBottom(listElement)
-    }, 200)
+    }, 0)
   }
   function removeEntry(id?: number): void {
+    flipDelay = 100
     const index: number = list.indexOf(list.filter((x) => x.id == id)[0])
     console.log(`Removing entry with ID ${id}`)
     if (index > -1) {
@@ -44,24 +49,23 @@
     }
   }
   function debugAddEntry(): void {
+    pushEntry({ title: '1 уведомление', description: 'Следующее уведомление не будет иметь описания.' })
+    pushEntry({ title: '2 уведомление', description: '' })
     setTimeout(() => {
       pushEntry({ title: 'Здесь водятся драконы!', description: 'В сборке могут быть ошибки. Пожалуйста, сообщите о них по кнопке в заголовке окна (WIP).' })
       pushEntry({ title: 'Здесь водятся драконы!', description: 'В сборке могут быть ошибки. Пожалуйста, сообщите о них по кнопке в заголовке окна (WIP).' })
       pushEntry({ title: 'Здесь водятся драконы!', description: 'В сборке могут быть ошибки. Пожалуйста, сообщите о них по кнопке в заголовке окна (WIP).' })
       pushEntry({ title: 'Здесь водятся драконы!', description: 'В сборке могут быть ошибки. Пожалуйста, сообщите о них по кнопке в заголовке окна (WIP).' })
-      setTimeout(() => {
-        pushEntry({ title: 'Здесь водятся драконы!', description: 'В сборке могут быть ошибки. Пожалуйста, сообщите о них по кнопке в заголовке окна (WIP).' })
-      }, 500)
     }, 500)
   }
   debugAddEntry()
 </script>
 
 <div class="status-feed" bind:this={listElement}>
-  <!-- <button on:click|self={debugAddEntry}>add entry</button> -->
   <ul>
+    <!-- <button on:click|self={debugAddEntry}>[DEBUG]add entry</button> -->
     {#each list as { title, description, id } (id)}
-      <li in:slide={{ delay: 0, duration: 200, easing: sineOut }} out:slide={{ duration: 150, easing: sineOut }}>
+      <li in:fly={{ delay: 100, duration: 200, x: 100, y: 0, easing: sineOut }} out:fly={{ delay: 0, duration: 200, x: 100, y: 0, easing: sineIn }} animate:flip={{ delay: flipDelay, duration: 200 }}>
         <h3>{title}</h3>
         <p>{description}</p>
         <!-- <debug>ID: {id}</debug> -->
@@ -78,35 +82,41 @@
 </div>
 
 <style lang="scss">
-  .status-feed {
+  div.status-feed {
     width: 16rem;
-    max-height: calc(100dvh - 1.5rem - 3px);
-    overflow-y: scroll;
-    overflow-x: hidden;
+    height: calc(100dvh - 1.5rem - 3px);
+    overflow: hidden;
     right: 0;
     bottom: 1px;
     position: fixed;
     margin: 0 0.5rem;
     flex-grow: 1;
 
-    &::-webkit-scrollbar {
-      width: 8px;
-      background-color: transparent;
-    }
-    &::-webkit-scrollbar-thumb {
-      border: 2px solid #0000;
-      background-color: var(--color-background-lighter);
-      background-clip: padding-box;
-      border-radius: 500px;
-    }
+    margin-right: 0;
 
     ul {
+      overflow-y: scroll;
+      overflow-x: hidden;
+
       list-style: none;
       padding: 0;
       padding-bottom: 0.5rem;
 
+      height: 100%;
+
       display: flex;
-      flex-flow: column;
+      flex-flow: column-reverse;
+
+      &::-webkit-scrollbar {
+        width: 8px;
+        background-color: transparent;
+      }
+      &::-webkit-scrollbar-thumb {
+        border: 2px solid #0000;
+        background-color: var(--color-background-lighter);
+        background-clip: padding-box;
+        border-radius: 500px;
+      }
 
       li {
         border-radius: 0.4rem;
@@ -124,6 +134,8 @@
           font-style: italic;
           line-height: 1;
           margin: 0.15rem 0;
+
+          width: calc(100% - 1.25rem);
 
           transform: translateX(-2px);
         }
