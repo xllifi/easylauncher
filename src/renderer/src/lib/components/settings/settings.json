@@ -1,0 +1,44 @@
+{
+  "$schema": {
+    "properties": {
+      "pages": {
+        "type": "array",
+        "properties": {
+          "id": { "type": "string" },
+          "title": { "type": "string" },
+          "options": {
+            "type": "array",
+            "properties": {
+              "id": { "type": "string" },
+              "name": { "type": "string" },
+              "binds_to": { "type": "string" }
+            }
+          }
+        }
+      }
+    }
+  },
+  "pages": [
+    {
+      "id": "page1",
+      "title": "Страница 1",
+      "options": [
+        {
+          "id": "option1",
+          "name": "Параметр 1",
+          "binds_to": "store-key-1"
+        },
+        {
+          "id": "option2",
+          "name": "Параметр 2",
+          "binds_to": "store-key-2"
+        },
+        {
+          "id": "option3",
+          "name": "Параметр 3",
+          "binds_to": "store-key-3"
+        }
+      ]
+    }
+  ]
+}

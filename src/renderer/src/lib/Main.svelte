@@ -1,6 +1,8 @@
 <script lang="ts">
+  import Settings from './components/settings/Main.svelte'
   import StatusBar from './components/StatusBar.svelte'
   import StatusFeed from './components/StatusFeed.svelte'
+  import { route } from './stores/route.svelte'
   import type { StatusBarContents } from './types/statusbar.d'
   import type { StatusFeedEntry } from './types/statusfeed'
   let statusBar, statusFeed
@@ -43,6 +45,10 @@
     statusBar.sendStatus(opts)
     ipc.send('launch', { username })
   }
+
+  // function routeTo(page: string): void {
+  //   $route.page =
+  // }
   ipc.on('close', () => {
     lockHandler('launch', false)
   })
@@ -50,9 +56,13 @@
 
 <div class="main">
   <input bind:value={username} placeholder="Никнейм" />
-  <button on:click|self={launchGame} class="start">Start</button>
+  <button onclick={launchGame} class="start">Start</button>
+  <button onclick={() => $route.page = 'settings'}>Settings</button>
   <StatusBar bind:this={statusBar} />
   <StatusFeed bind:this={statusFeed} />
+  {#if $route.page == 'settings'}
+    <Settings />
+  {/if}
 </div>
 
 <style lang="scss">

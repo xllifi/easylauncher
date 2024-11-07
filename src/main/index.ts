@@ -27,7 +27,7 @@ function createWindow(): void {
 
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    minWidth: 400,
+    minWidth: 520,
     minHeight: 360,
     width: 600,
     height: 400,
@@ -39,6 +39,7 @@ function createWindow(): void {
     autoHideMenuBar: true,
     transparent: true,
     frame: false,
+    fullscreenable: true,
     icon: icon,
     webPreferences: {
       preload: join(__dirname, '../preload/index.mjs'),

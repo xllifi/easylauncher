@@ -49,14 +49,7 @@
     }
   }
   function debugAddEntry(): void {
-    pushEntry({ title: '1 уведомление', description: 'Следующее уведомление не будет иметь описания.' })
-    pushEntry({ title: '2 уведомление', description: '' })
-    setTimeout(() => {
-      pushEntry({ title: 'Здесь водятся драконы!', description: 'В сборке могут быть ошибки. Пожалуйста, сообщите о них по кнопке в заголовке окна (WIP).' })
-      pushEntry({ title: 'Здесь водятся драконы!', description: 'В сборке могут быть ошибки. Пожалуйста, сообщите о них по кнопке в заголовке окна (WIP).' })
-      pushEntry({ title: 'Здесь водятся драконы!', description: 'В сборке могут быть ошибки. Пожалуйста, сообщите о них по кнопке в заголовке окна (WIP).' })
-      pushEntry({ title: 'Здесь водятся драконы!', description: 'В сборке могут быть ошибки. Пожалуйста, сообщите о них по кнопке в заголовке окна (WIP).' })
-    }, 500)
+    pushEntry({ title: 'Здесь водятся драконы!', description: 'В сборке могут быть ошибки. Пожалуйста, сообщите о них по кнопке в заголовке окна.\n(Скоро будет)' })
   }
   debugAddEntry()
 </script>
@@ -93,6 +86,8 @@
     flex-grow: 1;
 
     margin-right: 0;
+    
+    pointer-events: none;
 
     ul {
       overflow-y: scroll;
@@ -126,6 +121,10 @@
 
         padding: 0.4rem 0.6rem;
         margin-top: 0.5rem;
+
+        
+        pointer-events: all;
+        user-select: all;
 
         h3 {
           font-family: Unbounded;
