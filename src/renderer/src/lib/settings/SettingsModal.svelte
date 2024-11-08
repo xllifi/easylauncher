@@ -1,11 +1,12 @@
 <script lang="ts">
   import { scale } from 'svelte/transition'
-  import { route } from '../../stores/route.svelte'
+  import { route } from '../stores/route.svelte'
   import { X } from 'lucide-svelte'
   import { backOut } from 'svelte/easing'
   import settings from './settings.json'
-  import SettingsGeneral from './pages/SettingsGeneral.svelte'
-  import Settings404 from './pages/Settings404.svelte'
+  import SettingsPageGeneral from './pages/SettingsPageGeneral.svelte'
+  import SettingsPageLaunch from './pages/SettingsPageLaunch.svelte'
+  import SettingsPage404 from './pages/SettingsPage404.svelte'
 
   function exitButtonClick(e: Event) {
     e.stopPropagation()
@@ -22,16 +23,18 @@
     currentPageComponentName = e.target.id
     pageTitle = settings.pages.filter(x => x.component === currentPageComponentName)[0].title
     switch (e.target.id) {
-      case 'SettingsGeneral':
-        return Page = SettingsGeneral
+      case 'SettingsPageGeneral':
+        return Page = SettingsPageGeneral
+      case 'SettingsPageLaunch':
+        return Page = SettingsPageLaunch
       default:
         pageTitle = 'Неизвестная страница'
-        return Page = Settings404
+        return Page = SettingsPage404
     }
   }
 
-  let Page = $state(SettingsGeneral)
-  let currentPageComponentName = $state('SettingsGeneral')
+  let Page = $state(SettingsPageGeneral)
+  let currentPageComponentName = $state('SettingsPageGeneral')
   let pageTitle = $state(settings.pages.filter(x => x.component === currentPageComponentName)[0].title)
 </script>
 
@@ -46,7 +49,7 @@
       <ul class="tabs">
         {#each settings.pages as page}
           <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-          <li id={page.component} onclick={changePage}>{page.title}</li>
+          <li id={page.component} onclick={changePage} class:selected={currentPageComponentName === page.component}>{page.title}</li>
         {/each}
       </ul>
     </div>

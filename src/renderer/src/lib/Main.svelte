@@ -1,13 +1,12 @@
 <script lang="ts">
-  import Settings from './components/settings/Main.svelte'
+  import Settings from './settings/SettingsModal.svelte'
   import StatusBar from './components/StatusBar.svelte'
   import StatusFeed from './components/StatusFeed.svelte'
   import { route } from './stores/route.svelte'
-  import { params } from './components/settings/persisted'
+  import { params } from './settings/params'
   import type { StatusBarContents } from './types/statusbar.d'
   import type { StatusFeedEntry } from './types/statusfeed'
   let statusBar, statusFeed
-  let username: string = $params.username
 
   let ipc = window.electron.ipcRenderer
   let buttonsLocked = []
@@ -29,6 +28,7 @@
       return
     }
 
+    let username: string = $params.username
     if (!/^([a-zA-Z0-9_]){3,16}$/.test(username)) {
       console.log('bad username! ' + username)
       let opts: StatusFeedEntry = {

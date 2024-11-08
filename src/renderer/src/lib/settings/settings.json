@@ -12,8 +12,12 @@
   },
   "pages": [
     {
-      "component": "SettingsGeneral",
+      "component": "SettingsPageGeneral",
       "title": "Главное"
+    },
+    {
+      "component": "SettingsPageLaunch",
+      "title": "Запуск"
     }
   ]
 }

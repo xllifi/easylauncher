@@ -41,7 +41,7 @@
       max-width: 12rem;
       flex: 1 1 0;
       
-      height: 1.2rem;
+      height: 1.25rem;
       background-color: #0006;
       color: var(--text-color);
       font-family: Inter;

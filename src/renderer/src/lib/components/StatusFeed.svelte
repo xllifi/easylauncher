@@ -6,7 +6,7 @@
   import { flip } from 'svelte/animate'
 
   let list: StatusFeedEntry[] = []
-  let listElement
+  let listElement: Element
 
   let flipDelay = 0
 
@@ -55,10 +55,14 @@
 </script>
 
 <div class="status-feed" bind:this={listElement}>
-  <ul>
+  <ul class="scrollable">
     <!-- <button on:click|self={debugAddEntry}>[DEBUG]add entry</button> -->
     {#each list as { title, description, id } (id)}
-      <li in:fly={{ delay: 100, duration: 200, x: 100, y: 0, easing: sineOut }} out:fly={{ delay: 0, duration: 200, x: 100, y: 0, easing: sineIn }} animate:flip={{ delay: flipDelay, duration: 200 }}>
+      <li 
+        in:fly={{ delay: 100, duration: 200, x: 100, y: 0, easing: sineOut }} 
+        out:fly={{ delay: 0, duration: 200, x: 100, y: 0, easing: sineIn }} 
+        animate:flip={{ delay: flipDelay, duration: 200 }}
+      >
         <h3>{title}</h3>
         <p>{description}</p>
         <!-- <debug>ID: {id}</debug> -->
@@ -79,23 +83,20 @@
     width: 18rem;
     height: calc(100dvh - 1.5rem - 3px);
     overflow: hidden;
-    right: 0;
-    bottom: 1px;
+    right: 2px;
+    bottom: 2px;
     position: fixed;
-    margin: 0 0.5rem;
+    margin: 0.4rem;
     flex-grow: 1;
-
-    margin-right: 2px;
     
     pointer-events: none;
 
-    ul {
+    ul.scrollable {
       overflow-y: scroll;
       overflow-x: hidden;
 
       list-style: none;
       padding: 0;
-      padding-bottom: 0.5rem;
 
       height: 100%;
 
@@ -103,7 +104,7 @@
       flex-flow: column-reverse;
 
       &::-webkit-scrollbar {
-        width: 8px;
+        width: 0.5rem;
         background-color: transparent;
       }
       &::-webkit-scrollbar-thumb {
@@ -114,7 +115,7 @@
       }
 
       li {
-        border-radius: 0.4rem;
+        border-radius: 0.3rem;
         background: radial-gradient(ellipse at 30% 12%, #f55c, #f550 70%);
         background-color: #f557;
         backdrop-filter: blur(5px);
