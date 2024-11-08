@@ -11,5 +11,6 @@ export type SettingsPage = {
 export type SettingsPageOption = {
   id: string,
   name: string,
-  binds_to: string
+  binds_to: string,
+  type: string
 }

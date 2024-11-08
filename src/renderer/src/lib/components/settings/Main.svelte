@@ -3,12 +3,16 @@
   import { route } from '../../stores/route.svelte'
   import { X } from 'lucide-svelte'
   import { backOut } from 'svelte/easing'
-  import Switch from './components/Switch.svelte'
+  import Switch from './components/Checkbox.svelte'
   import settings from './settings.json'
+  import type { SettingsPage } from './settings'
+  import TextInput from './components/TextInput.svelte'
 
   function exitButtonClick() {
     if ($route.page == 'settings') $route.page = null
   }
+
+  let currentPage: SettingsPage = settings.pages[0]
 </script>
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->
@@ -27,13 +31,23 @@
     </div>
     <div class="right"> 
       <!-- TODO: Use settings.json to determine page -->
-      <button class="exit" on:click={exitButtonClick}>
-        <X />
-      </button>
-      <h3>Page contents!</h3>
-      <Switch name="setting 1"/>
-      <Switch name="setting 2"/>
-      <Switch name="setting 3" checked/>
+      <div class="page-content">
+        <div class="title">
+          <h3>{currentPage.title}</h3>
+          <button class="exit" on:click={exitButtonClick}>
+            <X />
+          </button>
+        </div>
+        {#each currentPage.options as option}
+          {#if option.type === 'checkbox'}
+            <Switch name={option.name} />
+          {/if}
+          {#if option.type === 'textinput'}
+            <TextInput name={option.name} bind:input={option.binds_to}/>
+            <p>{option.binds_to}</p>
+          {/if}
+        {/each}
+      </div>
     </div>
   </div>
 </div>
@@ -73,7 +87,6 @@
       height: 100%;
 
       div.left {
-        // background-color: #282;
         display: flex;
         flex-direction: column;
 
@@ -136,29 +149,39 @@
       div.right {
         position: relative;
 
-        padding: 0.2rem 0.6rem;
+        padding: 0.6rem;
 
-        button.exit {
-          position: absolute;
-          right: 0.4rem;
-          top: 0.4rem;
-
-          aspect-ratio: 1/1;
-          padding: 0.2rem;
-          line-height: 0;
-          border: none;
-          background-color: #0000;
-          color: white;
-          border-radius: 0.2rem;
-          cursor: pointer;
-
-          :global(.lucide) {
-            transform: translateX(0.5px);
-          }
-
-          &:hover {
-            background-color: #0004;
-          }
+        div.page-content {
+          div.title {
+            display: flex;
+            align-items: center;
+            height: 2rem;
+            margin-bottom: 0.5rem;
+            button.exit {
+              margin-left: auto;
+              width: 2rem;
+              height: 2rem;
+              padding: 0.2rem;
+              line-height: 0;
+              border: none;
+              background-color: #0000;
+              color: white;
+              border-radius: 0.2rem;
+              cursor: pointer;
+    
+              :global(.lucide) {
+                transform: translateX(0.5px);
+              }
+    
+              &:hover {
+                background-color: #0004;
+              }
+            }
+            h3 {
+              height: 100%;
+              font-size: 1.4rem;
+            }
+          }          
         }
       }
     }

@@ -11,7 +11,8 @@
             "properties": {
               "id": { "type": "string" },
               "name": { "type": "string" },
-              "binds_to": { "type": "string" }
+              "binds_to": { "type": "string" },
+              "type": { "type": "string" }
             }
           }
         }
@@ -26,17 +27,20 @@
         {
           "id": "option1",
           "name": "Параметр 1",
-          "binds_to": "store-key-1"
+          "binds_to": "store-key-1",
+          "type": "checkbox"
         },
         {
           "id": "option2",
           "name": "Параметр 2",
-          "binds_to": "store-key-2"
+          "binds_to": "store-key-2",
+          "type": "checkbox"
         },
         {
           "id": "option3",
           "name": "Параметр 3",
-          "binds_to": "store-key-3"
+          "binds_to": "store-key-3",
+          "type": "textinput"
         }
       ]
     }
