@@ -1,7 +1,7 @@
 {
   "name": "easylauncher",
   "version": "0.0.1",
-  "description": "Лаунчер для EasyMain",
+  "description": "Лаунчер для Minecraft сервера EasyMain",
   "main": "./out/main/index.js",
   "author": "xllifi",
   "license": "GPL-3.0-only",
