@@ -17,9 +17,9 @@
   </div>
   <div class="buttons">
     <span class="divider"></span>
-    <button class="minimize" on:click|stopPropagation={minimize}><Minus /></button>
+    <button class="minimize" on:click|stopPropagation={minimize}><Minus width="18px" height="18px" /></button>
     <span class="divider"></span>
-    <button class="close" on:click|stopPropagation={quit}><X /></button>
+    <button class="close" on:click|stopPropagation={quit}><X width="18px" height="18px" /></button>
   </div>
 </div>
 
@@ -77,26 +77,37 @@
         position: relative;
         width: 2rem;
         height: 1.5rem;
-        padding: 0.25rem;
+
+        margin: 0;
+        padding: 0;
 
         border: none;
         background-color: transparent;
+        cursor: pointer;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
 
         transition: background-color 100ms;
 
         :global(.lucide) {
-          width: 100%;
-          height: 100%;
+          width: 18px;
+          height: 18px;
           position: relative;
-          top: 0.5px;
-          right: 0.5px;
+          padding: 0;
+          margin: 0;
           color: var(--color-text-primary);
           // transition:
           //   transform 100ms ease-in-out,
           //   filter 200ms ease-in-out;
         }
 
-        &:hover :global(.lucide) {
+        &:focus {
+          outline: none;
+        }
+
+        &:is(:hover, :focus) :global(.lucide) {
           transform: scale(1.1);
           color: #000;
         }
@@ -105,14 +116,11 @@
           transform: scale(1);
         }
       }
-      .close {
-        border-radius: 0 0.5rem 0 0;
-        &:hover {
-          background-color: #f44c;
-        }
+      .close:is(:hover, :focus) {
+        background-color: #b33;
       }
-      .minimize:hover {
-        background-color: #fffc;
+      .minimize:is(:hover, :focus) {
+        background-color: #ccc;
       }
     }
   }

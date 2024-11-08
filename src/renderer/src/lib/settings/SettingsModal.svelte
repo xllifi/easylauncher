@@ -42,16 +42,15 @@
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <!-- svelte-ignore a11y_click_events_have_key_events -->
-<div class="settings" onclick={exitButtonClick}>
+<div class="settings" onclick={exitButtonClick} tabindex="-1">
   <div class="content" transition:scale={{ duration: 180, start: 1.5, easing: backOut }} onclick={(e) => e.stopPropagation()}>
     <div class="left">
       <h2 class="title">Настройки</h2>
-      <ul class="tabs">
+      <div class="tabs">
         {#each settings.pages as page}
-          <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-          <li id={page.component} onclick={changePage} class:selected={currentPageComponentName === page.component}>{page.title}</li>
+          <button tabindex="0" class="tab" id={page.component} onclick={changePage} class:selected={currentPageComponentName === page.component}>{page.title}</button>
         {/each}
-      </ul>
+      </div>
     </div>
     <div class="right">
       <div class="page-content">
@@ -96,7 +95,7 @@
 
       border-radius: 0.5rem;
       border: solid var(--color-border) 1px;
-      background-color: #222;
+      background-color: var(--color-background-lighter);
       backdrop-filter: blur(5px);
       opacity: 98%;
       height: 100%;
@@ -120,24 +119,39 @@
           background-color: transparent;
         }
 
-        ul.tabs {
+        div.tabs {
           flex-grow: 1;
-          padding: 0;
-          list-style: none;
+          display: flex;
+          flex-direction: column;
 
-          li {
-            margin: 0.3rem 0.4rem;
-            background-color: #fff1;
-            padding: 0.2rem 0.5rem;
-            border-radius: 0.4rem;
+          button.tab {
+            margin: 0.3rem 0.6rem;
+            color: var(--color-text);
+            font-family: Inter;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            background-color: #0006;
+            border: none;
+            outline: solid 2px var(--theme-accent-inactive);
+            padding: 0.1rem 0.4rem;
+            border-radius: 0.3rem;
             cursor: pointer;
 
             display: flex;
 
-            transition: background-color 80ms;
+            transition: background-color 80ms, outline-color 100ms, filter 100ms;
 
-            &:hover {
-              background-color: #fff2;
+            &:is(:hover, :focus) {
+              background-color: #0008;
+
+            }
+            &:focus {
+              &.selected {
+                background-color: #000c;
+              }
+              &:not(.selected) {
+                outline: solid 2px var(--theme-accent-active);
+              }
             }
 
             &:first-of-type {
@@ -148,7 +162,8 @@
             }
 
             &.selected {
-              outline: solid 1px var(--color-border);
+              outline: solid 2px var(--theme-accent-active);
+              filter: drop-shadow(0 0 3px var(--theme-accent-active-darker));
             }
 
             :global(.lucide) {
@@ -175,20 +190,26 @@
             top: 0.6rem;
             width: 2rem;
             height: 2rem;
+
             padding: 0.2rem;
-            line-height: 0;
-            border: none;
+            border-radius: 0.2rem;
             background-color: #0000;
             color: white;
-            border-radius: 0.2rem;
+            outline: solid 2px transparent;
+            border: none;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
             cursor: pointer;
+            
+            transition: background-color 80ms, outline-color 100ms, filter 100ms;
 
-            :global(.lucide) {
-              transform: translateX(0.5px);
-            }
-
-            &:hover {
+            &:is(:hover, :focus) {
               background-color: #0004;
+              outline: solid 2px var(--theme-accent-active);
+              filter: drop-shadow(0 0 3px var(--theme-accent-active-darker));
             }
           }
           h3 {

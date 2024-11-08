@@ -49,12 +49,12 @@
       padding: 0 0.2rem;
       border: none;
       border-radius: 0.2rem;
-      outline: solid #fff1 2px;
+      outline: solid var(--theme-accent-inactive) 2px;
 
       transition: outline-color 100ms, filter 100ms;
       &:focus {
-        outline: solid #f55 2px;
-        filter: drop-shadow(0 0 3px #b33c);
+        outline: solid var(--theme-accent-active) 2px;
+        filter: drop-shadow(0 0 3px var(--theme-accent-active-darker));
       }
     }
   }

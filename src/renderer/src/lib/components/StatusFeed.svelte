@@ -175,8 +175,13 @@
             transition: transform 100ms;
           }
 
-          &:hover {
+          &:is(:hover, :focus) {
             background-color: #f555;
+
+            &:focus {
+              outline: solid 2px var(--theme-accent-active);
+              outline-offset: -2px;
+            }
 
             :global(.lucide) {
               opacity: 1;
