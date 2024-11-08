@@ -1,7 +1,7 @@
 {
   "name": "easylauncher",
   "version": "0.0.1",
-  "description": "",
+  "description": "Лаунчер для EasyMain",
   "main": "./out/main/index.js",
   "author": "xllifi",
   "license": "GPL-3.0-only",
@@ -28,7 +28,7 @@
     "fflate": "^0.8.2",
     "fs-extra": "^11.2.0",
     "lucide-svelte": "^0.447.0",
-    "minecraft-java-core": "C:\\Code\\minecraft-java-core",
+    "minecraft-java-core": "file:../minecraft-java-core",
     "node-fetch": "^3.3.2",
     "svelte-persisted-store": "^0.12.0"
   },
