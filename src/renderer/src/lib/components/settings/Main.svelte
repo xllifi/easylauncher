@@ -3,50 +3,62 @@
   import { route } from '../../stores/route.svelte'
   import { X } from 'lucide-svelte'
   import { backOut } from 'svelte/easing'
-  import Switch from './components/Checkbox.svelte'
   import settings from './settings.json'
-  import type { SettingsPage } from './settings'
-  import TextInput from './components/TextInput.svelte'
+  import SettingsGeneral from './pages/SettingsGeneral.svelte'
+  import Settings404 from './pages/Settings404.svelte'
 
-  function exitButtonClick() {
+  function exitButtonClick(e: Event) {
+    e.stopPropagation()
     if ($route.page == 'settings') $route.page = null
   }
 
-  let currentPage: SettingsPage = settings.pages[0]
+  function exitByPressingEsc(e: KeyboardEvent) {
+    if (e.key === "Escape") {
+      if ($route.page == 'settings') $route.page = null
+    }
+  }
+
+  function changePage(e) {
+    currentPageComponentName = e.target.id
+    pageTitle = settings.pages.filter(x => x.component === currentPageComponentName)[0].title
+    switch (e.target.id) {
+      case 'SettingsGeneral':
+        return Page = SettingsGeneral
+      default:
+        pageTitle = 'Неизвестная страница'
+        return Page = Settings404
+    }
+  }
+
+  let Page = $state(SettingsGeneral)
+  let currentPageComponentName = $state('SettingsGeneral')
+  let pageTitle = $state(settings.pages.filter(x => x.component === currentPageComponentName)[0].title)
 </script>
 
-<!-- svelte-ignore a11y-no-static-element-interactions -->
-<!-- svelte-ignore a11y-click-events-have-key-events -->
-<div class="settings" on:click|self={exitButtonClick}>
-  <div class="content" transition:scale={{ duration: 180, start: 1.1, easing: backOut }}>
+<svelte:window onkeyup={exitByPressingEsc}/>
+
+<!-- svelte-ignore a11y_no_static_element_interactions -->
+<!-- svelte-ignore a11y_click_events_have_key_events -->
+<div class="settings" onclick={exitButtonClick}>
+  <div class="content" transition:scale={{ duration: 180, start: 1.5, easing: backOut }} onclick={(e) => e.stopPropagation()}>
     <div class="left">
-      <h2 class="title">
-        Настройки
-      </h2>
+      <h2 class="title">Настройки</h2>
       <ul class="tabs">
         {#each settings.pages as page}
-          <li>{page.title}</li>
+          <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+          <li id={page.component} onclick={changePage}>{page.title}</li>
         {/each}
       </ul>
     </div>
-    <div class="right"> 
-      <!-- TODO: Use settings.json to determine page -->
+    <div class="right">
       <div class="page-content">
+        <button class="exit" onclick={exitButtonClick}>
+          <X />
+        </button>
         <div class="title">
-          <h3>{currentPage.title}</h3>
-          <button class="exit" on:click={exitButtonClick}>
-            <X />
-          </button>
+          <h3>{pageTitle}</h3>
         </div>
-        {#each currentPage.options as option}
-          {#if option.type === 'checkbox'}
-            <Switch name={option.name} />
-          {/if}
-          {#if option.type === 'textinput'}
-            <TextInput name={option.name} bind:input={option.binds_to}/>
-            <p>{option.binds_to}</p>
-          {/if}
-        {/each}
+        <Page />
       </div>
     </div>
   </div>
@@ -152,36 +164,36 @@
         padding: 0.6rem;
 
         div.page-content {
-          div.title {
-            display: flex;
-            align-items: center;
+          height: 100%;
+
+          button.exit {
+            position: absolute;
+            right: 0.6rem;
+            top: 0.6rem;
+            width: 2rem;
+            height: 2rem;
+            padding: 0.2rem;
+            line-height: 0;
+            border: none;
+            background-color: #0000;
+            color: white;
+            border-radius: 0.2rem;
+            cursor: pointer;
+
+            :global(.lucide) {
+              transform: translateX(0.5px);
+            }
+
+            &:hover {
+              background-color: #0004;
+            }
+          }
+          h3 {
             height: 2rem;
             margin-bottom: 0.5rem;
-            button.exit {
-              margin-left: auto;
-              width: 2rem;
-              height: 2rem;
-              padding: 0.2rem;
-              line-height: 0;
-              border: none;
-              background-color: #0000;
-              color: white;
-              border-radius: 0.2rem;
-              cursor: pointer;
-    
-              :global(.lucide) {
-                transform: translateX(0.5px);
-              }
-    
-              &:hover {
-                background-color: #0004;
-              }
-            }
-            h3 {
-              height: 100%;
-              font-size: 1.4rem;
-            }
-          }          
+            height: 100%;
+            font-size: 1.4rem;
+          }
         }
       }
     }

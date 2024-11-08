@@ -17,28 +17,44 @@
 <style lang="scss">
   label.text-input {
     display: flex;
+    gap: 1rem;
 
     align-items: center;
     cursor: pointer;
-    
+
+    padding-bottom: 0.2rem;
+    border-bottom: solid var(--color-border) 1px;
+    margin-bottom: 0.2rem;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    p {
+      min-width: 0;
+      flex: 1 1 0;
+    }
+
     input[type="text"] {
-      min-width: 0px;
-      max-width: 32dvw;
+      min-width: 0;
+      width: 4rem;
+      max-width: 12rem;
+      flex: 1 1 0;
+      
       height: 1.2rem;
-      margin: 0;
       background-color: #0006;
       color: var(--text-color);
       font-family: Inter;
+      font-weight: 460;
+      padding: 0 0.2rem;
       border: none;
       border-radius: 0.2rem;
-      margin-left: auto;
-      outline: solid #fff0 2px;
-      flex-shrink: 1;
+      outline: solid #fff1 2px;
 
       transition: outline-color 100ms, filter 100ms;
       &:focus {
         outline: solid #f55 2px;
-        filter: drop-shadow(0 0 3px #a22c);
+        filter: drop-shadow(0 0 3px #b33c);
       }
     }
   }

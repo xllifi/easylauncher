@@ -112,6 +112,6 @@ export async function startGame(username: string): Promise<void> {
       title: 'Ошибка!',
       description: `${err.message.toString()}\n\nЭта ошибка может быть не критичной, но пожалуйста, сообщите нам о ней!\nЕсли Minecraft долго не запускается - перезапустите лаунчер.`
     })
-    console.log(`Error: ${err}`) // TODO: add error feed / status feed
+    console.log(`Error: ${err}`)
   })
 }

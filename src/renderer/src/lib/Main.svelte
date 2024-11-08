@@ -3,10 +3,11 @@
   import StatusBar from './components/StatusBar.svelte'
   import StatusFeed from './components/StatusFeed.svelte'
   import { route } from './stores/route.svelte'
+  import { params } from './components/settings/persisted'
   import type { StatusBarContents } from './types/statusbar.d'
   import type { StatusFeedEntry } from './types/statusfeed'
   let statusBar, statusFeed
-  let username: string = ''
+  let username: string = $params.username
 
   let ipc = window.electron.ipcRenderer
   let buttonsLocked = []
@@ -55,7 +56,6 @@
 </script>
 
 <div class="main">
-  <input bind:value={username} placeholder="Никнейм" />
   <button onclick={launchGame} class="start">Start</button>
   <button onclick={() => $route.page = 'settings'}>Settings</button>
   <StatusBar bind:this={statusBar} />
