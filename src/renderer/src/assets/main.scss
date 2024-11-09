@@ -63,10 +63,12 @@ input[type="text"] {
 }
 
 button {
-  padding: 0.2rem;
+  margin: 0.2rem;
+  padding: 0.4rem;
   border-radius: 0.2rem;
-  background-color: #0000;
-  color: white;
+  background-color: #0006;
+  color: var(--text-color);
+  font-family: Inter;
   outline: solid 2px transparent;
   border: none;
 
