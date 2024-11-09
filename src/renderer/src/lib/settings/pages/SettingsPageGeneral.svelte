@@ -1,7 +1,7 @@
 <script lang="ts">
   import OptionCheckbox from "../components/OptionCheckbox.svelte"
   import OptionTextInput from "../components/OptionTextInput.svelte"
-  import { params } from "../params"
+  import { params } from "../../stores/params"
 </script>
 
 <OptionTextInput name="Никнейм" bind:input={$params.username}/>
