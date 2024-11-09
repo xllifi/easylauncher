@@ -24,7 +24,9 @@
     margin-bottom: 0.2rem;
 
     &:last-child {
+      padding-bottom: 0;
       border-bottom: none;
+      margin-bottom: 0;
     }
 
     p {

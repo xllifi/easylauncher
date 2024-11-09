@@ -14,31 +14,31 @@
   }
 
   function exitByPressingEsc(e: KeyboardEvent) {
-    if (e.key === "Escape") {
+    if (e.key === 'Escape') {
       if ($route.page == 'settings') $route.page = null
     }
   }
 
   function changePage(e) {
     currentPageComponentName = e.target.id
-    pageTitle = settings.pages.filter(x => x.component === currentPageComponentName)[0].title
+    pageTitle = settings.pages.filter((x) => x.component === currentPageComponentName)[0].title
     switch (e.target.id) {
       case 'SettingsPageGeneral':
-        return Page = SettingsPageGeneral
+        return (Page = SettingsPageGeneral)
       case 'SettingsPageLaunch':
-        return Page = SettingsPageLaunch
+        return (Page = SettingsPageLaunch)
       default:
         pageTitle = 'Неизвестная страница'
-        return Page = SettingsPage404
+        return (Page = SettingsPage404)
     }
   }
 
   let Page = $state(SettingsPageGeneral)
   let currentPageComponentName = $state('SettingsPageGeneral')
-  let pageTitle = $state(settings.pages.filter(x => x.component === currentPageComponentName)[0].title)
+  let pageTitle = $state(settings.pages.filter((x) => x.component === currentPageComponentName)[0].title)
 </script>
 
-<svelte:window onkeyup={exitByPressingEsc}/>
+<svelte:window onkeyup={exitByPressingEsc} />
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <!-- svelte-ignore a11y_click_events_have_key_events -->
@@ -60,7 +60,9 @@
         <div class="title">
           <h3>{pageTitle}</h3>
         </div>
-        <Page />
+        <div class="options">
+          <Page />
+        </div>
       </div>
     </div>
   </div>
@@ -107,6 +109,7 @@
         border-right: solid 1px var(--color-border);
 
         h2.title {
+          height: 3.4rem;
           padding: 0.6rem 1rem;
 
           text-align: center;
@@ -116,16 +119,30 @@
           transform: skewX(-10deg) translateY(4px);
           border: none;
           color: #fff;
-          background-color: transparent;
         }
 
         div.tabs {
-          flex-grow: 1;
+          flex: 1 1 0;
           display: flex;
           flex-direction: column;
 
+          overflow-y: scroll;
+
+          margin: 0.2rem;
+          gap: 0.2rem;
+
+          &::-webkit-scrollbar {
+            width: 0.25rem;
+            background-color: transparent;
+            border-radius: 999px;
+          }
+
+          &::-webkit-scrollbar-thumb {
+            background-color: #0006;
+            border-radius: 999px;
+          }
+
           button.tab {
-            margin: 0.3rem 0.6rem;
             color: var(--color-text);
             font-family: Inter;
             font-size: 0.95rem;
@@ -139,12 +156,14 @@
 
             display: flex;
 
-            transition: background-color 80ms, outline-color 100ms, filter 100ms;
+            transition:
+              background-color 80ms,
+              outline-color 100ms,
+              filter 100ms;
 
             &:is(:hover, :focus-visible) {
               background-color: #0008;
               filter: none;
-
             }
             &:focus-visible {
               &.selected {
@@ -153,13 +172,6 @@
               &:not(.selected) {
                 outline: solid 2px var(--theme-accent-active);
               }
-            }
-
-            &:first-of-type {
-              margin-top: 0.4rem;
-            }
-            &:last-of-type {
-              margin-bottom: 0.4rem;
             }
 
             &.selected {
@@ -185,6 +197,9 @@
         div.page-content {
           height: 100%;
 
+          display: flex;
+          flex-direction: column;
+
           button.close {
             position: absolute;
             right: 0.6rem;
@@ -204,8 +219,11 @@
             align-items: center;
 
             cursor: pointer;
-            
-            transition: background-color 80ms, outline-color 100ms, filter 100ms;
+
+            transition:
+              background-color 80ms,
+              outline-color 100ms,
+              filter 100ms;
 
             &:is(:hover, :focus-visible) {
               background-color: #0004;
@@ -218,6 +236,23 @@
             margin-bottom: 0.5rem;
             height: 100%;
             font-size: 1.4rem;
+          }
+          div.options {
+            flex: 1 1 0;
+            overflow-y: scroll;
+            margin-right: -0.4rem;
+            padding-right: 0.2rem;
+
+            &::-webkit-scrollbar {
+              width: 0.25rem;
+              background-color: transparent;
+              border-radius: 999px;
+            }
+
+            &::-webkit-scrollbar-thumb {
+              background-color: #0006;
+              border-radius: 999px;
+            }
           }
         }
       }
