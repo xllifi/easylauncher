@@ -1,6 +1,4 @@
 <script lang="ts">
-  import { TriangleAlert } from 'lucide-svelte'
-
   interface Props {
     name: string
     input?: number
