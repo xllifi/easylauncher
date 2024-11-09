@@ -54,7 +54,7 @@
     </div>
     <div class="right">
       <div class="page-content">
-        <button class="exit" onclick={exitButtonClick}>
+        <button class="close" onclick={exitButtonClick}>
           <X />
         </button>
         <div class="title">
@@ -141,11 +141,12 @@
 
             transition: background-color 80ms, outline-color 100ms, filter 100ms;
 
-            &:is(:hover, :focus) {
+            &:is(:hover, :focus-visible) {
               background-color: #0008;
+              filter: none;
 
             }
-            &:focus {
+            &:focus-visible {
               &.selected {
                 background-color: #000c;
               }
@@ -184,7 +185,7 @@
         div.page-content {
           height: 100%;
 
-          button.exit {
+          button.close {
             position: absolute;
             right: 0.6rem;
             top: 0.6rem;
@@ -206,7 +207,7 @@
             
             transition: background-color 80ms, outline-color 100ms, filter 100ms;
 
-            &:is(:hover, :focus) {
+            &:is(:hover, :focus-visible) {
               background-color: #0004;
               outline: solid 2px var(--theme-accent-active);
               filter: drop-shadow(0 0 3px var(--theme-accent-active-darker));
