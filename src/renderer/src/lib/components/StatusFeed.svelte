@@ -100,14 +100,7 @@
       flex-flow: column-reverse;
 
       &::-webkit-scrollbar {
-        width: 0.5rem;
-        background-color: transparent;
-      }
-      &::-webkit-scrollbar-thumb {
-        border: 2px solid #0000;
-        background-color: var(--color-background-lighter);
-        background-clip: padding-box;
-        border-radius: 500px;
+        width: 0;
       }
 
       li {
