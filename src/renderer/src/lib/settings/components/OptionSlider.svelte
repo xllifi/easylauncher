@@ -24,7 +24,7 @@
       return
     }
     if (!/^\d+$/.test(input.toString())) {
-      input = min + max / 2
+      input = 0
       return
     }
   }
