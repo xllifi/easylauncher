@@ -1,15 +1,15 @@
 <script lang="ts">
-  import TextInput from '../components/OptionTextInput.svelte'
+  import OptionSlider from '../components/OptionSlider.svelte'
   import { params } from '../params'
 
   if ($params.launchParams === undefined) {
     $params.launchParams = {
-      maxMem: '6144',
-      minMem: '512'
+      maxMem: 6144,
+      minMem: 512
     }
   }
 </script>
 
 <!-- TODO: make a designated number input / slider -->
-<TextInput name="Макс. ОЗУ" bind:input={$params.launchParams.maxMem} />
-<TextInput name="Мин. ОЗУ" bind:input={$params.launchParams.minMem} />
+<OptionSlider name="Макс. мб. ОЗУ" bind:input={$params.launchParams.maxMem} min={128} max={16384} step={128}/>
+<OptionSlider name="Мин. мб. ОЗУ" bind:input={$params.launchParams.minMem} min={128} max={16384} step={128}/>
