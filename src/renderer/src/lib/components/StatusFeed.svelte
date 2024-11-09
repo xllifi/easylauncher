@@ -77,12 +77,12 @@
 <style lang="scss">
   div.status-feed {
     width: 18rem;
-    height: calc(100dvh - 1.5rem - 3px);
+    height: calc(100dvh - 1.5rem - 6px);
     overflow: hidden;
-    right: 2px;
-    bottom: 2px;
+    right: 3px;
+    bottom: 3px;
     position: fixed;
-    margin: 0.4rem;
+    margin: 0 0.4rem;
     flex-grow: 1;
 
     pointer-events: none;
@@ -92,7 +92,7 @@
       overflow-x: hidden;
 
       list-style: none;
-      padding: 0;
+      padding: 0.4rem 0;
 
       height: 100%;
 
