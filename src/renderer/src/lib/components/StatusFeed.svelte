@@ -58,11 +58,7 @@
   <ul class="scrollable">
     <!-- <button on:click|self={debugAddEntry}>[DEBUG]add entry</button> -->
     {#each list as { title, description, id } (id)}
-      <li 
-        in:fly={{ delay: 100, duration: 200, x: 100, y: 0, easing: sineOut }} 
-        out:fly={{ delay: 0, duration: 200, x: 100, y: 0, easing: sineIn }} 
-        animate:flip={{ delay: flipDelay, duration: 200 }}
-      >
+      <li in:fly={{ delay: 100, duration: 200, x: 100, y: 0, easing: sineOut }} out:fly={{ delay: 0, duration: 200, x: 100, y: 0, easing: sineIn }} animate:flip={{ delay: flipDelay, duration: 200 }}>
         <h3>{title}</h3>
         <p>{description}</p>
         <!-- <debug>ID: {id}</debug> -->
@@ -88,7 +84,7 @@
     position: fixed;
     margin: 0.4rem;
     flex-grow: 1;
-    
+
     pointer-events: none;
 
     ul.scrollable {
@@ -123,7 +119,6 @@
         padding: 0.4rem 0.6rem;
         margin-top: 0.5rem;
 
-        
         pointer-events: all;
         user-select: all;
 
@@ -147,25 +142,40 @@
           white-space: pre-line;
         }
 
-        .close {
+        button.close {
           position: absolute;
-          top: 0;
-          right: 0;
-          width: 28px;
-          height: 28px;
+          right: 0.6rem;
+          top: 0.6rem;
+          width: 1.5rem;
+          height: 1.5rem;
 
           padding: 0;
-          margin: 0.25rem;
+          border-radius: 0.2rem;
+          background-color: #0000;
+          color: white;
+          outline: solid 2px transparent;
+          border: none;
 
           display: flex;
           justify-content: center;
           align-items: center;
 
-          border-radius: 0.3rem;
-          background: #f550;
-          border: none;
-          transition: background-color 100ms;
           cursor: pointer;
+
+          transition:
+            background-color 80ms,
+            outline-color 100ms,
+            filter 100ms;
+
+          &:is(:hover, :focus-visible) {
+            background-color: #0004;
+            outline: solid 2px var(--theme-accent-active);
+            filter: drop-shadow(0 0 3px var(--theme-accent-active-darker));
+            
+            :global(.lucide) {
+              opacity: 1;
+            }
+          }
 
           :global(.lucide) {
             width: 24px;
@@ -173,19 +183,6 @@
             opacity: 0.5;
 
             transition: transform 100ms;
-          }
-
-          &:is(:hover, :focus) {
-            background-color: #f555;
-
-            &:focus {
-              outline: solid 2px var(--theme-accent-active);
-              outline-offset: -2px;
-            }
-
-            :global(.lucide) {
-              opacity: 1;
-            }
           }
         }
       }

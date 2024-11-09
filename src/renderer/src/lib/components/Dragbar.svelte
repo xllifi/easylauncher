@@ -77,6 +77,7 @@
         position: relative;
         width: 2rem;
         height: 1.5rem;
+        border-radius: 0;
 
         margin: 0;
         padding: 0;
@@ -103,11 +104,12 @@
           //   filter 200ms ease-in-out;
         }
 
-        &:focus {
+        &:is(:hover, :focus-visible) {
           outline: none;
+          filter: none;
         }
 
-        &:is(:hover, :focus) :global(.lucide) {
+        &:is(:hover, :focus-visible) :global(.lucide) {
           transform: scale(1.1);
           color: #000;
         }
@@ -116,10 +118,10 @@
           transform: scale(1);
         }
       }
-      .close:is(:hover, :focus) {
+      .close:is(:hover, :focus-visible) {
         background-color: #b33;
       }
-      .minimize:is(:hover, :focus) {
+      .minimize:is(:hover, :focus-visible) {
         background-color: #ccc;
       }
     }
