@@ -82,7 +82,7 @@
   ipc.on('progress', async (_event, { element, percent }) => {
     console.log(`Got progress: ${element}, ${percent}`)
     hide = false
-    text = `Загрузка: «${element}»`
+    text = `Загрузка...`
     left_text = `${percent}%`
     progress = percent
     fillcolor = 'fa0'
@@ -92,7 +92,7 @@
   ipc.on('check', async (_event, { element, percent }) => {
     console.log(`Got check: ${element}, ${percent}`)
     hide = false
-    text = `Проверка: «${element}»`
+    text = `Проверка...`
     left_text = `${percent}%`
     progress = percent
     fillcolor = '80f'
