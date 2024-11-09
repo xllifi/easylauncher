@@ -81,6 +81,8 @@
       background: #0006;
       height: 0.4rem;
       border-radius: 0.2rem;
+      
+      cursor: pointer;
 
       &::-webkit-slider-thumb {
         appearance: none;
@@ -89,8 +91,6 @@
         border-radius: 0.2rem;
         background-color: #0006;
         outline: solid 2px var(--theme-accent-inactive);
-
-        cursor: pointer;
 
         &:hover {
           outline: solid 2px var(--theme-accent-active);
