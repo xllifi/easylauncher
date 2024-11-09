@@ -28,12 +28,22 @@
       return
     }
   }
+
+  function handleScroll(e: WheelEvent) {
+    if (e.deltaY < 0) {
+      input = input + step
+    }
+    if (e.deltaY > 0) {
+      input = input - step
+    }
+    verifyInput()
+  } 
 </script>
 
 <label class="text-input">
   <p>{name}</p>
   <input type="text" bind:value={input} onfocusout={verifyInput}/>
-  <input type="range" bind:value={input} min={min} max={max} step={step} />
+  <input type="range" bind:value={input} min={min} max={max} step={step} onwheel={handleScroll}/>
 </label>
 
 <style lang="scss">
