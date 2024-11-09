@@ -28,7 +28,7 @@
       case 'SettingsPageLaunch':
         return (Page = SettingsPageLaunch)
       default:
-        pageTitle = 'Неизвестная страница'
+        pageTitle = 'Нет страницы'
         return (Page = SettingsPage404)
     }
   }
