@@ -1,17 +1,14 @@
 <script lang="ts">
   interface Props {
-    checked?: boolean,
+    checked?: boolean
     name: string
   }
-  let {
-    checked = $bindable(),
-    name
-  }: Props = $props()
+  let { checked = $bindable(), name }: Props = $props()
 </script>
 
 <label class="checkbox-input">
   <p>{name}</p>
-  <input type="checkbox" bind:checked={checked}>
+  <input type="checkbox" bind:checked />
 </label>
 
 <style lang="scss">
@@ -29,21 +26,17 @@
     &:last-child {
       border-bottom: none;
     }
-    
+
     p {
       min-width: 0;
       flex: 1 1 0;
     }
 
-    input[type="checkbox"] {
+    input[type='checkbox'] {
       width: 1.25rem;
       appearance: none;
       margin: 0;
       cursor: pointer;
-
-      &:focus {
-        outline: none;
-      }
 
       &::before {
         content: '';
@@ -56,18 +49,25 @@
         border-radius: 0.2rem;
         outline: solid var(--theme-accent-inactive) 2px;
 
-        transition: outline-color 100ms, filter 100ms, background-color 100ms;
+        transition:
+          outline-color 100ms,
+          filter 100ms,
+          background-color 100ms;
       }
       &:checked::before {
         outline: solid var(--theme-accent-active) 2px;
         background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>');
         filter: drop-shadow(0 0 3px var(--theme-accent-active-darker));
       }
-      &:not(:checked):is(:hover, :focus)::before {
+
+      &:focus-visible {
+        outline: none;
+      }
+      &:not(:checked):is(:hover, :focus-visible)::before {
         outline: solid var(--theme-accent-active) 2px;
         filter: drop-shadow(0 0 3px var(--theme-accent-active-darker));
       }
-      &:checked:is(:hover, :focus)::before {
+      &:checked:is(:hover, :focus-visible)::before {
         outline-offset: -1px;
         outline-width: 3px;
         background-color: var(--theme-accent-active);
