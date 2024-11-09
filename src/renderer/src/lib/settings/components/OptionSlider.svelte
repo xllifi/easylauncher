@@ -25,7 +25,7 @@
       input = min
       return
     }
-    if (!/^\d+$/.test(input)) {
+    if (!/^\d+$/.test(input.toString())) {
       input = min + max / 2
       return
     }
