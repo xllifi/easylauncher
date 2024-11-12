@@ -4,7 +4,7 @@ import { Mojang, Launch } from 'minecraft-java-core'
 import { LauncherParams } from './types'
 
 export async function startGame(params: LauncherParams): Promise<void> {
-const launch = new Launch()
+  const launch = new Launch()
 
   console.log(params)
   const ipc = mainWindow.webContents
@@ -100,12 +100,12 @@ const launch = new Launch()
   })
 
   launch.on('data', (logs) => {
-    console.log(`Data: ${logs}`)
+    console.log(`Data: ${logs}`.replace(/\n$/, ''))
     ipc.send('data') // TODO: сделать логи? а надо вообще???
   })
 
-  launch.on('close', (code) => {
-    console.log(`Close code: ${code}`)
+  launch.on('close', (message) => {
+    console.log(`Close message: ${message}`)
     ipc.send('close')
   })
 
