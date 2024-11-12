@@ -7,7 +7,7 @@ import { startGame } from './launch'
 const isDev = !app.isPackaged
 
 export const gamePath = app.getPath('userData') + '/.minecraft'
-export let loadingWindow, mainWindow
+export let loadingWindow: BrowserWindow, mainWindow: BrowserWindow
 
 function createWindow(): void {
   loadingWindow = new BrowserWindow({
