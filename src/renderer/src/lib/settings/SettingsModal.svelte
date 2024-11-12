@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { scale } from 'svelte/transition'
+  import { fade, scale } from 'svelte/transition'
   import { route } from '../stores/route.svelte'
   import { X } from 'lucide-svelte'
   import { backOut } from 'svelte/easing'
@@ -43,27 +43,22 @@
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <!-- svelte-ignore a11y_click_events_have_key_events -->
 <div class="settings" onclick={exitButtonClick} tabindex="-1">
-  <div class="content" transition:scale={{ duration: 180, start: 1.5, easing: backOut }} onclick={(e) => e.stopPropagation()}>
+  <div class="window" transition:scale={{ duration: 180, start: 1.5, easing: backOut }} onclick={(e) => e.stopPropagation()}>
+    <div class="title">
+      {#key pageTitle}
+        <h2 class="text">Настройки <span class="arrow">→</span> <span in:fade={{ duration: 100 }}>{pageTitle}</span></h2>
+      {/key}
+      <button class="close" onclick={exitButtonClick}>
+        <X />
+      </button>
+    </div>
     <div class="left">
-      <h2 class="title">Настройки</h2>
-      <div class="tabs">
-        {#each settings.pages as page}
-          <button tabindex="0" class="tab" id={page.component} onclick={changePage} class:selected={currentPageComponentName === page.component}>{page.title}</button>
-        {/each}
-      </div>
+      {#each settings.pages as page}
+        <button tabindex="0" class="tab" id={page.component} onclick={changePage} class:selected={currentPageComponentName === page.component}>{page.title}</button>
+      {/each}
     </div>
     <div class="right">
-      <div class="page-content">
-        <button class="close" onclick={exitButtonClick}>
-          <X />
-        </button>
-        <div class="title">
-          <h3>{pageTitle}</h3>
-        </div>
-        <div class="options">
-          <Page />
-        </div>
-      </div>
+      <Page />
     </div>
   </div>
 </div>
@@ -83,7 +78,7 @@
     justify-content: center;
     align-items: center;
 
-    div.content {
+    div.window {
       min-height: 10rem;
       height: 20dvh;
       max-height: 30rem;
@@ -93,7 +88,10 @@
       flex: 1 1 0;
 
       display: grid;
-      grid-template-columns: 1fr 3fr;
+      grid-template:
+        'title title' 3rem
+        'tabs content'
+        'tabs content' 1fr / min(24dvw, 12rem) calc(100% - min(24dvw, 12rem));
 
       border-radius: 0.5rem;
       border: solid var(--color-border) 1px;
@@ -102,158 +100,157 @@
       opacity: 98%;
       height: 100%;
 
+      div.title {
+        grid-area: title;
+
+        position: relative;
+
+        display: flex;
+        align-items: center;
+
+        border-bottom: solid 1px var(--color-border);
+
+        h2.text {
+          margin-left: 0.8rem;
+
+          display: flex;
+          align-items: center;
+
+          font-family: Unbounded;
+          font-size: 1.4rem;
+          transform: skewX(-10deg) translateY(1px);
+          border: none;
+          color: #fff;
+
+          span.arrow {
+            opacity: 0.5;
+            margin: 0 0.5rem;
+          }
+        }
+        button.close {
+          position: absolute;
+          right: 0.2rem;
+
+          width: 2rem;
+          height: 2rem;
+
+          padding: 0.2rem;
+          border-radius: 0.2rem;
+          background-color: #0000;
+          color: white;
+          outline: solid 2px transparent;
+          border: none;
+
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          cursor: pointer;
+
+          transition:
+            background-color 80ms,
+            outline-color 100ms,
+            filter 100ms;
+
+          &:is(:hover, :focus-visible) {
+            background-color: #0004;
+            outline: solid 2px var(--theme-accent-active);
+            filter: drop-shadow(0 0 3px var(--theme-accent-active-darker));
+          }
+        }
+      }
+
       div.left {
+        grid-area: tabs;
         display: flex;
         flex-direction: column;
 
         border-right: solid 1px var(--color-border);
 
-        h2.title {
-          height: 3.4rem;
-          padding: 0.6rem 1rem;
+        padding: 0.6rem;
+        padding-top: 0.7rem;
+        padding-right: calc(0.6rem - 0.25rem);
+        gap: 0.4rem;
 
-          text-align: center;
-          font-family: Unbounded;
-          font-weight: 600;
-          font-size: 1.4rem;
-          transform: skewX(-10deg) translateY(4px);
-          border: none;
-          color: #fff;
+        overflow-y: scroll;
+        &::-webkit-scrollbar {
+          width: 0.25rem;
+          background-color: transparent;
+          border-radius: 999px;
         }
 
-        div.tabs {
-          flex: 1 1 0;
+        &::-webkit-scrollbar-thumb {
+          background-color: #0006;
+          border-radius: 999px;
+        }
+
+        button.tab {
+          color: var(--color-text);
+          font-family: Inter;
+          font-size: 0.95rem;
+          line-height: 1.6;
+          background-color: #0006;
+          border: none;
+          outline: solid 2px var(--theme-accent-inactive);
+          padding: 0.1rem 0.4rem;
+          margin: 0;
+          border-radius: 0.3rem;
+          cursor: pointer;
+
           display: flex;
-          flex-direction: column;
 
-          overflow-y: scroll;
+          transition:
+            background-color 80ms,
+            outline-color 100ms,
+            filter 100ms;
 
-          margin: 0.2rem;
-          gap: 0.2rem;
-
-          &::-webkit-scrollbar {
-            width: 0.25rem;
-            background-color: transparent;
-            border-radius: 999px;
+          &:is(:hover, :focus-visible) {
+            background-color: #0008;
+            filter: none;
           }
-
-          &::-webkit-scrollbar-thumb {
-            background-color: #0006;
-            border-radius: 999px;
-          }
-
-          button.tab {
-            color: var(--color-text);
-            font-family: Inter;
-            font-size: 0.95rem;
-            line-height: 1.6;
-            background-color: #0006;
-            border: none;
-            outline: solid 2px var(--theme-accent-inactive);
-            padding: 0.1rem 0.4rem;
-            border-radius: 0.3rem;
-            cursor: pointer;
-
-            display: flex;
-
-            transition:
-              background-color 80ms,
-              outline-color 100ms,
-              filter 100ms;
-
-            &:is(:hover, :focus-visible) {
-              background-color: #0008;
-              filter: none;
-            }
-            &:focus-visible {
-              &.selected {
-                background-color: #000c;
-              }
-              &:not(.selected) {
-                outline: solid 2px var(--theme-accent-active);
-              }
-            }
-
+          &:focus-visible {
             &.selected {
+              background-color: #000c;
+            }
+            &:not(.selected) {
               outline: solid 2px var(--theme-accent-active);
-              filter: drop-shadow(0 0 3px var(--theme-accent-active-darker));
             }
+          }
 
-            :global(.lucide) {
-              width: 1rem;
-              stroke-width: 2.3;
-              shape-rendering: geometricPrecision;
-              margin-right: 0.2rem;
-            }
+          &.selected {
+            outline: solid 2px var(--theme-accent-active);
+            filter: drop-shadow(0 0 3px var(--theme-accent-active-darker));
+          }
+
+          :global(.lucide) {
+            width: 1rem;
+            stroke-width: 2.3;
+            shape-rendering: geometricPrecision;
+            margin-right: 0.2rem;
           }
         }
       }
 
       div.right {
+        grid-area: content;
         position: relative;
 
         padding: 0.6rem;
 
-        div.page-content {
-          height: 100%;
+        flex: 1 1 0;
+        overflow-y: scroll;
+        // margin-right: -0.2rem;
+        padding-right: 0.2rem;
 
-          display: flex;
-          flex-direction: column;
+        &::-webkit-scrollbar {
+          width: 0.25rem;
+          background-color: transparent;
+          border-radius: 999px;
+        }
 
-          button.close {
-            position: absolute;
-            right: 0.6rem;
-            top: 0.6rem;
-            width: 2rem;
-            height: 2rem;
-
-            padding: 0.2rem;
-            border-radius: 0.2rem;
-            background-color: #0000;
-            color: white;
-            outline: solid 2px transparent;
-            border: none;
-
-            display: flex;
-            justify-content: center;
-            align-items: center;
-
-            cursor: pointer;
-
-            transition:
-              background-color 80ms,
-              outline-color 100ms,
-              filter 100ms;
-
-            &:is(:hover, :focus-visible) {
-              background-color: #0004;
-              outline: solid 2px var(--theme-accent-active);
-              filter: drop-shadow(0 0 3px var(--theme-accent-active-darker));
-            }
-          }
-          h3 {
-            height: 2rem;
-            margin-bottom: 0.5rem;
-            height: 100%;
-            font-size: 1.4rem;
-          }
-          div.options {
-            flex: 1 1 0;
-            overflow-y: scroll;
-            margin-right: -0.4rem;
-            padding-right: 0.2rem;
-
-            &::-webkit-scrollbar {
-              width: 0.25rem;
-              background-color: transparent;
-              border-radius: 999px;
-            }
-
-            &::-webkit-scrollbar-thumb {
-              background-color: #0006;
-              border-radius: 999px;
-            }
-          }
+        &::-webkit-scrollbar-thumb {
+          background-color: #0006;
+          border-radius: 999px;
         }
       }
     }
