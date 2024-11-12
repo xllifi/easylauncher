@@ -6,6 +6,7 @@
   import { params } from './stores/params'
   import type { StatusBarContents } from './types/statusbar.d'
   import type { StatusFeedEntry } from './types/statusfeed'
+  import { get } from 'svelte/store'
   let statusBar, statusFeed
 
   let ipc = window.electron.ipcRenderer
@@ -28,9 +29,9 @@
       return
     }
 
-    let username: string = $params.username
-    if (!/^([a-zA-Z0-9_]){3,16}$/.test(username)) {
-      console.log('bad username! ' + username)
+    let paramsPass = get(params)
+    if (!/^([a-zA-Z0-9_]){3,16}$/.test(paramsPass.username)) {
+      console.log('bad username! ' + paramsPass.username)
       let opts: StatusFeedEntry = {
         title: 'Никнейм некорректен!',
         description: 'Никнейм должен быть не короче 3 символов и не длиннее 16, а также содержать только латинские символы, цифры и символ _'
@@ -44,7 +45,7 @@
       fillcolor: 'fa0'
     }
     statusBar.sendStatus(opts)
-    ipc.send('launch', { username })
+    ipc.send('launch', { params: paramsPass })
   }
 
   // function routeTo(page: string): void {

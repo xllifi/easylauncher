@@ -1,13 +1,15 @@
 import { LaunchOPTS } from 'minecraft-java-core/build/Launch'
 import { gamePath, mainWindow } from '.'
 import { Mojang, Launch } from 'minecraft-java-core'
+import { LauncherParams } from './types'
 
+export async function startGame(params: LauncherParams): Promise<void> {
 const launch = new Launch()
 
-export async function startGame(username: string): Promise<void> {
+  console.log(params)
   const ipc = mainWindow.webContents
   const opt: LaunchOPTS = {
-    authenticator: await Mojang.login(username),
+    authenticator: await Mojang.login(params.username),
     timeout: 10000,
     path: gamePath,
     instance: 'main',
@@ -25,7 +27,7 @@ export async function startGame(username: string): Promise<void> {
     },
 
     verify: true,
-    ignored: ['config', 'essential', 'logs', 'resourcepacks', 'saves', 'screenshots', 'shaderpacks', 'W-OVERFLOW', 'options.txt', 'optionsof.txt'],
+    ignored: ['config', 'logs', 'resourcepacks', 'saves', 'screenshots', 'shaderpacks', 'options.txt'],
 
     JVM_ARGS: [],
     GAME_ARGS: [],
@@ -42,8 +44,8 @@ export async function startGame(username: string): Promise<void> {
     },
 
     memory: {
-      min: '512M',
-      max: '6G'
+      min: `${params.launchParams.minMem}M`,
+      max: `${params.launchParams.maxMem}M`
     }
   }
 

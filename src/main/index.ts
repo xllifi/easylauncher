@@ -116,6 +116,6 @@ ipcMain.on('quit', () => {
   mainWindow.destroy()
 })
 
-ipcMain.on('launch', (_event, { username }) => {
-  startGame(username)
+ipcMain.on('launch', (_event, { params }) => {
+  startGame(params)
 })
