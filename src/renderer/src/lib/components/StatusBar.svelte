@@ -202,7 +202,7 @@
       width: 100%;
       text-align: center;
       white-space: nowrap;
-      transition: clip-path 200ms ease-in-out;
+      transition: clip-path 50ms ease-in-out;
 
       display: flex;
       align-items: center;
