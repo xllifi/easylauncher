@@ -3,7 +3,7 @@
   import { route } from '../stores/route.svelte'
   import { X } from 'lucide-svelte'
   import { backOut } from 'svelte/easing'
-  import settings from './settings.json'
+  import settings from './pages.json'
   import SettingsPageGeneral from './pages/SettingsPageGeneral.svelte'
   import SettingsPageLaunch from './pages/SettingsPageLaunch.svelte'
   import SettingsPage404 from './pages/SettingsPage404.svelte'
