@@ -8,8 +8,15 @@ export async function startGame(params: LauncherParams): Promise<void> {
 
   console.log(params)
   const ipc = mainWindow.webContents
+  Mojang.ChangeAuthApi('https://testauth.xllifi.ru/auth')
+
   const opt: LaunchOPTS = {
-    authenticator: await Mojang.login(params.username),
+    authenticator: await Mojang.login(params.username, "xxx").catch((err) => {
+      ipc.send('feed-push', {
+        title: 'Ошибка!',
+        description: `${err.toString()}\n\nПохоже, вы ввели неверные данные. Пожалуйста, проверьте.`
+      })
+    }),
     timeout: 10000,
     path: gamePath,
     instance: 'main',
@@ -29,7 +36,7 @@ export async function startGame(params: LauncherParams): Promise<void> {
     verify: true,
     ignored: ['config', 'logs', 'resourcepacks', 'saves', 'screenshots', 'shaderpacks', 'options.txt'],
 
-    JVM_ARGS: [],
+    JVM_ARGS: ['-javaagent:<path to authlib>/authlib-injector-1.2.5.jar=https://testauth.xllifi.ru/'],
     GAME_ARGS: [],
 
     java: {
