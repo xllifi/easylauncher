@@ -5,28 +5,21 @@
     min: number
     max: number
     step: number
+    oninput?: any
   }
-  let {
-    name,
-    input = $bindable(),
-    min,
-    max,
-    step
-  }: Props = $props()
+  let { name, input = $bindable(), min, max, step, oninput }: Props = $props()
 
   function verifyInput() {
+    if (!/^\d+$/.test(input.toString())) {
+      input = 0
+    }
     if (input > max) {
       input = max
-      return
     }
     if (input < min) {
       input = min
-      return
     }
-    if (!/^\d+$/.test(input.toString())) {
-      input = 0
-      return
-    }
+    oninput()
   }
 
   function handleScroll(e: WheelEvent) {
@@ -37,13 +30,13 @@
       input = input - step
     }
     verifyInput()
-  } 
+  }
 </script>
 
 <label class="text-input">
   <p>{name}</p>
-  <input type="text" bind:value={input} onfocusout={verifyInput}/>
-  <input type="range" bind:value={input} min={min} max={max} step={step} onwheel={handleScroll}/>
+  <input type="text" bind:value={input} onfocusout={verifyInput} />
+  <input {oninput} type="range" bind:value={input} {min} {max} {step} onwheel={handleScroll} />
 </label>
 
 <style lang="scss">
@@ -76,12 +69,12 @@
     }
 
     input[type='range'] {
-      width: 12dvw;
+      width: 16dvw;
       appearance: none;
       background: #0006;
       height: 0.4rem;
       border-radius: 0.2rem;
-      
+
       cursor: pointer;
 
       &::-webkit-slider-thumb {
@@ -91,10 +84,15 @@
         border-radius: 0.2rem;
         background-color: #0006;
         outline: solid 2px var(--theme-accent-inactive);
+      }
 
-        &:hover {
+      &:hover{
+        outline: solid 2px var(--theme-accent-active);
+        filter: drop-shadow(0 0 3px var(--theme-accent-active-darker));
+        &::-webkit-slider-thumb {
+          background-color: var(--theme-accent-active);
           outline: solid 2px var(--theme-accent-active);
-          filter: drop-shadow(0 0 3px var(--theme-accent-active-darker));
+          // filter: drop-shadow(0 0 3px var(--theme-accent-active-darker));
         }
       }
     }

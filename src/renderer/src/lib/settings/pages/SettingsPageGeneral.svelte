@@ -5,7 +5,9 @@
   import OptionButton from "../components/OptionButton.svelte"
 </script>
 
-<OptionTextInput name="Никнейм" bind:input={$params.username}/>
-<OptionCheckbox name="Checkbox (not persistent)" />
-<OptionCheckbox name="Checkbox (persistent)" bind:checked={$params.testopt}/>
-<OptionButton name="Вход в аккаунт" actionLabel="Войти!" onclick={() => console.log('cliccked')}/>
+<main>
+  <OptionTextInput name="Никнейм" bind:input={$params.username}/>
+  <OptionCheckbox name="Checkbox (not persistent)" />
+  <OptionCheckbox name="Checkbox (persistent)" bind:checked={$params.testopt}/>
+  <OptionButton name="Вход в аккаунт" actionLabel="Войти!" onclick={() => console.log('cliccked')}/>
+</main>
