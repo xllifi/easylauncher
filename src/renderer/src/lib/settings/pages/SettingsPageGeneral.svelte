@@ -4,6 +4,8 @@
   import { params } from "../../stores/params"
 </script>
 
-<OptionTextInput name="Никнейм" bind:input={$params.username}/>
-<OptionCheckbox name="Checkbox (not persistent)" />
-<OptionCheckbox name="Checkbox (persistent)" bind:checked={$params.testopt}/>
+<main>
+  <OptionTextInput name="Никнейм" bind:input={$params.username}/>
+  <OptionCheckbox name="Checkbox (not persistent)" />
+  <OptionCheckbox name="Checkbox (persistent)" bind:checked={$params.testopt}/>
+</main>
