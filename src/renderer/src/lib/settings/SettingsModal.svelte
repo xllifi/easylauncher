@@ -46,7 +46,7 @@
   <div class="window" transition:scale={{ duration: 180, start: 1.5, easing: backOut }} onclick={(e) => e.stopPropagation()}>
     <div class="title">
       {#key pageTitle}
-        <h2 class="text">Настройки <span class="arrow">→</span> <span in:fade={{ duration: 100 }}>{pageTitle}</span></h2>
+        <h2 class="text">Настройки <span class="arrow">/</span> <span in:fade={{ duration: 100 }}>{pageTitle}</span></h2>
       {/key}
       <button class="close" onclick={exitButtonClick}>
         <X />
