@@ -249,8 +249,8 @@
       z-index: 1;
 
       transition:
-        width 200ms ease-in-out,
-        background-color 200ms;
+        width 50ms ease-in-out,
+        background-color 50ms;
     }
   }
   @media (min-width: 600px) {
