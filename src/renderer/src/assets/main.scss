@@ -32,7 +32,7 @@ body {
     width: calc(100% - 4px);
     height: calc(100% - 4px);
     position: fixed;
-    
+
     border: solid 1.5px var(--color-border);
     border-radius: .5rem;
     overflow: hidden;
@@ -44,7 +44,7 @@ input[type="text"] {
   width: 4rem;
   max-width: 12rem;
   flex: 1 1 0;
-  
+
   height: 1.25rem;
   background-color: #0006;
   color: var(--text-color);
@@ -56,6 +56,9 @@ input[type="text"] {
   outline: solid var(--theme-accent-inactive) 2px;
 
   transition: outline-color 100ms, filter 100ms;
+  &:hover {
+    outline: solid var(--theme-accent-active) 2px;
+  }
   &:focus {
     outline: solid var(--theme-accent-active) 2px;
     filter: drop-shadow(0 0 3px var(--theme-accent-active-darker));
@@ -77,7 +80,7 @@ button {
   align-items: center;
 
   cursor: pointer;
-  
+
   transition: background-color 80ms, outline-color 100ms, filter 100ms;
 
   &:is(:hover, :focus-visible) {

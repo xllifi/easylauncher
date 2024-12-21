@@ -7,6 +7,7 @@
   import SettingsPageGeneral from './pages/SettingsPageGeneral.svelte'
   import SettingsPageLaunch from './pages/SettingsPageLaunch.svelte'
   import SettingsPage404 from './pages/SettingsPage404.svelte'
+  import { tilt } from '../scripts/testtransition.svelte'
 
   function exitButtonClick(e: Event) {
     e.stopPropagation()
@@ -42,11 +43,11 @@
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <!-- svelte-ignore a11y_click_events_have_key_events -->
-<div class="settings" onclick={exitButtonClick} tabindex="-1">
+<div class="settings" onclick={exitButtonClick} tabindex="-1" out:fade={{duration:200}}>
   <div class="window" transition:scale={{ duration: 180, start: 1.5, easing: backOut }} onclick={(e) => e.stopPropagation()}>
     <div class="title">
       {#key pageTitle}
-        <h2 class="text">Настройки <span class="arrow">/</span> <span in:fade={{ duration: 100 }}>{pageTitle}</span></h2>
+        <h2 class="text">Настройки <span class="arrow">/</span> <span in:tilt={{ duration: 200 }}>{pageTitle}</span></h2>
       {/key}
       <button class="close" onclick={exitButtonClick}>
         <X />
@@ -118,7 +119,7 @@
 
           font-family: Unbounded;
           font-size: 1.4rem;
-          transform: skewX(-10deg) translateY(1px);
+          transform: translateY(1px);
           border: none;
           color: #fff;
 

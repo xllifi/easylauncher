@@ -6,11 +6,6 @@
   let text, left_text, right_text_1, right_text_2, progress, finishAnimTimeout
   let hide = true
   let fillcolor = 'fa0'
-  let minecraft_launched = false
-
-  // hide = false
-  // text = 'looooooooooooooooooong text'
-  // progress = 100
 
   let texts = [
     'Сверяемся с манифестом',
@@ -79,20 +74,20 @@
   ipc.on('extract', (_event, { extract }) => {
     console.log(`Got Extract: ${extract}`)
   })
-  ipc.on('progress', async (_event, { element, percent }) => {
-    console.log(`Got progress: ${element}, ${percent}`)
+  ipc.on('progress', async (_event, { type, percent }) => {
+    console.log(`Got progress: ${type}, ${percent}`)
     hide = false
-    text = `Загрузка...`
+    text = `Загрузка ${type}...`
     left_text = `${percent}%`
     progress = percent
     fillcolor = 'fa0'
 
     clearTimeout(finishAnimTimeout)
   })
-  ipc.on('check', async (_event, { element, percent }) => {
-    console.log(`Got check: ${element}, ${percent}`)
+  ipc.on('check', async (_event, { type, percent }) => {
+    console.log(`Got check: ${type}, ${percent}`)
     hide = false
-    text = `Проверка...`
+    text = `Проверка ${type}...`
     left_text = `${percent}%`
     progress = percent
     fillcolor = '80f'
@@ -107,12 +102,8 @@
     console.log(`Got speed: ${speed}`)
     right_text_1 = speed
   })
-  ipc.on('data', async () => {
-    console.log('Got data')
-    if (minecraft_launched) {
-      return
-    }
-    minecraft_launched = true
+  ipc.on('start', async () => {
+    console.log('Got start')
     hide = false
     text = `Minecraft запускается...`
     left_text = ''
@@ -129,7 +120,6 @@
     }, 2500)
   })
   ipc.on('close', () => {
-    minecraft_launched = false
     hide = false
     text = `Minecraft закрыт!`
     left_text = ''

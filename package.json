@@ -1,6 +1,6 @@
 {
   "name": "easylauncher",
-  "version": "0.0.1",
+  "version": "0.0.5",
   "description": "Лаунчер для Minecraft сервера EasyMain",
   "main": "./out/main/index.js",
   "author": "xllifi",
@@ -27,7 +27,8 @@
     "electron-updater": "^6.1.7",
     "lucide-svelte": "^0.447.0",
     "minecraft-java-core": "file:../minecraft-java-core",
-    "svelte-persisted-store": "^0.12.0"
+    "svelte-persisted-store": "^0.12.0",
+    "xlicore": "file:../xlicore"
   },
   "devDependencies": {
     "@electron-toolkit/eslint-config-prettier": "^2.0.0",

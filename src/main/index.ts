@@ -2,11 +2,11 @@ import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
-import { startGame } from './launch'
+import { startGame } from './launch.js'
 
 const isDev = !app.isPackaged
 
-export const gamePath = app.getPath('userData') + '/.minecraft'
+export const gamePath = app.getPath('userData') + '/.easylauncher'
 export let loadingWindow: BrowserWindow, mainWindow: BrowserWindow
 
 function createWindow(): void {
@@ -109,6 +109,9 @@ app.on('window-all-closed', () => {
 // In this file you can include the rest of your app"s specific main process
 // code. You can also put them in separate files and require them here.
 
+ipcMain.on('report', () => {
+  shell.openExternal('https://t.me/xllifi')
+})
 ipcMain.on('minimize', () => {
   mainWindow.minimize()
 })

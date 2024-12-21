@@ -40,6 +40,8 @@
       margin: 0;
       cursor: pointer;
 
+      pointer-events: none;
+
       &::before {
         content: '';
         display: block;

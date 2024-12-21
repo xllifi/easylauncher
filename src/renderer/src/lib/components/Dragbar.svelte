@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { X, Minus } from 'lucide-svelte'
+  import { X, Minus, Bug } from 'lucide-svelte'
 
   let ipc = window.electron.ipcRenderer
 
@@ -9,6 +9,9 @@
   function minimize(): void {
     ipc.send('minimize')
   }
+  function report(): void {
+    ipc.send('report')
+  }
 </script>
 
 <div class="dragbar">
@@ -16,6 +19,8 @@
     <p>easylauncher • пре-αльфа</p>
   </div>
   <div class="buttons">
+    <span class="divider"></span>
+    <button class="report" on:click|stopPropagation={report}><Bug width="18px" height="18px" /></button>
     <span class="divider"></span>
     <button class="minimize" on:click|stopPropagation={minimize}><Minus width="18px" height="18px" /></button>
     <span class="divider"></span>
@@ -123,6 +128,9 @@
       }
       .minimize:is(:hover, :focus-visible) {
         background-color: #ccc;
+      }
+      .report:is(:hover, :focus-visible) {
+        background-color: #33b;
       }
     }
   }

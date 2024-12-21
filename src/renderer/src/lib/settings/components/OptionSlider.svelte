@@ -74,6 +74,7 @@
       background: #0006;
       height: 0.4rem;
       border-radius: 0.2rem;
+      transition: filter 200ms;
 
       cursor: pointer;
 
@@ -84,6 +85,7 @@
         border-radius: 0.2rem;
         background-color: #0006;
         outline: solid 2px var(--theme-accent-inactive);
+        transition: outline-color 200ms;
       }
 
       &:hover{
@@ -91,7 +93,8 @@
         filter: drop-shadow(0 0 3px var(--theme-accent-active-darker));
         &::-webkit-slider-thumb {
           background-color: var(--theme-accent-active);
-          outline: solid 2px var(--theme-accent-active);
+          outline: solid 4px var(--theme-accent-active);
+          outline-offset: -3px;
           // filter: drop-shadow(0 0 3px var(--theme-accent-active-darker));
         }
       }

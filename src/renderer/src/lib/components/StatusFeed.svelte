@@ -49,19 +49,18 @@
     }
   }
   function debugAddEntry(): void {
-    pushEntry({ title: 'Здесь водятся драконы!', description: 'В сборке могут быть ошибки. Пожалуйста, сообщите о них по кнопке в заголовке окна.\n(WIP)' })
+    pushEntry({ title: 'Тестовая версия', description: 'Если вы столкнулись с проблемой в работе сборки или у вас есть предложения по улучшению лаунчера, сообщите разработчику по кнопке в заголовке окна.' })
   }
   debugAddEntry()
 </script>
 
+<button on:click|self={debugAddEntry}>[DEBUG]add entry</button>
 <div class="status-feed" bind:this={listElement}>
   <ul class="scrollable">
-    <!-- <button on:click|self={debugAddEntry}>[DEBUG]add entry</button> -->
     {#each list as { title, description, id } (id)}
       <li in:fly={{ delay: 100, duration: 200, x: 100, y: 0, easing: sineOut }} out:fly={{ delay: 0, duration: 200, x: 100, y: 0, easing: sineIn }} animate:flip={{ delay: flipDelay, duration: 200 }}>
         <h3>{title}</h3>
         <p>{description}</p>
-        <!-- <debug>ID: {id}</debug> -->
         <button
           class="close"
           on:click={// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
@@ -82,7 +81,6 @@
     right: 3px;
     bottom: 3px;
     position: fixed;
-    margin: 0 0.4rem;
     flex-grow: 1;
 
     pointer-events: none;
@@ -92,7 +90,7 @@
       overflow-x: hidden;
 
       list-style: none;
-      padding: 0.4rem 0;
+      padding: 0.4rem;
 
       height: 100%;
 
@@ -105,8 +103,8 @@
 
       li {
         border-radius: 0.3rem;
-        background: radial-gradient(ellipse at 30% 12%, #f55c, #f550 70%);
-        background-color: #f557;
+        background: radial-gradient(ellipse at 30% 12%, var(--theme-accent-active), #f550 70%);
+        background-color: var(--theme-accent-active-darker);
         backdrop-filter: blur(5px);
 
         padding: 0.4rem 0.6rem;
@@ -164,7 +162,7 @@
             background-color: #0004;
             outline: solid 2px var(--theme-accent-active);
             filter: drop-shadow(0 0 3px var(--theme-accent-active-darker));
-            
+
             :global(.lucide) {
               opacity: 1;
             }
