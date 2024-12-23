@@ -1,5 +1,7 @@
 <script lang="ts">
+  import { fly } from 'svelte/transition'
   import type { StatusBarContents } from '../types/statusbar.d.ts'
+  import { backIn, backOut } from 'svelte/easing'
 
   let ipc = window.electron.ipcRenderer
 
@@ -10,7 +12,7 @@
   let texts = [
     'Сверяемся с манифестом',
     'Ищем файлы',
-    'Смотрим wiki.vg',
+    'Поминаем wiki.vg',
     'Пишем аргументы запуска',
     'Допиливаем лаунчер',
     'Изучаем TypeScript',
@@ -135,10 +137,16 @@
       }, 500)
     }, 2500)
   })
+
+  function toggleHide() {
+    hide ? hide = false : hide = true
+  }
 </script>
 
+<button onclick={toggleHide}>[DEBUG] toggle statusbar</button>
 <div class="progressbarwrapper">
-  <div class="progressbar" class:hidden={hide}>
+  {#if !hide}
+  <div class="progressbar" in:fly={{x: 0, y: 100, duration: 400, easing: backOut, opacity: 0}} out:fly={{x: 0, y: 100, duration: 400, easing: backIn, opacity: 0}}>
     <clipPath class="fill" id="fill" style="width: {progress == null ? 0 : progress}%; background-color: #{fillcolor};"></clipPath>
     <div class="labels top" style="clip-path: polygon(0% 0%, 0% 100%, {progress == null ? 0 : progress}% 100%, {progress == null ? 0 : progress}% 0%);">
       <p class="primary">{text == '' ? displayText + '...' : text}</p>
@@ -151,6 +159,7 @@
       <p class="secondary right">{right_text_1} {right_text_1 == '' ? '' : '•'} {right_text_2}</p>
     </div>
   </div>
+  {/if}
 </div>
 
 <style lang="scss">
@@ -180,11 +189,25 @@
     justify-content: center;
     align-items: center;
 
-    transition: bottom 500ms;
-
-    &.hidden {
-      bottom: -2rem;
-      box-shadow: 0 0 0 #0000;
+    &:after {
+      content: '';
+      bottom: 0;
+      transform: translateX(100%) skewX(-25deg);
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      z-index: 1;
+      animation: glint 2s infinite 3s;
+      background: linear-gradient(to right, rgba(255, 255, 255, 0) 40%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0) 60%);
+    }
+    @keyframes glint {
+      0% {
+        transform: translateX(-100%) skewX(-25deg);
+      }
+      75%,
+      100% {
+        transform: translateX(100%) skewX(-25deg);
+      }
     }
 
     .labels {
