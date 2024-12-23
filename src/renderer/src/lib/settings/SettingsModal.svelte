@@ -7,7 +7,7 @@
   import SettingsPageGeneral from './pages/SettingsPageGeneral.svelte'
   import SettingsPageLaunch from './pages/SettingsPageLaunch.svelte'
   import SettingsPage404 from './pages/SettingsPage404.svelte'
-  import { tilt } from '../scripts/testtransition.svelte'
+  import { tilt } from '../scripts/tilt_transition.js'
 
   function exitButtonClick(e: Event) {
     e.stopPropagation()
@@ -47,7 +47,7 @@
   <div class="window" transition:scale={{ duration: 180, start: 1.5, easing: backOut }} onclick={(e) => e.stopPropagation()}>
     <div class="title">
       {#key pageTitle}
-        <h2 class="text">Настройки <span class="arrow">/</span> <span in:tilt={{ duration: 200 }}>{pageTitle}</span></h2>
+        <h2 class="text">Настройки <span class="arrow">/</span> <span in:tilt={{ duration: 160 }}>{pageTitle}</span></h2>
       {/key}
       <button class="close" onclick={exitButtonClick}>
         <X />
