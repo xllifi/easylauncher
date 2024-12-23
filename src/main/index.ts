@@ -37,8 +37,6 @@ function createWindow(): void {
     titleBarStyle: 'hidden',
     title: 'easylauncher',
     autoHideMenuBar: true,
-    transparent: true,
-    frame: false,
     fullscreenable: true,
     icon: icon,
     webPreferences: {
