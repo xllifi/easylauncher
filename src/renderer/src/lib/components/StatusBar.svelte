@@ -1,9 +1,9 @@
 <script lang="ts">
-  import type { StatusBarContents } from '../types/statusbar.d'
+  import type { StatusBarContents } from '../types/statusbar.d.ts'
 
   let ipc = window.electron.ipcRenderer
 
-  let text, left_text, right_text_1, right_text_2, progress, finishAnimTimeout
+  let text, left_text, right_text_1, right_text_2, progress, endTimeout
   let hide = true
   let fillcolor = 'fa0'
 
@@ -69,7 +69,7 @@
     fillcolor = 'fa0'
     progress = 0
 
-    clearTimeout(finishAnimTimeout)
+    clearTimeout(endTimeout)
   })
   ipc.on('extract', (_event, { extract }) => {
     console.log(`Got Extract: ${extract}`)
@@ -82,7 +82,7 @@
     progress = percent
     fillcolor = 'fa0'
 
-    clearTimeout(finishAnimTimeout)
+    clearTimeout(endTimeout)
   })
   ipc.on('check', async (_event, { type, percent }) => {
     console.log(`Got check: ${type}, ${percent}`)
@@ -92,7 +92,7 @@
     progress = percent
     fillcolor = '80f'
 
-    clearTimeout(finishAnimTimeout)
+    clearTimeout(endTimeout)
   })
   ipc.on('eta', (_event, { eta }) => {
     console.log(`Got ETA: ${eta}`)
@@ -111,9 +111,9 @@
     right_text_2 = ''
     progress = 100
     fillcolor = '5d5'
-    finishAnimTimeout = setTimeout(() => {
+    endTimeout = setTimeout(() => {
       hide = true
-      finishAnimTimeout = setTimeout(() => {
+      endTimeout = setTimeout(() => {
         progress = undefined
         fillcolor = 'fa0'
       }, 500)
@@ -127,9 +127,9 @@
     right_text_2 = ''
     progress = 100
     fillcolor = 'd44'
-    finishAnimTimeout = setTimeout(() => {
+    endTimeout = setTimeout(() => {
       hide = true
-      finishAnimTimeout = setTimeout(() => {
+      endTimeout = setTimeout(() => {
         progress = undefined
         fillcolor = 'fa0'
       }, 500)

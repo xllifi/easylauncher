@@ -3,9 +3,9 @@
   import StatusBar from './components/StatusBar.svelte'
   import StatusFeed from './components/StatusFeed.svelte'
   import { route } from './stores/route.svelte'
-  import { params } from './stores/params'
-  import type { StatusBarContents } from './types/statusbar.d'
-  import type { StatusFeedEntry } from './types/statusfeed'
+  import { params } from './stores/params.js'
+  import type { StatusBarContents } from './types/statusbar.d.ts'
+  import type { StatusFeedEntry } from './types/statusfeed.d.ts'
   import { get } from 'svelte/store'
   let statusBar, statusFeed
 
@@ -52,7 +52,9 @@
   //   $route.page =
   // }
   ipc.on('close', () => {
-    lockHandler('launch', false)
+    setTimeout(() => {
+      lockHandler('launch', false)
+    }, 3000);
   })
 </script>
 

@@ -1,7 +1,7 @@
 <script lang="ts">
   import { fly } from 'svelte/transition'
   import { sineIn, sineOut } from 'svelte/easing'
-  import type { StatusFeedEntry } from '../types/statusfeed.d'
+  import type { StatusFeedEntry } from '../types/statusfeed.d.ts'
   import { X } from 'lucide-svelte'
   import { flip } from 'svelte/animate'
 

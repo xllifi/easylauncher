@@ -10,10 +10,6 @@ export function startGame(params: LauncherParams) {
     authserver: '',
     rootDir: gamePath,
     version: '1.21.1',
-    verify: true,
-    fabric: {
-      version: null
-    },
     gameOpts: {
       memory: {
         min: params.launchParams.minMem,
@@ -39,6 +35,13 @@ export function startGame(params: LauncherParams) {
           })
           console.log(`Error: ${err}`)
       },
+    },
+    mrpack: {
+      url: 'https://cdn.modrinth.com/data/paoFU4Vl/versions/lTRTUeLo/Additive-1.32.0%2B1.21.1.fabric.mrpack',
+      verify: {
+        hash: 'ff68c4be7942064dbe378701bb50960284059c9f',
+        algorithm: 'sha1'
+      }
     }
   }
   const launch = new Launch(launchOpts)

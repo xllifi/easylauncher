@@ -1,7 +1,7 @@
 <script lang="ts">
   import OptionCheckbox from "../components/OptionCheckbox.svelte"
   import OptionTextInput from "../components/OptionTextInput.svelte"
-  import { params } from "../../stores/params"
+  import { params } from "../../stores/params.js"
   import OptionButton from "../components/OptionButton.svelte"
 </script>
 

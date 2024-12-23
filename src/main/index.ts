@@ -1,12 +1,12 @@
 import { app, shell, BrowserWindow, ipcMain } from 'electron'
-import { join } from 'path'
+import path, { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 import { startGame } from './launch.js'
 
 const isDev = !app.isPackaged
 
-export const gamePath = app.getPath('userData') + '/.easylauncher'
+export const gamePath = path.resolve(app.getPath('appData'), '.easylauncher')
 export let loadingWindow: BrowserWindow, mainWindow: BrowserWindow
 
 function createWindow(): void {

@@ -7,6 +7,8 @@
     "src/preload/*.d.ts"
   ],
   "compilerOptions": {
+    "module": "NodeNext",
+    "moduleResolution": "nodenext",
     "verbatimModuleSyntax": true,
     "useDefineForClassFields": true,
     "strict": false,

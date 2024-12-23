@@ -1,6 +1,6 @@
 <script lang="ts">
   import OptionSlider from '../components/OptionSlider.svelte'
-  import { params } from '../../stores/params'
+  import { params } from '../../stores/params.js'
 
   if ($params.launchParams === undefined) {
     $params.launchParams = {
