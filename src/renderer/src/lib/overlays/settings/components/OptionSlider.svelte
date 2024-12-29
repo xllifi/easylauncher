@@ -10,6 +10,7 @@
   let { name, input = $bindable(), min, max, step, oninput }: Props = $props()
 
   function verifyInput() {
+    if (!input) return
     if (!/^\d+$/.test(input.toString())) {
       input = 0
     }
@@ -23,6 +24,7 @@
   }
 
   function handleScroll(e: WheelEvent) {
+    if (!input) return
     if (e.deltaY < 0) {
       input = input + step
     }

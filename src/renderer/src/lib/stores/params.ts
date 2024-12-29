@@ -8,6 +8,10 @@ export const params: Persisted<LauncherParams> = persisted('preferences', {
     memory: {
       min: 512,
       max: 6144
+    },
+    screen: {
+      width: 854,
+      height: 480
     }
   }
 })

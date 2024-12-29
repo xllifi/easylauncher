@@ -4,7 +4,6 @@ import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 import { startGame } from './launch.js'
 import { DraslAuth, launchCredentials } from 'xlicore'
-import { HTTPError, NormalizedOptions } from 'ky'
 
 const isDev = !app.isPackaged
 

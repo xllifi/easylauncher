@@ -6,7 +6,7 @@
   import type { StatusBarContents } from '../types/statusbar.js'
   import { get } from 'svelte/store'
   import { ipc } from '../shared/general.js'
-  let statusBar, statusFeed
+  let statusBar
 
   let buttonsLocked: string[] = []
 
@@ -58,7 +58,7 @@
   <button onclick={() => ($route.overlay.current = 'settings')}>Settings</button>
   <!-- <button onclick={() => ($route.overlay.current = 'login')}>Login</button> -->
   <StatusBar bind:this={statusBar} />
-  <StatusFeed bind:this={statusFeed} />
+  <StatusFeed />
 </div>
 
 <style lang="scss">
