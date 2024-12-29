@@ -2,8 +2,7 @@
   import { fly } from 'svelte/transition'
   import type { StatusBarContents } from '../types/statusbar.d.ts'
   import { backIn, backOut } from 'svelte/easing'
-
-  let ipc = window.electron.ipcRenderer
+  import { ipc } from '../shared/general.js'
 
   let text, left_text, right_text_1, right_text_2, progress, endTimeout
   let hide = true
@@ -137,13 +136,8 @@
       }, 500)
     }, 2500)
   })
-
-  function toggleHide() {
-    hide ? hide = false : hide = true
-  }
 </script>
 
-<button onclick={toggleHide}>[DEBUG] toggle statusbar</button>
 <div class="progressbarwrapper">
   {#if !hide}
   <div class="progressbar" in:fly={{x: 0, y: 100, duration: 400, easing: backOut, opacity: 0}} out:fly={{x: 0, y: 100, duration: 400, easing: backIn, opacity: 0}}>

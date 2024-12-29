@@ -14,7 +14,7 @@ export function tilt(node, { delay = 0, duration = 400, easing = linear } = {}) 
 		duration,
 		easing,
 		css: (t) =>
-      `transform: skewX(-${16*(Math.sin(Math.PI*t*.95))}deg);
+      `transform: skewX(-${12*(Math.sin(Math.PI*t*.95))}deg);
       opacity: ${o*4*Math.pow((t-.5), 2)}`
 	};
 }

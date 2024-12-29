@@ -1,7 +1,15 @@
+import { launchCredentials } from "xlicore"
+
 export type LauncherParams = {
-  username: string,
-  launchParams: {
-    maxMem: number,
-    minMem: number
+  launchCredentials: launchCredentials
+  launchOpts: {
+    memory: {
+      min: number
+      max: number
+    }
+    screen: {
+      width: number
+      height: number
+    }
   }
 }

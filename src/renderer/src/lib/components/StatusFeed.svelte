@@ -4,6 +4,7 @@
   import type { StatusFeedEntry } from '../types/statusfeed.d.ts'
   import { X } from 'lucide-svelte'
   import { flip } from 'svelte/animate'
+  import { ipc } from '../shared/general.js'
 
   let list: StatusFeedEntry[] = []
   let listElement: Element
@@ -14,9 +15,8 @@
     el.scroll({ top: el.scrollHeight, behavior: 'smooth' })
   }
 
-  let ipc = window.electron.ipcRenderer
-  ipc.on('feed-push', (_event, { title, description, hide_after_secs }) => {
-    console.log(`Got Feed-Push: ${title}, ${description}, ${hide_after_secs}`)
+  ipc.on('feed-push', (_event, { title, description }) => {
+    console.log(`Got Feed-Push: ${title}, ${description}`)
     console.log(description)
     let opts: StatusFeedEntry = {
       title: title,
@@ -26,7 +26,7 @@
   })
   export function pushEntry(entry: StatusFeedEntry): void {
     flipDelay = 0
-    let entryID = list.length > 0 ? list[0].id + 1 : 0
+    let entryID = list[0] && list[0].id ? list[0].id + 1 : 0
     entry = {
       ...entry,
       id: entryID
@@ -49,12 +49,10 @@
     }
   }
   function debugAddEntry(): void {
-    pushEntry({ title: 'Тестовая версия', description: 'Если вы столкнулись с проблемой в работе сборки или у вас есть предложения по улучшению лаунчера, сообщите разработчику по кнопке в заголовке окна.' })
+    pushEntry({ title: 'Тестовая версия', description: 'Если вы столкнулись с проблемой в работе лаунчера или у вас есть предложения по улучшению, сообщите разработчику по кнопке в заголовке окна.' })
   }
   debugAddEntry()
 </script>
-
-<button on:click|self={debugAddEntry}>[DEBUG]add entry</button>
 <div class="status-feed" bind:this={listElement}>
   <ul class="scrollable">
     {#each list as { title, description, id } (id)}
@@ -76,10 +74,10 @@
 <style lang="scss">
   div.status-feed {
     width: 18rem;
-    height: calc(100dvh - 1.5rem - 6px);
+    height: calc(100dvh - 1.5rem);
     overflow: hidden;
-    right: 3px;
-    bottom: 3px;
+    right: 0;
+    bottom: 0;
     position: fixed;
     flex-grow: 1;
 

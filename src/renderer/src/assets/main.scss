@@ -33,7 +33,7 @@ body {
   }
 }
 
-input[type="text"] {
+input:is([type="text"], [type="password"]) {
   min-width: 0;
   width: 4rem;
   max-width: 12rem;
@@ -66,7 +66,7 @@ button {
   background-color: #0006;
   color: var(--text-color);
   font-family: Inter;
-  outline: solid 2px transparent;
+  outline: solid 2px var(--theme-accent-inactive);
   border: none;
 
   display: flex;
@@ -81,5 +81,10 @@ button {
     background-color: #0004;
     outline: solid 2px var(--theme-accent-active);
     filter: drop-shadow(0 0 3px var(--theme-accent-active-darker));
+  }
+  &:disabled {
+    filter: brightness(0.4);
+    pointer-events: none;
+    user-select: none;
   }
 }

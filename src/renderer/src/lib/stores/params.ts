@@ -1,10 +1,13 @@
-import { persisted } from 'svelte-persisted-store'
+import { persisted, type Persisted } from 'svelte-persisted-store'
+import type { launchCredentials } from 'xlicore'
+import type { LauncherParams } from '../../../../main/types.js'
 
-export const params = persisted('preferences', {
-  username: 'Steve',
-  testopt: true,
-  launchParams: {
-    maxMem: 6144,
-    minMem: 512
+export const params: Persisted<LauncherParams> = persisted('preferences', {
+  launchCredentials: {} as launchCredentials,
+  launchOpts: {
+    memory: {
+      min: 512,
+      max: 6144
+    }
   }
 })

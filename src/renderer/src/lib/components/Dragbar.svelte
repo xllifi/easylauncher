@@ -1,7 +1,6 @@
 <script lang="ts">
   import { X, Minus, Bug } from 'lucide-svelte'
-
-  let ipc = window.electron.ipcRenderer
+  import { ipc } from '../shared/general.js'
 
   function quit(): void {
     ipc.send('quit')

@@ -1,13 +1,15 @@
-import { app, shell, BrowserWindow, ipcMain } from 'electron'
+import { app, shell, BrowserWindow, ipcMain, WebContents } from 'electron'
 import path, { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 import { startGame } from './launch.js'
+import { DraslAuth, launchCredentials } from 'xlicore'
+import { HTTPError, NormalizedOptions } from 'ky'
 
 const isDev = !app.isPackaged
 
 export const gamePath = path.resolve(app.getPath('appData'), '.easylauncher')
-export let loadingWindow: BrowserWindow, mainWindow: BrowserWindow
+export let loadingWindow: BrowserWindow, mainWindow: BrowserWindow, renderer: WebContents
 
 function createWindow(): void {
   loadingWindow = new BrowserWindow({
@@ -87,6 +89,7 @@ app.whenReady().then(() => {
   })
 
   createWindow()
+  renderer = mainWindow.webContents
 
   app.on('activate', function () {
     // On macOS it's common to re-create a window in the app when the
@@ -119,4 +122,35 @@ ipcMain.on('quit', () => {
 
 ipcMain.on('launch', (_event, { params }) => {
   startGame(params)
+})
+
+ipcMain.on('loginrequest', async (_event, { username, password }) => {
+  console.log(`auth with: ${username}; ${password}`)
+  const drasl = new DraslAuth({
+    username,
+    password,
+    server: 'https://testauth.xllifi.ru',
+    saveDir: path.resolve(gamePath, 'instance')
+  })
+
+  const resp = await drasl.first().catch((err) => {
+    renderer.send('loginresponse', { launchCredentials: {} })
+    if (err.response && err.response.status == 401) {
+      return renderer.send('feed-push', { title: `Не удалось войти!`, description: `Похоже, что вы ввели неверные данные. \nКод ошибки: ${err.response.status}` })
+    }
+    renderer.send('feed-push', { title: `Не удалось войти!`, description: `Полная причина: ${err}` })
+  })
+  if (!resp) return
+
+  const launchCredentials: launchCredentials = {
+    accessToken: resp.accessToken,
+    clientId: resp.clientToken,
+    name: resp.selectedProfile.name,
+    uuid: resp.selectedProfile.id,
+    userType: 'mojang',
+    drasl: { server: drasl.authserver }
+  }
+  console.log(JSON.stringify(launchCredentials))
+  renderer.send('loginresponse', { launchCredentials })
+  renderer.send('feed-push', { title: `Вы успешно вошли`, description: `Ваш никнейм - ${launchCredentials.name}` })
 })

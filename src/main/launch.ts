@@ -1,35 +1,37 @@
 import { Launch, LaunchOpts } from 'xlicore'
 import { LauncherParams } from './types.js'
-import { gamePath, mainWindow } from './index.js'
+import { gamePath, renderer } from './index.js'
 
 export function startGame(params: LauncherParams) {
-  const ipc = mainWindow.webContents
-
   const launchOpts: LaunchOpts = {
-    auth: params.username,
-    authserver: '',
+    auth: params.launchCredentials,
+    useAuthlib: true,
     rootDir: gamePath,
     version: '1.21.1',
     gameOpts: {
       memory: {
-        min: params.launchParams.minMem,
-        max: params.launchParams.maxMem
+        min: params.launchOpts.memory.min,
+        max: params.launchOpts.memory.max
+      },
+      screen: {
+        width: params.launchOpts.screen.width,
+        height: params.launchOpts.screen.height
       }
     },
     callbacks: {
       dlOnProgress(progress, _chunk, file, _lastProgress) {
-        ipc.send('progress', { type: file.type, percent: (progress.percent*100).toFixed(2) })
+        renderer.send('progress', { type: file.type, percent: (progress.percent*100).toFixed(2) })
       },
       gameOnStart() {
         console.log(`MC started`)
-        ipc.send('start')
+        renderer.send('start')
       },
       gameOnExit() {
         console.log(`MC closed`)
-        ipc.send('close')
+        renderer.send('close')
       },
       gameOnError(err) {
-          ipc.send('feed-push', {
+          renderer.send('feed-push', {
             title: 'Ошибка!',
             description: `${err.message.toString()}\n\nЭта ошибка может быть не критичной, но пожалуйста, сообщите нам о ней!\nЕсли Minecraft долго не запускается - перезапустите лаунчер.`
           })

@@ -25,9 +25,10 @@
     "@electron-toolkit/preload": "^3.0.1",
     "@electron-toolkit/utils": "^3.0.0",
     "electron-updater": "^6.1.7",
+    "ky": "^1.7.4",
     "lucide-svelte": "^0.447.0",
-    "minecraft-java-core": "file:../minecraft-java-core",
     "svelte-persisted-store": "^0.12.0",
+    "svelte-skinview3d": "^1.0.0",
     "xlicore": "file:../xlicore"
   },
   "devDependencies": {
