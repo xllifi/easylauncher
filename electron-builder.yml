@@ -12,7 +12,10 @@ files:
 asarUnpack:
   - resources/**
 win:
-  executableName: easylauncher
+  target: appx
+  executableName: EasyLauncher
+appx:
+  displayName: EasyLauncher
 nsis:
   artifactName: ${name}-${version}-setup.${ext}
   shortcutName: ${productName}

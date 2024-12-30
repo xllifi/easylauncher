@@ -61,7 +61,7 @@
         <p>{description}</p>
         <button
           class="close"
-          on:click={// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+          on:click={
           () => {
             removeEntry(id)
           }}><X /></button
