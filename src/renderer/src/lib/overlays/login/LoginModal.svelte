@@ -43,7 +43,6 @@
   }
 
   ipc.on('loginresponse', (_event, { launchCredentials }) => {
-    console.log(launchCredentials)
     $params.launchCredentials = launchCredentials
   })
 </script>

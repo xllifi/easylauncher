@@ -776,12 +776,20 @@
   dependencies:
     "@types/node" "*"
 
-"@types/three@^0.142.0":
-  version "0.142.0"
-  resolved "https://registry.yarnpkg.com/@types/three/-/three-0.142.0.tgz#32ca897afc925057174a398416777fcb141666d6"
-  integrity sha512-YNVnlqthfgqsxKuSNbT/G2r+ha/6x+aJm7kvjT+sxa4jUROw/KOPm5xzGj33sk1+Librg6NwH/wJ6LCDX33UZg==
+"@types/stats.js@*":
+  version "0.17.3"
+  resolved "https://registry.yarnpkg.com/@types/stats.js/-/stats.js-0.17.3.tgz#705446e12ce0fad618557dd88236f51148b7a935"
+  integrity sha512-pXNfAD3KHOdif9EQXZ9deK82HVNaXP5ZIF5RP2QG6OQFNTaY2YIetfrE9t528vEreGQvEPRDDc8muaoYeK0SxQ==
+
+"@types/three@^0.156.0":
+  version "0.156.0"
+  resolved "https://registry.yarnpkg.com/@types/three/-/three-0.156.0.tgz#cd49f2a12e858400962ea818d1e1c45e638141a8"
+  integrity sha512-733bXDSRdlrxqOmQuOmfC1UBRuJ2pREPk8sWnx9MtIJEVDQMx8U0NQO5MVVaOrjzDPyLI+cFPim2X/ss9v0+LQ==
   dependencies:
+    "@types/stats.js" "*"
     "@types/webxr" "*"
+    fflate "~0.6.10"
+    meshoptimizer "~0.18.1"
 
 "@types/verror@^1.10.3":
   version "1.10.10"
@@ -1877,6 +1885,11 @@ fdir@^6.2.0:
   resolved "https://registry.yarnpkg.com/fdir/-/fdir-6.4.2.tgz#ddaa7ce1831b161bc3657bb99cb36e1622702689"
   integrity sha512-KnhMXsKSPZlAhp7+IjUkRZKPb4fUyccpDrdFXbi4QL1qkmFh9kVY09Yox+n4MaOb3lHZ1Tv829C3oaaXoMYPDQ==
 
+fflate@~0.6.10:
+  version "0.6.10"
+  resolved "https://registry.yarnpkg.com/fflate/-/fflate-0.6.10.tgz#5f40f9659205936a2d18abf88b2e7781662b6d43"
+  integrity sha512-IQrh3lEPM93wVCEczc9SaAOvkmcoQn/G8Bo1e8ZPlY3X3bnAxWaBdvTdvM1hP62iZp0BXWDy4vTAy4fF0+Dlpg==
+
 file-entry-cache@^8.0.0:
   version "8.0.0"
   resolved "https://registry.yarnpkg.com/file-entry-cache/-/file-entry-cache-8.0.0.tgz#7787bddcf1131bffb92636c69457bbc0edd6d81f"
@@ -2524,6 +2537,11 @@ merge2@^1.3.0, merge2@^1.4.1:
   resolved "https://registry.yarnpkg.com/merge2/-/merge2-1.4.1.tgz#4368892f885e907455a6fd7dc55c0c9d404990ae"
   integrity sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==
 
+meshoptimizer@~0.18.1:
+  version "0.18.1"
+  resolved "https://registry.yarnpkg.com/meshoptimizer/-/meshoptimizer-0.18.1.tgz#cdb90907f30a7b5b1190facd3b7ee6b7087797d8"
+  integrity sha512-ZhoIoL7TNV4s5B6+rx5mC//fw8/POGyNxS/DZyCJeiZ12ScLfVwRE/GfsxwiTkMYYD5DmK2/JXnEVXqL4rF+Sw==
+
 micromatch@^4.0.4:
   version "4.0.8"
   resolved "https://registry.yarnpkg.com/micromatch/-/micromatch-4.0.8.tgz#d66fa18f3a47076789320b9b1af32bd86d9fa202"
@@ -3154,19 +3172,19 @@ simple-update-notifier@2.0.0:
   dependencies:
     semver "^7.5.3"
 
-skinview-utils@^0.7.0:
+skinview-utils@^0.7.1:
   version "0.7.1"
   resolved "https://registry.yarnpkg.com/skinview-utils/-/skinview-utils-0.7.1.tgz#925cc144a6d359be2bea6b4c023a5a88656af2df"
   integrity sha512-4eLrMqR526ehlZbsd8SuZ/CHpS9GiH0xUMoV+PYlJVi95ZFz5HJu7Spt5XYa72DRS7wgt5qquvHZf0XZJgmu9Q==
 
-skinview3d@3.0.0-alpha.1:
-  version "3.0.0-alpha.1"
-  resolved "https://registry.yarnpkg.com/skinview3d/-/skinview3d-3.0.0-alpha.1.tgz#48f43243a96ddebba9b3657e1ebcc5bd45e20638"
-  integrity sha512-Y5v5yxQIVZZwpQlnRHeVZ9pgDOETLkPrkeMcwJN92OFAYQ0+WTHy6WlZOu0M1DRys+h8iyBdxRb/9976ftt72Q==
+skinview3d@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/skinview3d/-/skinview3d-3.1.0.tgz#b4ea6130be34c6520e299efc073de941130e3828"
+  integrity sha512-L+HXXAP4qYjLcY3YHasXKie9KXQpv/mPTMxgLOEd+hVQRdQkPs5xdWaKuOmlZY8UnyZzecQM7yrWRzgT/e7HZw==
   dependencies:
-    "@types/three" "^0.142.0"
-    skinview-utils "^0.7.0"
-    three "^0.142.0"
+    "@types/three" "^0.156.0"
+    skinview-utils "^0.7.1"
+    three "^0.156.1"
 
 slash@^3.0.0:
   version "3.0.0"
@@ -3215,7 +3233,16 @@ stat-mode@^1.0.0:
   resolved "https://registry.yarnpkg.com/stat-mode/-/stat-mode-1.0.0.tgz#68b55cb61ea639ff57136f36b216a291800d1465"
   integrity sha512-jH9EhtKIjuXZ2cWxmXS8ZP80XyC3iasQxMDV8jzhNJpfDb7VbQLVW4Wvsxz9QZvzV+G4YoSfBUVKDOyxLzi/sg==
 
-"string-width-cjs@npm:string-width@^4.2.0", string-width@^4.1.0, string-width@^4.2.0, string-width@^4.2.3:
+"string-width-cjs@npm:string-width@^4.2.0":
+  version "4.2.3"
+  resolved "https://registry.yarnpkg.com/string-width/-/string-width-4.2.3.tgz#269c7117d27b05ad2e536830a8ec895ef9c6d010"
+  integrity sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g==
+  dependencies:
+    emoji-regex "^8.0.0"
+    is-fullwidth-code-point "^3.0.0"
+    strip-ansi "^6.0.1"
+
+string-width@^4.1.0, string-width@^4.2.0, string-width@^4.2.3:
   version "4.2.3"
   resolved "https://registry.yarnpkg.com/string-width/-/string-width-4.2.3.tgz#269c7117d27b05ad2e536830a8ec895ef9c6d010"
   integrity sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g==
@@ -3233,7 +3260,14 @@ string-width@^5.0.1, string-width@^5.1.2:
     emoji-regex "^9.2.2"
     strip-ansi "^7.0.1"
 
-"strip-ansi-cjs@npm:strip-ansi@^6.0.1", strip-ansi@^6.0.0, strip-ansi@^6.0.1:
+"strip-ansi-cjs@npm:strip-ansi@^6.0.1":
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/strip-ansi/-/strip-ansi-6.0.1.tgz#9e26c63d30f53443e9489495b2105d37b67a85d9"
+  integrity sha512-Y38VPSHcqkFrCpFnQ9vuSXmquuv5oXOKpGeT6aGrr3o3Gc9AlVa6JBfUSOCnbxGGZF+/0ooI7KrPuUSztUdU5A==
+  dependencies:
+    ansi-regex "^5.0.1"
+
+strip-ansi@^6.0.0, strip-ansi@^6.0.1:
   version "6.0.1"
   resolved "https://registry.yarnpkg.com/strip-ansi/-/strip-ansi-6.0.1.tgz#9e26c63d30f53443e9489495b2105d37b67a85d9"
   integrity sha512-Y38VPSHcqkFrCpFnQ9vuSXmquuv5oXOKpGeT6aGrr3o3Gc9AlVa6JBfUSOCnbxGGZF+/0ooI7KrPuUSztUdU5A==
@@ -3312,13 +3346,6 @@ svelte-persisted-store@^0.12.0:
   resolved "https://registry.yarnpkg.com/svelte-persisted-store/-/svelte-persisted-store-0.12.0.tgz#cd9405cec4611df395f4342b382416237834d972"
   integrity sha512-BdBQr2SGSJ+rDWH8/aEV5GthBJDapVP0GP3fuUCA7TjYG5ctcB+O9Mj9ZC0+Jo1oJMfZUd1y9H68NFRR5MyIJA==
 
-svelte-skinview3d@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/svelte-skinview3d/-/svelte-skinview3d-1.0.0.tgz#1def4f83818c6062b5fc4456b045ee6f9dc03c43"
-  integrity sha512-6660WoB7XtDcL8EsLEeD0gbrLfjT/Z4nXckPQyXKHAUB5m9HokVndfNoiIq/zgOfxbqbRLXsQHsk77H+nDZflQ==
-  dependencies:
-    skinview3d "3.0.0-alpha.1"
-
 svelte@^5.1.9:
   version "5.1.9"
   resolved "https://registry.yarnpkg.com/svelte/-/svelte-5.1.9.tgz#e8d5f2e4b4e029091c1e3a5a0882ff75d40ba291"
@@ -3371,10 +3398,10 @@ text-table@^0.2.0:
   resolved "https://registry.yarnpkg.com/text-table/-/text-table-0.2.0.tgz#7f5ee823ae805207c00af2df4a84ec3fcfa570b4"
   integrity sha512-N+8UisAXDGk8PFXP4HAzVR9nbfmVJ3zYLAWiTIoqC5v5isinhr+r5uaO8+7r3BMfuNIufIsA7RdpVgacC2cSpw==
 
-three@^0.142.0:
-  version "0.142.0"
-  resolved "https://registry.yarnpkg.com/three/-/three-0.142.0.tgz#89e226a16221f212eb1d40f0786604b711f28aed"
-  integrity sha512-ESjPO+3geFr+ZUfVMpMnF/eVU2uJPOh0e2ZpMFqjNca1wApS9lJb7E4MjwGIczgt9iuKd8PEm6Pfgp2bJ92Xtg==
+three@^0.156.1:
+  version "0.156.1"
+  resolved "https://registry.yarnpkg.com/three/-/three-0.156.1.tgz#bab4fec121a5b3975eb4f4d227d9c912171eb399"
+  integrity sha512-kP7H0FK9d/k6t/XvQ9FO6i+QrePoDcNhwl0I02+wmUJRNSLCUIDMcfObnzQvxb37/0Uc9TDT0T1HgsRRrO6SYQ==
 
 tiny-typed-emitter@^2.1.0:
   version "2.1.0"
@@ -3531,7 +3558,16 @@ word-wrap@^1.2.5:
   resolved "https://registry.yarnpkg.com/word-wrap/-/word-wrap-1.2.5.tgz#d2c45c6dd4fbce621a66f136cbe328afd0410b34"
   integrity sha512-BN22B5eaMMI9UMtjrGd5g5eCYPpCPDUy0FJXbYsaT5zYxjFOckS53SQDE3pWkVoWpHXVb3BrYcEN4Twa55B5cA==
 
-"wrap-ansi-cjs@npm:wrap-ansi@^7.0.0", wrap-ansi@^7.0.0:
+"wrap-ansi-cjs@npm:wrap-ansi@^7.0.0":
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/wrap-ansi/-/wrap-ansi-7.0.0.tgz#67e145cff510a6a6984bdf1152911d69d2eb9e43"
+  integrity sha512-YVGIj2kamLSTxw6NsZjoBxfSwsn0ycdesmc4p+Q21c5zPuZ1pl+NfxVdxPtdHvmNVOQ6XSYG4AUtyt/Fi7D16Q==
+  dependencies:
+    ansi-styles "^4.0.0"
+    string-width "^4.1.0"
+    strip-ansi "^6.0.0"
+
+wrap-ansi@^7.0.0:
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/wrap-ansi/-/wrap-ansi-7.0.0.tgz#67e145cff510a6a6984bdf1152911d69d2eb9e43"
   integrity sha512-YVGIj2kamLSTxw6NsZjoBxfSwsn0ycdesmc4p+Q21c5zPuZ1pl+NfxVdxPtdHvmNVOQ6XSYG4AUtyt/Fi7D16Q==

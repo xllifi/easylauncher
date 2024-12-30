@@ -2,20 +2,30 @@ import ky from "ky"
 import { get } from "svelte/store"
 import { params } from "../stores/params.js"
 
-export async function getSkin() {
-  const skin: sessionResp = await ky.get(`https://testauth.xllifi.ru/session/minecraft/profile/${get(params).launchCredentials.uuid}`).json()
-  const skinvalues: texturesValue = JSON.parse(atob(skin.properties.filter((x) => x.name == 'textures')[0].value))
+export async function getSkinUrls() {
+  let ret: getSkinReturn
+  console.log(`Getting skin Urls with launchCredentials:`)
+  console.log(get(params).launchCredentials)
+  try {
+    if (get(params).launchCredentials.uuid == undefined) console.trace(`UUID UNDEFINED!!!`)
+    const skin: sessionResp = await ky.get(`https://testauth.xllifi.ru/session/minecraft/profile/${get(params).launchCredentials.uuid}`, {
+      timeout: 3000
+    }).json()
+    const skinvalues: texturesValue = JSON.parse(atob(skin.properties.filter((x) => x.name == 'textures')[0].value))
 
-  const ret: getSkinReturn = {
-    skin: skinvalues.textures.SKIN.url,
-    cape: skinvalues.textures.CAPE.url
+    ret = {
+      skin: skinvalues.textures.SKIN ? skinvalues.textures.SKIN.url : null,
+      cape: skinvalues.textures.CAPE ? skinvalues.textures.CAPE.url : null
+    }
+  } catch {
+    ret = {} as getSkinReturn
   }
   return ret
 }
 
 export type getSkinReturn = {
-  skin: string
-  cape: string
+  skin: string | null
+  cape: string | null
 }
 
 type sessionResp = {

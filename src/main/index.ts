@@ -134,11 +134,11 @@ ipcMain.on('loginrequest', async (_event, { username, password }) => {
   })
 
   const resp = await drasl.first().catch((err) => {
-    renderer.send('loginresponse', { launchCredentials: {} })
     if (err.response && err.response.status == 401) {
       return renderer.send('feed-push', { title: `Не удалось войти!`, description: `Похоже, что вы ввели неверные данные. \nКод ошибки: ${err.response.status}` })
     }
     renderer.send('feed-push', { title: `Не удалось войти!`, description: `Полная причина: ${err}` })
+    renderer.send('loginresponse', { launchCredentials: {} })
   })
   if (!resp) return
 
@@ -151,6 +151,6 @@ ipcMain.on('loginrequest', async (_event, { username, password }) => {
     drasl: { server: drasl.authserver }
   }
   console.log(JSON.stringify(launchCredentials))
-  renderer.send('loginresponse', { launchCredentials })
   renderer.send('feed-push', { title: `Вы успешно вошли`, description: `Ваш никнейм - ${launchCredentials.name}` })
+  renderer.send('loginresponse', { launchCredentials })
 })
