@@ -3,7 +3,7 @@ import path, { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 import { startGame } from './launch.js'
-import { DraslAuth, launchCredentials } from 'xlicore'
+import { DraslAuth, launchCredentials, genDirs } from 'xlicore'
 
 const isDev = !app.isPackaged
 
@@ -77,6 +77,7 @@ function createWindow(): void {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
+  genDirs(gamePath)
   // Set app user model id for windows
   electronApp.setAppUserModelId('ru.xllifi.launcher')
 
