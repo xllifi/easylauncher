@@ -15,15 +15,25 @@
   let password = $state('')
 
   let isUsernameValid: boolean = $state(false)
-  let showUsernameIncorrect: boolean = $state(false)
+  let showUsernameInvalid: boolean = $state(false)
+
+  let isPasswordValid: boolean = $state(false)
+  let showPasswordInvalid: boolean = $state(false)
 
   function oninputUsername(): void {
     onunfocusUsername()
     isUsernameValid = username.match(/^[a-zA-Z0-9_]{3,16}$/) != null
   }
   function onunfocusUsername(): void {
-    if (username.length == 0) showUsernameIncorrect = false
-    else showUsernameIncorrect = true
+    showUsernameInvalid = true
+  }
+
+  function oninputPassword(): void {
+    onunfocusPassword()
+    isPasswordValid = password.length > 0
+  }
+  function onunfocusPassword(): void {
+    showPasswordInvalid = true
   }
 
   function login(e): void {
@@ -47,21 +57,21 @@
     <button class="close" onclick={exit}><X /></button>
   </div>
   <div class="form">
-    <div class="textinput" class:incorrect={!isUsernameValid && showUsernameIncorrect}>
+    <div class="textinput" class:incorrect={!isUsernameValid && showUsernameInvalid}>
       <div class="label">
         <CircleUserRound />
         <p>Никнейм</p>
       </div>
       <input type="text" bind:value={username} oninput={oninputUsername} onfocusout={onunfocusUsername} />
     </div>
-    <div class="textinput">
+    <div class="textinput" class:incorrect={!isPasswordValid && showPasswordInvalid}>
       <div class="label">
         <KeySquare />
         <p>Пароль</p>
       </div>
-      <input type="password" bind:value={password} />
+      <input type="password" bind:value={password} oninput={oninputPassword} onfocusout={onunfocusPassword} />
     </div>
-    <button onclick={login} class="login" disabled={!isUsernameValid}>Войти!</button>
+    <button onclick={login} class="login" disabled={!isUsernameValid || !isPasswordValid}>Войти!</button>
   </div>
 </div>
 
@@ -151,16 +161,15 @@
           outline 200ms;
 
         &.incorrect {
-          color: #f55;
-          font-weight: 700;
+          font-weight: 800;
           outline: solid #f55 2px;
           filter: drop-shadow(0 0 1px #b336);
 
           :global(.lucide) {
             stroke-width: 2.5px;
           }
-          input {
-            color: white;
+          *:not(input) {
+            color: #f55;
           }
         }
 
