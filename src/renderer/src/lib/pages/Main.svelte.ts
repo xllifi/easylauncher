@@ -4,10 +4,7 @@ import { params } from "../stores/params.js"
 
 export async function getSkinUrls() {
   let ret: getSkinReturn
-  console.log(`Getting skin Urls with launchCredentials:`)
-  console.log(get(params).launchCredentials)
   try {
-    if (get(params).launchCredentials.uuid == undefined) console.trace(`UUID UNDEFINED!!!`)
     const skin: sessionResp = await ky.get(`https://testauth.xllifi.ru/session/minecraft/profile/${get(params).launchCredentials.uuid}`, {
       timeout: 3000
     }).json()

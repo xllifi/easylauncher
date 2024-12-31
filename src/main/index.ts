@@ -64,7 +64,6 @@ function createWindow(): void {
   // HMR for renderer base on electron-vite cli.
   // Load the remote URL for development or the local html file for production.
   if (is.dev && process.env['ELECTRON_RENDERER_URL']) {
-    console.log(process.env['ELECTRON_RENDERER_URL'])
     loadingWindow.loadURL(process.env['ELECTRON_RENDERER_URL'] + '/splash')
     mainWindow.loadURL(process.env['ELECTRON_RENDERER_URL'])
   } else {
@@ -125,7 +124,6 @@ ipcMain.on('launch', (_event, { params }) => {
 })
 
 ipcMain.on('loginrequest', async (_event, { username, password }) => {
-  console.log(`auth with: ${username}; ${password}`)
   const drasl = new DraslAuth({
     username,
     password,
@@ -133,24 +131,18 @@ ipcMain.on('loginrequest', async (_event, { username, password }) => {
     saveDir: path.resolve(gamePath, 'instance')
   })
 
-  console.log(`sending to drasl module`)
   const resp = await drasl.first()
   .catch((err) => {
-    console.log(`drasl errored!`)
     renderer.send('loginresponse', { launchCredentials: {} })
     if (err.response && err.response.status == 401) {
-      console.log(`drasl 401!`)
       return renderer.send('feed-push', { title: `Не удалось войти!`, description: `Похоже, что вы ввели неверные данные. \nКод ошибки: ${err.response.status}` })
     }
-    console.log(`drasl unknown err!`)
     renderer.send('feed-push', { title: `Не удалось войти!`, description: `Полная причина: ${err}` })
   })
   if (!resp) {
-    console.log(`drasl no resp!`)
     return
   }
 
-  console.log(`drasl finished, sending creds!`)
   const launchCredentials: launchCredentials = {
     accessToken: resp.accessToken,
     clientId: resp.clientToken,
@@ -159,7 +151,6 @@ ipcMain.on('loginrequest', async (_event, { username, password }) => {
     userType: 'mojang',
     drasl: { server: drasl.authserver }
   }
-  console.log(JSON.stringify(launchCredentials))
   renderer.send('feed-push', { title: `Вы успешно вошли`, description: `Ваш никнейм - ${launchCredentials.name}` })
   renderer.send('loginresponse', { launchCredentials })
 })
