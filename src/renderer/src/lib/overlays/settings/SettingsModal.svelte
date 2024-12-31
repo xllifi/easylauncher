@@ -1,55 +1,66 @@
 <script lang="ts">
   import { X } from 'lucide-svelte'
-  import settings from './pages.json'
   import SettingsPageGeneral from './pages/SettingsPageGeneral.svelte'
   import SettingsPageLaunch from './pages/SettingsPageLaunch.svelte'
   import SettingsPage404 from './pages/SettingsPage404.svelte'
-  import { tilt } from '../../shared/tilt_transition.js'
+  import { tilt } from '../../scripts/tilt_transition.js'
   import type { MouseEventHandler } from 'svelte/elements'
   import { fade } from 'svelte/transition'
+  import { _ } from 'svelte-i18n'
 
   interface Props {
     exit: MouseEventHandler<any>
   }
   let { exit = $bindable() }: Props = $props()
 
+  const pages = $state([
+    {
+      component: 'SettingsPageGeneral',
+      title: $_('settings.pages.general')
+    },
+    {
+      component: 'SettingsPageLaunch',
+      title: $_('settings.pages.launch')
+    }
+  ])
+
   function changePage(e) {
     currentPageComponentName = e.target.id
-    pageTitle = settings.pages.filter((x) => x.component === currentPageComponentName)[0].title
+    pageTitle = pages.filter((x) => x.component === currentPageComponentName)[0].title
     switch (e.target.id) {
       case 'SettingsPageGeneral':
         return (Page = SettingsPageGeneral)
       case 'SettingsPageLaunch':
         return (Page = SettingsPageLaunch)
       default:
-        pageTitle = 'Нет страницы'
+        pageTitle = $_('settings.pages.404')
         return (Page = SettingsPage404)
     }
   }
 
   let Page = $state(SettingsPageGeneral)
   let currentPageComponentName = $state('SettingsPageGeneral')
-  let pageTitle = $state(settings.pages.filter((x) => x.component === currentPageComponentName)[0].title)
+  let pageTitle = $state(pages.filter((x) => x.component === currentPageComponentName)[0].title)
 </script>
 
 <div class="layout">
   <div class="title">
     {#key pageTitle}
-      <h2 class="text">Настройки <span class="arrow">/</span> <span in:tilt={{ duration: 200 }}>{pageTitle}</span></h2>
+      <h2 class="text">{$_('settings.title')} <span class="arrow">/</span> <span in:tilt={{ duration: 200 }}>{pageTitle}</span></h2>
     {/key}
     <button class="close" onclick={exit}>
       <X />
     </button>
   </div>
   <div class="left">
-    {#each settings.pages as page}
+    {#each pages as page}
       <button tabindex="0" class="tab" id={page.component} onclick={changePage} class:selected={currentPageComponentName === page.component}>{page.title}</button>
     {/each}
   </div>
   {#key Page}
-  <div class="right" transition:fade={{ duration: 100 }}>
+    <div class="right" transition:fade={{ duration: 100 }}>
       <Page />
-  </div>
+    </div>
   {/key}
 </div>
 

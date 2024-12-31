@@ -1,8 +1,7 @@
 <script lang="ts">
   import { ArrowLeft, CircleUserRound, KeySquare, X } from 'lucide-svelte'
   import type { MouseEventHandler } from 'svelte/elements'
-  import { ipc } from '../../shared/general.js'
-  import { params } from '../../stores/params.js'
+  import { ipc } from '../../scripts/general.js'
   import { route } from '../../stores/route.svelte.js'
 
   interface Props {
@@ -41,10 +40,6 @@
     exit(e)
     ipc.send('loginrequest', { username, password })
   }
-
-  ipc.on('loginresponse', (_event, { launchCredentials }) => {
-    $params.launchCredentials = launchCredentials
-  })
 </script>
 
 <!-- TODO: IMPROVE UI -->

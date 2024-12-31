@@ -133,15 +133,24 @@ ipcMain.on('loginrequest', async (_event, { username, password }) => {
     saveDir: path.resolve(gamePath, 'instance')
   })
 
-  const resp = await drasl.first().catch((err) => {
+  console.log(`sending to drasl module`)
+  const resp = await drasl.first()
+  .catch((err) => {
+    console.log(`drasl errored!`)
+    renderer.send('loginresponse', { launchCredentials: {} })
     if (err.response && err.response.status == 401) {
+      console.log(`drasl 401!`)
       return renderer.send('feed-push', { title: `Не удалось войти!`, description: `Похоже, что вы ввели неверные данные. \nКод ошибки: ${err.response.status}` })
     }
+    console.log(`drasl unknown err!`)
     renderer.send('feed-push', { title: `Не удалось войти!`, description: `Полная причина: ${err}` })
-    renderer.send('loginresponse', { launchCredentials: {} })
   })
-  if (!resp) return
+  if (!resp) {
+    console.log(`drasl no resp!`)
+    return
+  }
 
+  console.log(`drasl finished, sending creds!`)
   const launchCredentials: launchCredentials = {
     accessToken: resp.accessToken,
     clientId: resp.clientToken,

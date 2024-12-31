@@ -4,16 +4,11 @@
   import type { StatusFeedEntry } from '../types/statusfeed.d.ts'
   import { X } from 'lucide-svelte'
   import { flip } from 'svelte/animate'
-  import { ipc } from '../shared/general.js'
+  import { ipc } from '../scripts/general.js'
+  import { _ } from 'svelte-i18n'
 
   let list: StatusFeedEntry[] = []
   let listElement: Element
-
-  let flipDelay = 0
-
-  async function scrollToBottom(el: Element): Promise<void> {
-    el.scroll({ top: el.scrollHeight, behavior: 'smooth' })
-  }
 
   ipc.on('feed-push', (_event, { title, description }) => {
     console.log(`Got Feed-Push: ${title}, ${description}`)
@@ -25,8 +20,10 @@
     pushEntry(opts)
   })
   export function pushEntry(entry: StatusFeedEntry): void {
-    flipDelay = 0
-    let entryID = list[0] && list[0].id ? list[0].id + 1 : 0
+    let entryID = 0
+    if (list.length > 0 && list[0].id != undefined) {
+      entryID = list[0].id + 1
+    }
     entry = {
       ...entry,
       id: entryID
@@ -34,13 +31,8 @@
     list = [entry, ...list]
     console.log(list)
     console.log(`Added entry with ID ${entryID}`)
-
-    setTimeout(() => {
-      scrollToBottom(listElement)
-    }, 0)
   }
   function removeEntry(id?: number): void {
-    flipDelay = 100
     const index: number = list.indexOf(list.filter((x) => x.id == id)[0])
     console.log(`Removing entry with ID ${id}`)
     if (index > -1) {
@@ -49,20 +41,20 @@
     }
   }
   function debugAddEntry(): void {
-    pushEntry({ title: 'Тестовая версия', description: 'Если вы столкнулись с проблемой в работе лаунчера или у вас есть предложения по улучшению, сообщите разработчику по кнопке в заголовке окна.' })
+    pushEntry({ title: $_('statusfeed.debugmessage.title'), description: $_('statusfeed.debugmessage.description') })
   }
   debugAddEntry()
 </script>
+
 <div class="status-feed" bind:this={listElement}>
   <ul class="scrollable">
     {#each list as { title, description, id } (id)}
-      <li in:fly={{ delay: 100, duration: 200, x: 100, y: 0, easing: sineOut }} out:fly={{ delay: 0, duration: 200, x: 100, y: 0, easing: sineIn }} animate:flip={{ delay: flipDelay, duration: 200 }}>
+      <li in:fly={{ delay: 100, duration: 200, x: 100, y: 0, easing: sineOut }} out:fly={{ delay: 0, duration: 200, x: 100, y: 0, easing: sineIn }} animate:flip={{ duration: 200 }}>
         <h3>{title}</h3>
         <p>{description}</p>
         <button
           class="close"
-          on:click={
-          () => {
+          on:click={() => {
             removeEntry(id)
           }}><X /></button
         >

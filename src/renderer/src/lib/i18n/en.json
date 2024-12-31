@@ -1,0 +1,45 @@
+{
+  "meta": {
+    "langnames": {
+      "ru": "Russian",
+      "en": "English"
+    }
+  },
+  "dragbar": {
+    "title": "easylauncher",
+    "prealpha": "pre-αlpha"
+  },
+  "statusbar": {
+    "texts": [
+      "Checking up with the manifest",
+      "Looking for files",
+      "Mourning wiki.vg",
+      "Writing launch arguments",
+      "Polishing the launcher",
+      "Learning TypeScript",
+      "Tweaking with stats",
+      "Thinking of texts to write",
+      "Hacking Pentagon",
+      "Examining your computer",
+      "Formatting drives",
+      "Seeding torrents",
+      "Checking up with the manifest",
+      "Looking for files",
+      "Mourning wiki.vg"
+    ]
+  },
+  "statusfeed": {
+    "debugmessage": {
+      "title": "Testing release",
+      "description": "If you experience any issues with the launcher or have any suggestions for improvements, please let the developer know by clicking the button in the window header."
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "pages": {
+      "general": "General",
+      "launch": "Launch",
+      "404": "No page"
+    }
+  }
+}

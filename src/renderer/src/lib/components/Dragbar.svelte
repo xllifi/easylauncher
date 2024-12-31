@@ -1,6 +1,7 @@
 <script lang="ts">
   import { X, Minus, Bug } from 'lucide-svelte'
-  import { ipc } from '../shared/general.js'
+  import { ipc } from '../scripts/general.js'
+  import { _ } from 'svelte-i18n'
 
   function quit(): void {
     ipc.send('quit')
@@ -15,7 +16,7 @@
 
 <div class="dragbar">
   <div class="text">
-    <p>easylauncher • пре-αльфа</p>
+    <p>{$_('dragbar.title')} • {$_('dragbar.prealpha')}</p>
   </div>
   <div class="buttons">
     <span class="divider"></span>

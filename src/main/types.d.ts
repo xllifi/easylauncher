@@ -1,6 +1,7 @@
 import { launchCredentials } from "xlicore"
 
 export type LauncherParams = {
+  lang?: string,
   launchCredentials: launchCredentials
   launchOpts: {
     memory: {

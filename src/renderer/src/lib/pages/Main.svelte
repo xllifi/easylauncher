@@ -5,14 +5,17 @@
   import { params } from '../stores/params.js'
   import type { StatusBarContents } from '../types/statusbar.js'
   import { get } from 'svelte/store'
-  import { ipc } from '../shared/general.js'
+  import { ipc } from '../scripts/general.js'
   import { onMount } from 'svelte'
   import * as skinview3d from 'skinview3d'
   import { getSkinUrls } from './Main.svelte.js'
   import noskin from '../../assets/unknownplayer.png'
+  import { locale } from 'svelte-i18n'
+  import { fade } from 'svelte/transition'
   let statusBar, skinCv: HTMLCanvasElement, skinVw: skinview3d.SkinViewer
   let skin: string = noskin
   let cape: string
+  let skinLoaded: boolean = false
 
   function resizeCv(cv: HTMLCanvasElement, sw: skinview3d.SkinViewer) {
     const height = window.innerHeight
@@ -49,15 +52,21 @@
     window.addEventListener('resize', () => {
       resizeCv(skinCv, skinVw)
     })
+
+    skinLoaded = true
   }
   async function changeSkin() {
     let skinval = await getSkinUrls()
+    console.log(`Changing skin to value:`)
+    console.log(skinval)
     if (skinval.skin) skin = skinval.skin
-      else skin = noskin
+    else skin = noskin
     if (skinval.cape) cape = skinval.cape
 
     skinVw.loadSkin(skin)
     skinVw.loadCape(cape)
+
+    skinLoaded = true
   }
 
   let buttonsLocked: string[] = []
@@ -96,10 +105,14 @@
       lockHandler('launch', false)
     }, 3000)
   })
-  ipc.on('loginresponse', async () => {
+  ipc.on('loginresponse', async (_event, { launchCredentials }) => {
+    $params.launchCredentials = launchCredentials
+
+    skinLoaded = false
+    console.log(`received login, changing skin in 500ms!!`)
     setTimeout(() => {
       changeSkin()
-    }, 500);
+    }, 500)
   })
   onMount(() => {
     setSkin()
@@ -109,11 +122,14 @@
 <div class="main">
   <button onclick={launchGame} class="start">Start</button>
   <button onclick={() => ($route.overlay.current = 'settings')}>Settings</button>
+  <button onclick={() => ($locale = 'en')}>SET EN</button>
+  <button onclick={() => ($locale = 'ru')}>SET RU</button>
   <!-- <button onclick={() => ($route.overlay.current = 'login')}>Login</button> -->
   <StatusBar bind:this={statusBar} />
   <StatusFeed />
   <!-- svelte-ignore element_invalid_self_closing_tag -->
-  <canvas class="skin" class:noskin={skin == noskin} bind:this={skinCv} />
+  {skinLoaded}
+  <canvas class="skin" class:noskin={skin == noskin} class:hidden={!skinLoaded} bind:this={skinCv} transition:fade />
 </div>
 
 <style lang="scss">
@@ -129,14 +145,20 @@
     position: relative;
 
     .skin {
+      opacity: 1;
       position: absolute;
       left: 0;
       bottom: 0;
 
-      z-index: -5;
+      transition: opacity 500ms;
+
+      z-index: -1;
 
       &.noskin {
         filter: brightness(25%);
+      }
+      &.hidden {
+        opacity: 0;
       }
     }
   }

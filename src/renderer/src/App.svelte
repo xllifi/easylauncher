@@ -6,6 +6,12 @@
   import { fly, scale } from 'svelte/transition'
   import { backIn, backOut } from 'svelte/easing'
   import LoginModal from './lib/overlays/login/LoginModal.svelte'
+  import { getLocaleFromNavigator, init, isLoading, register } from 'svelte-i18n'
+  import { params } from './lib/stores/params.js'
+
+  window.addEventListener('DOMContentLoaded', () => {
+    $route.loaded = true
+  })
 
   function exitButtonClick(e: Event) {
     e.stopPropagation()
@@ -27,33 +33,47 @@
       $route.overlay.current = 'none'
     }
   }
+
+  register("ru", () => import("./lib/i18n/ru.json"));
+  register("en", () => import("./lib/i18n/en.json"));
+
+  if (!$params.lang) $params.lang = getLocaleFromNavigator()!
+
+  init({
+    fallbackLocale: "en",
+    initialLocale: $params.lang
+  });
 </script>
 
 <svelte:window onkeyup={exitByPressingEsc} />
 
-<Dragbar />
-<div class="body">
-  <!-- Page -->
-  {#if $route.page == 'main'}
-    <Main />
-  {/if}
-  <!-- Overlay -->
-  {#if $route.overlay.current != 'none'}
-    <!-- svelte-ignore a11y_no_static_element_interactions -->
-    <!-- svelte-ignore a11y_click_events_have_key_events -->
-    <div class="overlay" onclick={exitButtonClick} tabindex="-1" out:scale={{ duration: 200, start: 0, easing: backIn }} in:scale={{ duration: 200, start: 1.5, easing: backOut }}>
-      {#key $route.overlay.current}
-        <div class="inner" onclick={(e) => e.stopPropagation()} out:fly={{ duration: 200, y: 100 }} in:fly={{ delay: 60, duration: 200, y: -100 }}>
-          {#if $route.overlay.current == 'settings'}
-            <Settings exit={exitButtonClick} />
-          {:else if $route.overlay.current == 'login'}
-            <LoginModal exit={exitButtonClick} back={backButtonClick}/>
-          {/if}
-        </div>
-      {/key}
-    </div>
-  {/if}
-</div>
+{#if $isLoading || !$route.loaded}
+  ...
+{:else}
+  <Dragbar />
+  <div class="body">
+    <!-- Page -->
+    {#if $route.page == 'main'}
+      <Main />
+    {/if}
+    <!-- Overlay -->
+    {#if $route.overlay.current != 'none'}
+      <!-- svelte-ignore a11y_no_static_element_interactions -->
+      <!-- svelte-ignore a11y_click_events_have_key_events -->
+      <div class="overlay" onclick={exitButtonClick} tabindex="-1" out:scale={{ duration: 200, start: 0, easing: backIn }} in:scale={{ duration: 200, start: 1.5, easing: backOut }}>
+        {#key $route.overlay.current}
+          <div class="inner" onclick={(e) => e.stopPropagation()} out:fly={{ duration: 200, y: 100 }} in:fly={{ delay: 60, duration: 200, y: -100 }}>
+            {#if $route.overlay.current == 'settings'}
+              <Settings exit={exitButtonClick} />
+            {:else if $route.overlay.current == 'login'}
+              <LoginModal exit={exitButtonClick} back={backButtonClick} />
+            {/if}
+          </div>
+        {/key}
+      </div>
+    {/if}
+  </div>
+{/if}
 
 <style lang="scss">
   .body {

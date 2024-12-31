@@ -2,50 +2,35 @@
   import { fly } from 'svelte/transition'
   import type { StatusBarContents } from '../types/statusbar.d.ts'
   import { backIn, backOut } from 'svelte/easing'
-  import { ipc } from '../shared/general.js'
+  import { ipc } from '../scripts/general.js'
+  import { _ } from 'svelte-i18n'
 
   let text, left_text, right_text_1, right_text_2, progress, endTimeout
   let hide = true
   let fillcolor = 'fa0'
 
-  let texts = [
-    'Сверяемся с манифестом',
-    'Ищем файлы',
-    'Поминаем wiki.vg',
-    'Пишем аргументы запуска',
-    'Допиливаем лаунчер',
-    'Изучаем TypeScript',
-    'Настраиваем статистику',
-    'Придумываем тексты',
-    'Сверлим потолок',
-    'Выкручиваем лампочки',
-    'Узнаём, что такое Minecraft',
-    'Взламываем Пентагон',
-    'Исследуем ваш компьютер',
-    'Форматируем диски',
-    'Раздаём торренты'
-  ]
+  let texts = $_('statusbar.texts')
   let displayText = texts[Math.floor(Math.random() * texts.length)]
   setInterval(() => {
     displayText = texts[Math.floor(Math.random() * texts.length)]
   }, 2500)
 
   async function parseContents(opts: StatusBarContents): Promise<void> {
-    text = opts.text ? opts.text : ''
-    left_text = opts.left_text ? opts.left_text : ''
-    right_text_1 = opts.right_text_1 ? opts.right_text_1 : ''
-    right_text_2 = opts.right_text_2 ? opts.right_text_2 : ''
-    fillcolor = opts.fillcolor ? opts.fillcolor : ''
+    text = opts.text ? opts.text : undefined
+    left_text = opts.left_text ? opts.left_text : undefined
+    right_text_1 = opts.right_text_1 ? opts.right_text_1 : undefined
+    right_text_2 = opts.right_text_2 ? opts.right_text_2 : undefined
+    fillcolor = opts.fillcolor ? opts.fillcolor : 'fa0'
     progress = opts.progress ? opts.progress : 0
   }
   async function unsetContents(): Promise<void> {
     hide = true
     setTimeout(() => {
-      text = ''
-      left_text = ''
-      right_text_1 = ''
-      right_text_2 = ''
-      fillcolor = ''
+      text = undefined
+      left_text = undefined
+      right_text_1 = undefined
+      right_text_2 = undefined
+      fillcolor = 'fa0'
       progress = 0
     }, 400)
   }
@@ -63,10 +48,10 @@
   ipc.on('start', async () => {
     console.log('Got start')
     hide = false
-    text = ''
-    left_text = ''
-    right_text_1 = ''
-    right_text_2 = ''
+    text = undefined
+    left_text = undefined
+    right_text_1 = undefined
+    right_text_2 = undefined
     fillcolor = 'fa0'
     progress = 0
 
@@ -107,9 +92,9 @@
     console.log('Got start')
     hide = false
     text = `Minecraft запускается...`
-    left_text = ''
-    right_text_1 = ''
-    right_text_2 = ''
+    left_text = undefined
+    right_text_1 = undefined
+    right_text_2 = undefined
     progress = 100
     fillcolor = '5d5'
     endTimeout = setTimeout(() => {
@@ -123,9 +108,9 @@
   ipc.on('close', () => {
     hide = false
     text = `Minecraft закрыт!`
-    left_text = ''
-    right_text_1 = ''
-    right_text_2 = ''
+    left_text = undefined
+    right_text_1 = undefined
+    right_text_2 = undefined
     progress = 100
     fillcolor = 'd44'
     endTimeout = setTimeout(() => {
@@ -143,14 +128,14 @@
   <div class="progressbar" in:fly={{x: 0, y: 100, duration: 400, easing: backOut, opacity: 0}} out:fly={{x: 0, y: 100, duration: 400, easing: backIn, opacity: 0}}>
     <clipPath class="fill" id="fill" style="width: {progress == null ? 0 : progress}%; background-color: #{fillcolor};"></clipPath>
     <div class="labels top" style="clip-path: polygon(0% 0%, 0% 100%, {progress == null ? 0 : progress}% 100%, {progress == null ? 0 : progress}% 0%);">
-      <p class="primary">{text == '' ? displayText + '...' : text}</p>
+      <p class="primary">{!text ? displayText + '...' : text}</p>
       <p class="secondary left" style="filter: drop-shadow(0 0 2px #{fillcolor}) drop-shadow(0 0 2px #{fillcolor});">{left_text}</p>
-      <p class="secondary right" style="filter: drop-shadow(0 0 2px #{fillcolor}) drop-shadow(0 0 2px #{fillcolor});">{right_text_1} {right_text_1 == '' ? '' : '•'} {right_text_2}</p>
+      <p class="secondary right" style="filter: drop-shadow(0 0 2px #{fillcolor}) drop-shadow(0 0 2px #{fillcolor});">{right_text_1} {!right_text_1 ? '' : '•'} {right_text_2}</p>
     </div>
     <div class="labels bottom">
-      <p class="primary">{text == '' ? displayText + '...' : text}</p>
+      <p class="primary">{!text ? displayText + '...' : text}</p>
       <p class="secondary left">{left_text}</p>
-      <p class="secondary right">{right_text_1} {right_text_1 == '' ? '' : '•'} {right_text_2}</p>
+      <p class="secondary right">{right_text_1} {!right_text_1 ? '' : '•'} {right_text_2}</p>
     </div>
   </div>
   {/if}
