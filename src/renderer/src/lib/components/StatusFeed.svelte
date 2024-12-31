@@ -9,7 +9,6 @@
   import { onMount } from 'svelte'
 
   let list: StatusFeedEntry[] = []
-  let listElement: Element
 
   ipc.on('feed-push', (_event, { title, description }) => {
     console.log(`Got Feed-Push: ${title}, ${description}`)
@@ -60,7 +59,7 @@
   }}
 />
 
-<div class="status-feed" bind:this={listElement}>
+<div class="status-feed">
   <ul class="scrollable">
     {#each list as { title, description, id } (id)}
       <li in:fly={{ delay: 100, duration: 200, x: 100, y: 0, easing: sineOut }} out:fly={{ delay: 0, duration: 200, x: 100, y: 0, easing: sineIn }} animate:flip={{ duration: 200 }}>

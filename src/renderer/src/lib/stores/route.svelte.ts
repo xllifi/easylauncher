@@ -5,7 +5,7 @@ export const route = writable({
   loaded: false,
   page: get(params).onboardingComplete ? 'main' : 'onboarding',
   overlay: {
-    current: 'modpack',
+    current: 'none',
     previous: 'none'
   }
 })

@@ -50,10 +50,12 @@
 <svelte:window onkeyup={exitByPressingEsc} />
 
 {#if $isLoading || !$route.loaded}
-  ...
+  <div class="wrapper" out:fade>
+    <span class="loading"></span>
+  </div>
 {:else}
   <Dragbar />
-  <div class="body">
+  <div class="body" in:fade>
     <!-- Page -->
     {#key $route.page}
       <div class="inner" transition:fade>
@@ -86,6 +88,49 @@
 {/if}
 
 <style lang="scss">
+  div.wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    position: absolute;
+    -webkit-app-region: drag;
+
+    width: 100%;
+    height: 100%;
+
+    > span.loading {
+      position: fixed;
+      width: 3rem;
+      height: 3rem;
+
+      border-radius: 9999px;
+
+      background-color: var(--theme-accent-inactive);
+      outline: solid 4px var(--theme-accent-inactive);
+      outline-offset: 5px;
+
+      animation: pulse 1s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0% {
+        scale: 1;
+        outline-offset: 5px;
+      }
+      40% {
+        scale: 1.1;
+        outline-offset: 6px;
+      }
+      80% {
+        scale: 1;
+        outline-offset: 5px;
+      }
+      100% {
+        scale: 1;
+      }
+    }
+  }
   .body {
     width: 100%;
     height: calc(100% - 1.5rem);

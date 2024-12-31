@@ -14,6 +14,7 @@ export const params: Persisted<LauncherParams> = persisted('preferences', {
     screen: {
       width: 854,
       height: 480
-    }
+    },
+    detached: true
   }
 })
