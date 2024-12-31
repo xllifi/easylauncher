@@ -14,6 +14,7 @@ asarUnpack:
 win:
   target: appx
   executableName: EasyLauncher
+  icon: build/icon.ico
 appx:
   displayName: EasyLauncher
 nsis:
