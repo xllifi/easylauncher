@@ -3957,8 +3957,9 @@ wrappy@1:
   resolved "https://registry.yarnpkg.com/wrappy/-/wrappy-1.0.2.tgz#b5243d8f3ec1aa35f1364605bc0d1036e30ab69f"
   integrity sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==
 
-"xlicore@file:../xlicore":
+"xlicore@https://github.com/xllifi/xlicore.git":
   version "0.0.2"
+  resolved "https://github.com/xllifi/xlicore.git#d4eabcdb184fd0a8f7662a457c56865d6fdfd696"
   dependencies:
     dotenv "^16.4.7"
     extract-zip "^2.0.1"
