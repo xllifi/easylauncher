@@ -7,7 +7,7 @@
   import Step4 from './Step4.svelte'
   import { route } from '../../stores/route.svelte.js'
   import { params } from '../../stores/params.svelte.js'
-  let step: number = 2
+  let step: number = 0
   let movingFront: boolean = true
 
   function next() {
