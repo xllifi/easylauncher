@@ -1,10 +1,11 @@
-import { writable } from 'svelte/store'
+import { get, writable } from 'svelte/store'
+import { params } from './params.svelte.js'
 
 export const route = writable({
   loaded: false,
-  page: 'main',
+  page: get(params).onboardingComplete ? 'main' : 'onboarding',
   overlay: {
-    current: 'none',
+    current: 'modpack',
     previous: 'none'
   }
 })

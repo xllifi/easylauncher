@@ -6,7 +6,7 @@
 
   interface Props {
     exit: MouseEventHandler<any>,
-    back: MouseEventHandler<any>
+    back?: MouseEventHandler<any>
   }
   let { exit = $bindable(), back = $bindable() }: Props = $props()
 
@@ -41,8 +41,6 @@
     ipc.send('loginrequest', { username, password })
   }
 </script>
-
-<!-- TODO: IMPROVE UI -->
 
 <div class="layout">
   <div class="title">

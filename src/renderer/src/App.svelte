@@ -3,11 +3,13 @@
   import Main from './lib/pages/Main.svelte'
   import Settings from './lib/overlays/settings/SettingsModal.svelte'
   import { route } from './lib/stores/route.svelte'
-  import { fly, scale } from 'svelte/transition'
+  import { fade, fly, scale } from 'svelte/transition'
   import { backIn, backOut } from 'svelte/easing'
   import LoginModal from './lib/overlays/login/LoginModal.svelte'
   import { getLocaleFromNavigator, init, isLoading, register } from 'svelte-i18n'
-  import { params } from './lib/stores/params.js'
+  import { params } from './lib/stores/params.svelte.js'
+  import Step1 from './lib/pages/onboarding/Index.svelte'
+  import ModpackModal from './lib/overlays/ModpackModal.svelte'
 
   window.addEventListener('DOMContentLoaded', () => {
     $route.loaded = true
@@ -34,15 +36,15 @@
     }
   }
 
-  register("ru", () => import("./lib/i18n/ru.json"));
-  register("en", () => import("./lib/i18n/en.json"));
+  register('ru', () => import('./lib/i18n/ru.json'))
+  register('en', () => import('./lib/i18n/en.json'))
 
   if (!$params.lang) $params.lang = getLocaleFromNavigator()!
 
   init({
-    fallbackLocale: "en",
+    fallbackLocale: 'en',
     initialLocale: $params.lang
-  });
+  })
 </script>
 
 <svelte:window onkeyup={exitByPressingEsc} />
@@ -53,9 +55,15 @@
   <Dragbar />
   <div class="body">
     <!-- Page -->
-    {#if $route.page == 'main'}
-      <Main />
-    {/if}
+    {#key $route.page}
+      <div class="inner" transition:fade>
+        {#if $route.page == 'main'}
+          <Main />
+        {:else if $route.page == 'onboarding'}
+          <Step1 />
+        {/if}
+      </div>
+    {/key}
     <!-- Overlay -->
     {#if $route.overlay.current != 'none'}
       <!-- svelte-ignore a11y_no_static_element_interactions -->
@@ -67,6 +75,8 @@
               <Settings exit={exitButtonClick} />
             {:else if $route.overlay.current == 'login'}
               <LoginModal exit={exitButtonClick} back={backButtonClick} />
+            {:else if $route.overlay.current == 'modpack'}
+              <ModpackModal exit={exitButtonClick} back={backButtonClick} />
             {/if}
           </div>
         {/key}
@@ -78,8 +88,14 @@
 <style lang="scss">
   .body {
     width: 100%;
-    height: 100%;
+    height: calc(100% - 1.5rem);
     position: relative;
+
+    > .inner {
+      width: 100%;
+      height: 100%;
+      position: fixed;
+    }
 
     .overlay {
       position: absolute;
@@ -96,7 +112,10 @@
       align-items: center;
 
       .inner {
-        position: absolute;
+        position: fixed;
+
+        display: flex;
+        flex-direction: column;
 
         min-height: 10rem;
         height: calc(90dvh - 1.5rem);

@@ -75,7 +75,7 @@ button {
 
   cursor: pointer;
 
-  transition: background-color 80ms, outline-color 100ms, filter 100ms;
+  transition: background-color 80ms, outline 100ms, outline-offset 100ms, filter 100ms;
 
   &:is(:hover, :focus-visible) {
     background-color: #0004;

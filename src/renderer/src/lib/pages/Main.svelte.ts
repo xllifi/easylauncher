@@ -1,6 +1,6 @@
 import ky from "ky"
 import { get } from "svelte/store"
-import { params } from "../stores/params.js"
+import { params } from "../stores/params.svelte.js"
 
 export async function getSkinUrls() {
   let ret: getSkinReturn

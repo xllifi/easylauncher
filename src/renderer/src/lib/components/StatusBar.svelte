@@ -61,9 +61,9 @@
     console.log(`Got Extract: ${extract}`)
   })
   ipc.on('progress', async (_event, { type, percent }) => {
-    console.log(`Got progress: ${type}, ${percent}`)
+    console.log(`Got Progress: ${type}, ${percent}`)
     hide = false
-    text = `Загрузка ${type}...`
+    text = `Загрузка ${$_(`statusbar.progresstypes.${type}`)}...`
     left_text = `${percent}%`
     progress = percent
     fillcolor = 'fa0'

@@ -6,6 +6,7 @@
   import { flip } from 'svelte/animate'
   import { ipc } from '../scripts/general.js'
   import { _ } from 'svelte-i18n'
+  import { onMount } from 'svelte'
 
   let list: StatusFeedEntry[] = []
   let listElement: Element
@@ -41,10 +42,23 @@
     }
   }
   function debugAddEntry(): void {
-    pushEntry({ title: $_('statusfeed.debugmessage.title'), description: $_('statusfeed.debugmessage.description') })
+    pushEntry({ title: $_('statusfeed.messages.debug.title'), description: $_('statusfeed.messages.debug.description') })
   }
   debugAddEntry()
+
+  onMount(() => {
+    if (!window.navigator.onLine) pushEntry({ title: $_('statusfeed.messages.startedoffline.title'), description: $_('statusfeed.messages.startedoffline.description') })
+  })
 </script>
+
+<svelte:window
+  onoffline={() => {
+    pushEntry({ title: $_('statusfeed.messages.gotoffline.title'), description: $_('statusfeed.messages.gotoffline.description') })
+  }}
+  ononline={() => {
+    pushEntry({ title: $_('statusfeed.messages.gotonline.title'), description: $_('statusfeed.messages.gotonline.description') })
+  }}
+/>
 
 <div class="status-feed" bind:this={listElement}>
   <ul class="scrollable">
@@ -103,6 +117,14 @@
         pointer-events: all;
         user-select: all;
 
+        :is(h3, p) {
+          user-select: text;
+
+          &::selection {
+            background-color: #c55;
+          }
+        }
+
         h3 {
           font-family: Unbounded;
           font-weight: 500;
@@ -121,6 +143,14 @@
           max-width: 16rem;
           text-wrap: balance;
           white-space: pre-line;
+          pointer-events: all;
+
+          &::before {
+            content: '';
+            float: right;
+            width: 2rem;
+            height: 1em;
+          }
         }
 
         button.close {

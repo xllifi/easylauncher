@@ -29,9 +29,23 @@
     ]
   },
   "statusfeed": {
-    "debugmessage": {
-      "title": "Testing release",
-      "description": "If you experience any issues with the launcher or have any suggestions for improvements, please let the developer know by clicking the button in the window header."
+    "messages": {
+      "debug": {
+        "title": "Pre-alpha release",
+        "description": "If you experience any issues with the launcher or have any suggestions for improvements, please let the developer know by clicking the button in the window header."
+      },
+      "startedoffline": {
+        "title": "No connection!",
+        "description": "Seems like you don't have internet connection. Some features might not work."
+      },
+      "gotoffline": {
+        "title": "No connection!",
+        "description": "Seems like you got offline. Some features might stop working."
+      },
+      "gotonline": {
+        "title": "You're online!",
+        "description": "Internet is back, all features are now working."
+      }
     }
   },
   "settings": {

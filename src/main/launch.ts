@@ -1,6 +1,7 @@
 import { Launch, LaunchOpts } from 'xlicore'
 import { LauncherParams } from './types.js'
 import { gamePath, renderer } from './index.js'
+import { TimeoutError } from 'ky'
 
 export function startGame(params: LauncherParams) {
   const launchOpts: LaunchOpts = {
@@ -16,7 +17,8 @@ export function startGame(params: LauncherParams) {
       screen: {
         width: params.launchOpts.screen.width,
         height: params.launchOpts.screen.height
-      }
+      },
+      detached: params.launchOpts.detached
     },
     callbacks: {
       dlOnProgress(progress, _chunk, file, _lastProgress) {
@@ -47,5 +49,10 @@ export function startGame(params: LauncherParams) {
     }
   }
   const launch = new Launch(launchOpts)
-  launch.start()
+  launch.start().catch((err) => {
+    if (err instanceof TimeoutError) {
+      renderer.send('feed-push', { title: 'Не удалось получить данные!', description: `Подробное описание: ${err}\n\nВАЖНО: ошибка может быть не критичной, игра может запуститься. Если лаунчер "завис", сообщите разработчику об ошибке и перезапустите лаунчер.`})
+    }
+    renderer.send('feed-push', { title: 'Ошибка!', description: `Подробное описание: ${err}\n\nВАЖНО: ошибка может быть не критичной, игра может запуститься. Если лаунчер "завис", сообщите разработчику об ошибке и перезапустите лаунчер.`})
+  })
 }

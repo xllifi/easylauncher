@@ -1,7 +1,9 @@
-import { launchCredentials } from "xlicore"
+import { launchCredentials } from 'xlicore'
 
 export type LauncherParams = {
-  lang?: string,
+  lang?: string
+  modpackType: 'min' | 'ess' | 'ful'
+  onboardingComplete: boolean
   launchCredentials: launchCredentials
   launchOpts: {
     memory: {
@@ -12,5 +14,6 @@ export type LauncherParams = {
       width: number
       height: number
     }
+    detached: boolean
   }
 }

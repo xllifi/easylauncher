@@ -2,7 +2,7 @@
   import StatusBar from '../components/StatusBar.svelte'
   import StatusFeed from '../components/StatusFeed.svelte'
   import { route } from '../stores/route.svelte.js'
-  import { params } from '../stores/params.js'
+  import { params } from '../stores/params.svelte.js'
   import type { StatusBarContents } from '../types/statusbar.js'
   import { get } from 'svelte/store'
   import { ipc } from '../scripts/general.js'
@@ -23,9 +23,6 @@
     sw.width = width
     cv.height = height
     sw.height = height
-
-    console.log(`${cv.width}; ${cv.height}`)
-    console.log(`${sw.width}; ${sw.height}`)
   }
 
   async function setSkin() {
@@ -57,16 +54,19 @@
 
     skinLoaded = true
   }
-  async function changeSkin() {
+  async function changeSkin(retriesLeft?: number) {
+    skinLoaded = false
     let skinval = await getSkinUrls()
-    console.log(`Changing skin to value:`)
-    console.log(skinval)
     if (skinval.skin) skin = skinval.skin
     else skin = noskin
     if (skinval.cape) cape = skinval.cape
 
     skinVw.loadSkin(skin)
     skinVw.loadCape(cape)
+
+    if ((!window.navigator.onLine || skin == noskin) && (retriesLeft && retriesLeft > 0)) {
+      return changeSkin(retriesLeft ? retriesLeft - 1 : 2)
+    }
 
     skinLoaded = true
   }
@@ -85,7 +85,6 @@
   }
 
   function launchGame(): void {
-    console.log('starting launch')
     if (buttonsLocked.includes('launch')) {
       return
     }
@@ -108,8 +107,6 @@
   ipc.on('loginresponse', async (_event, { launchCredentials }) => {
     $params.launchCredentials = launchCredentials
 
-    skinLoaded = false
-    console.log(`received login, changing skin in 500ms!!`)
     setTimeout(() => {
       changeSkin()
     }, 500)
@@ -118,6 +115,12 @@
     setSkin()
   })
 </script>
+
+<svelte:window ononline={() => {
+  setTimeout(() => {
+    changeSkin()
+  }, 2000);
+}} />
 
 <!-- svelte-ignore element_invalid_self_closing_tag -->
 <canvas class="skin" class:noskin={skin == noskin} class:hidden={!skinLoaded} bind:this={skinCv} />
