@@ -10,8 +10,6 @@
   import * as skinview3d from 'skinview3d'
   import { getSkinUrls } from './Main.svelte.js'
   import noskin from '../../assets/unknownplayer.png'
-  import { locale } from 'svelte-i18n'
-  import { fade } from 'svelte/transition'
   let statusBar, skinCv: HTMLCanvasElement, skinVw: skinview3d.SkinViewer
   let skin: string = noskin
   let cape: string
@@ -39,7 +37,6 @@
       canvas: skinCv,
       skin,
       cape,
-      enableControls: false,
       animation: new skinview3d.IdleAnimation()
     })
 
@@ -47,6 +44,11 @@
     cam.position.set(-20, 3, 28)
     const ctrl = skinVw.controls
     ctrl.target.set(0, 7, 0)
+    ctrl.enableDamping = true
+    ctrl.enablePan = false
+    ctrl.enableZoom = false
+    ctrl.minPolarAngle = 1.65
+    ctrl.maxPolarAngle = 1.65
 
     resizeCv(skinCv, skinVw)
     window.addEventListener('resize', () => {
@@ -70,8 +72,6 @@
   }
 
   let buttonsLocked: string[] = []
-
-  // TODO: add skin renderer
 
   function lockHandler(id: string, lock = true): void {
     if (lock) {
@@ -119,17 +119,14 @@
   })
 </script>
 
+<!-- svelte-ignore element_invalid_self_closing_tag -->
+<canvas class="skin" class:noskin={skin == noskin} class:hidden={!skinLoaded} bind:this={skinCv} />
 <div class="main">
   <button onclick={launchGame} class="start">Start</button>
   <button onclick={() => ($route.overlay.current = 'settings')}>Settings</button>
-  <button onclick={() => ($locale = 'en')}>SET EN</button>
-  <button onclick={() => ($locale = 'ru')}>SET RU</button>
   <!-- <button onclick={() => ($route.overlay.current = 'login')}>Login</button> -->
   <StatusBar bind:this={statusBar} />
   <StatusFeed />
-  <!-- svelte-ignore element_invalid_self_closing_tag -->
-  {skinLoaded}
-  <canvas class="skin" class:noskin={skin == noskin} class:hidden={!skinLoaded} bind:this={skinCv} transition:fade />
 </div>
 
 <style lang="scss">
@@ -138,28 +135,28 @@
     height: 100%;
 
     display: flex;
-
     justify-content: center;
     align-items: center;
 
     position: relative;
+    pointer-events: none;
 
-    .skin {
-      opacity: 1;
-      position: absolute;
-      left: 0;
-      bottom: 0;
+    * {
+      pointer-events: all;
+    }
+  }
 
-      transition: opacity 500ms;
+  .skin {
+    opacity: 1;
+    position: absolute;
+    left: 0;
+    bottom: 0;
 
-      z-index: -1;
+    transition: opacity 500ms;
 
-      &.noskin {
-        filter: brightness(25%);
-      }
-      &.hidden {
-        opacity: 0;
-      }
+    filter: brightness(50%);
+    &.hidden {
+      opacity: 0;
     }
   }
 </style>
