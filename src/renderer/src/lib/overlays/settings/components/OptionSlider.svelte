@@ -31,7 +31,7 @@
     if (e.deltaY > 0) {
       input = input - step
     }
-    verifyInput()
+    if (verifyInput) verifyInput()
   }
 </script>
 
