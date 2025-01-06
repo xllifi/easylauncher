@@ -11,8 +11,6 @@
   let list: StatusFeedEntry[] = []
 
   ipc.on('feed-push', (_event, { title, description }) => {
-    console.log(`Got Feed-Push: ${title}, ${description}`)
-    console.log(description)
     let opts: StatusFeedEntry = {
       title: title,
       description: description
@@ -29,12 +27,9 @@
       id: entryID
     }
     list = [entry, ...list]
-    console.log(list)
-    console.log(`Added entry with ID ${entryID}`)
   }
   function removeEntry(id?: number): void {
     const index: number = list.indexOf(list.filter((x) => x.id == id)[0])
-    console.log(`Removing entry with ID ${id}`)
     if (index > -1) {
       list.splice(index, 1)
       list = list
