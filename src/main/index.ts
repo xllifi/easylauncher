@@ -4,6 +4,9 @@ import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 import { startGame } from './launch.js'
 import { DraslAuth, launchCredentials, genDirs } from 'xlicore'
+import * as Sentry from '@sentry/electron/main'
+
+Sentry.init({ dsn: 'https://f3c5d61a7f01460390091cfcb30e6f91@sentry.xllifi.ru/1' })
 
 const isDev = !app.isPackaged
 
@@ -131,8 +134,7 @@ ipcMain.on('loginrequest', async (_event, { username, password }) => {
     saveDir: path.resolve(gamePath, 'instance')
   })
 
-  const resp = await drasl.first()
-  .catch((err) => {
+  const resp = await drasl.first().catch((err) => {
     renderer.send('loginresponse', { launchCredentials: {} })
     if (err.response && err.response.status == 401) {
       return renderer.send('feed-push', { title: `Не удалось войти!`, description: `Похоже, что вы ввели неверные данные. \nКод ошибки: ${err.response.status}` })
