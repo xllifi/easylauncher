@@ -111,11 +111,11 @@
     } else {
       skin = noskin
     }
-    skinVw.loadSkin(skin)
+    await skinVw.loadSkin(skin)
 
     if (skinval.cape) {
       cape = skinval.cape
-      skinVw.loadCape(cape)
+      await skinVw.loadCape(cape)
     } else {
       skinVw.resetCape()
     }
