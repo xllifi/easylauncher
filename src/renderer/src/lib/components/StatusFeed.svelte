@@ -74,7 +74,7 @@
 <style lang="scss">
   div.status-feed {
     width: 18rem;
-    height: calc(100dvh - 1.5rem);
+    height: calc(100dvh - 2rem);
     overflow: hidden;
     right: 0;
     bottom: 0;

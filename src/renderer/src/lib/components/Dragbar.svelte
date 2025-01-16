@@ -56,20 +56,19 @@
     .buttons {
       display: inline-flex;
       flex-direction: row;
-      margin: 0.25rem;
       margin-left: auto;
-      gap: 0.5rem;
 
       button {
         -webkit-app-region: no-drag;
         position: relative;
-        width: 1.5rem;
-        height: 1.5rem;
+        width: 2rem;
+        height: 2rem;
 
         margin: 0;
         padding: 0;
 
         border: none;
+        border-radius: 0;
         outline: none;
         background-color: transparent;
         cursor: pointer;
@@ -88,11 +87,23 @@
           margin: 0;
           color: var(--color-text-primary);
           opacity: 0.4;
-          transition: opacity 100ms;
+          transition: opacity 100ms color 200ms;
         }
 
         &:is(:hover, :focus-visible) :global(.lucide) {
           opacity: 1;
+        }
+
+        &.report:is(:hover, :focus-visible) :global(.lucide) {
+          color: #88f;
+        }
+
+        &.minimize:is(:hover, :focus-visible) :global(.lucide) {
+          color: #8bb;
+        }
+
+        &.close:is(:hover, :focus-visible) :global(.lucide) {
+          color: #f88;
         }
       }
     }
