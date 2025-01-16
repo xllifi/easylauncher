@@ -150,6 +150,7 @@
     bottom: 0;
 
     overflow: hidden;
+    pointer-events: none;
   }
   .progressbar {
     height: 2rem;
