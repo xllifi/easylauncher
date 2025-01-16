@@ -1,6 +1,6 @@
 <script lang="ts">
   import Dragbar from './lib/components/Dragbar.svelte'
-  import Main from './lib/pages/Main.svelte'
+  import Main from './lib/pages/main/Main.svelte'
   import Settings from './lib/overlays/settings/SettingsModal.svelte'
   import { route } from './lib/stores/route.svelte'
   import { fade, fly, scale } from 'svelte/transition'
@@ -10,6 +10,8 @@
   import { params } from './lib/stores/params.svelte.js'
   import Step1 from './lib/pages/onboarding/Index.svelte'
   import ModpackModal from './lib/overlays/ModpackModal.svelte'
+  import StatusBar from './lib/components/StatusBar.svelte'
+  import StatusFeed from './lib/components/StatusFeed.svelte'
 
   window.addEventListener('DOMContentLoaded', () => {
     $route.loaded = true
@@ -84,6 +86,9 @@
         {/key}
       </div>
     {/if}
+    <!-- Unconditional elements -->
+    <StatusBar />
+    <StatusFeed />
   </div>
 {/if}
 
@@ -145,7 +150,7 @@
     .overlay {
       position: absolute;
       width: 100%;
-      height: calc(100dvh - 1.5rem);
+      height: calc(100dvh - 2rem);
       backdrop-filter: blur(5px);
       padding: 5dvh 3.5dvw;
 

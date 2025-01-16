@@ -39,6 +39,9 @@ export function startGame(params: LauncherParams) {
           })
           console.log(`Error: ${err}`)
       },
+      gameOnLogs(data) {
+
+      },
     },
     mrpack: {
       url: 'https://cdn.modrinth.com/data/paoFU4Vl/versions/lTRTUeLo/Additive-1.32.0%2B1.21.1.fabric.mrpack',

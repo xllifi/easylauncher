@@ -13,7 +13,6 @@
   let scrolled: boolean = $state(false)
 
   function isWrapperScrolled() {
-    console.log(wrapper.scrollTop)
     scrolled = wrapper.scrollTop > 10
   }
 

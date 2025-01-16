@@ -2,6 +2,7 @@
   import type { MouseEventHandler } from 'svelte/elements'
   import { ipc } from '../../scripts/general.js'
   import { CircleUserRound, KeySquare } from 'lucide-svelte'
+  import { params } from '../../stores/params.svelte.js'
 
   interface Props {
     next: MouseEventHandler<any>
@@ -32,11 +33,22 @@
     showPasswordInvalid = true
   }
 
-  function login(e): void {
+  function login(): void {
     if (!isUsernameValid) return
-    next(e)
     ipc.send('loginrequest', { username, password })
   }
+
+  ipc.on('loginresponse', (_event, { launchCredentials }) => {
+    if (!launchCredentials.uuid) {
+      username = ""
+      password = ""
+      isUsernameValid = false
+      isPasswordValid = false
+      return
+    }
+    $params.launchCredentials = launchCredentials
+    next(new MouseEvent('fake'))
+  })
 </script>
 
 <!-- TODO: IMPROVE UI -->
