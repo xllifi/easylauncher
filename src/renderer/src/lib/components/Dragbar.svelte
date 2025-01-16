@@ -2,7 +2,6 @@
   import { X, Minus, Bug } from 'lucide-svelte'
   import { ipc } from '../scripts/general.js'
   import { _ } from 'svelte-i18n'
-  import { route } from '../stores/route.svelte.js'
 
   function quit(): void {
     ipc.send('quit')
