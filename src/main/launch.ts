@@ -40,7 +40,7 @@ export function startGame(params: LauncherParams) {
           console.log(`Error: ${err}`)
       },
       gameOnLogs(data) {
-
+        renderer.send('logs', { data })
       },
     },
     mrpack: {

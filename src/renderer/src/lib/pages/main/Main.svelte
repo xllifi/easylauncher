@@ -6,6 +6,7 @@
   import * as skinview3d from 'skinview3d'
   import { getSkinUrls, setupSkin } from './Main.svelte.js'
   import noskin from '../../../assets/unknownplayer.png'
+  import BgLogs from './BgLogs.svelte'
   let skinCv: HTMLCanvasElement, skinVw: skinview3d.SkinViewer
   let skin: string = noskin
   let cape: string
@@ -93,6 +94,7 @@
 
 <!-- svelte-ignore element_invalid_self_closing_tag -->
 <canvas class="skin" class:noskin={skin == noskin} class:hidden={!skinLoaded} bind:this={skinCv} />
+<BgLogs />
 <div class="main">
   <button onclick={launchGame}>Start</button>
   <button onclick={() => ($route.overlay.current = 'settings')}>Settings</button>
