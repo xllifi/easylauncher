@@ -146,7 +146,8 @@
           line-height: 1.2;
           max-width: 16rem;
           text-wrap: balance;
-          white-space: pre-line;
+          word-break: break-all;
+          white-space: all;
           pointer-events: all;
 
           &::before {
