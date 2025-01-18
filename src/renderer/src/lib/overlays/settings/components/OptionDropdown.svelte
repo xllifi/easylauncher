@@ -7,13 +7,14 @@
   interface Props {
     onclick: MouseEventHandler<HTMLButtonElement>
     name: string
+    description: string
     actionLabel: string
     options: {
         name: string
         action: MouseEventHandler<HTMLLIElement>
       }[]
   }
-  let { onclick, name, actionLabel, options }: Props = $props()
+  let { onclick, name, description, actionLabel, options }: Props = $props()
 
   let lblHov: boolean = $state(false)
 
@@ -25,7 +26,7 @@
   }
 </script>
 
-<label class="dropdown" onmouseover={mIn} onmouseleave={mOut} onfocus={mIn} onfocusout={mOut}>
+<label class="dropdown" data-title={description} onmouseover={mIn} onmouseleave={mOut} onfocus={mIn} onfocusout={mOut}>
   <p>{name}</p>
   <button {onclick} aria-label={name} class:rotateChev={lblHov} onfocus={mIn} onfocusout={mOut}>{actionLabel} <ChevronDown /></button>
   {#if lblHov}
@@ -79,7 +80,7 @@
 
       &.rotateChev {
         :global(.lucide) {
-          transform: rotateX(180deg);
+          transform: scaleY(-1);
         }
       }
     }

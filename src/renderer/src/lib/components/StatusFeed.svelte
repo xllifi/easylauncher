@@ -10,7 +10,21 @@
 
   let list: StatusFeedEntry[] = []
 
-  ipc.on('feed-push', (_event, { title, description }) => {
+  ipc.on('feed-push', (_event, { id, additional }) => {
+    let description = $_(`statusfeed.messages.${id}.description`)
+    if (additional) {
+      for (const add of additional) {
+        const i = additional.indexOf(add)+1
+        description = description.replace(`$${i}`, add)
+      }
+    }
+    let opts: StatusFeedEntry = {
+      title: $_(`statusfeed.messages.${id}.title`),
+      description
+    }
+    pushEntry(opts)
+  })
+  ipc.on('feed-push-literal', (_event, { title, description }) => {
     let opts: StatusFeedEntry = {
       title: title,
       description: description
@@ -35,10 +49,6 @@
       list = list
     }
   }
-  function debugAddEntry(): void {
-    pushEntry({ title: $_('statusfeed.messages.debug.title'), description: $_('statusfeed.messages.debug.description') })
-  }
-  debugAddEntry()
 
   onMount(() => {
     if (!window.navigator.onLine) pushEntry({ title: $_('statusfeed.messages.startedoffline.title'), description: $_('statusfeed.messages.startedoffline.description') })

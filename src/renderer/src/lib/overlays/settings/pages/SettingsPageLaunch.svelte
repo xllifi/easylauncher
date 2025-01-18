@@ -2,6 +2,7 @@
   import OptionSlider from '../components/OptionSlider.svelte'
   import { params } from '../../../stores/params.svelte.js'
   import OptionCheckbox from '../components/OptionCheckbox.svelte'
+  import { _ } from 'svelte-i18n'
 
   if ($params.launchOpts === undefined) {
     $params.launchOpts = {
@@ -35,9 +36,9 @@
 </script>
 
 <main>
-  <OptionSlider oninput={() => verifyValues('max')} name="Макс. мб. ОЗУ" bind:input={$params.launchOpts.memory.max} min={0} max={16384} step={512} />
-  <OptionSlider oninput={() => verifyValues('min')} name="Мин. мб. ОЗУ" bind:input={$params.launchOpts.memory.min} min={0} max={16384} step={512} />
-  <OptionSlider name="Ширина окна" bind:input={$params.launchOpts.screen.width} min={0} max={3840} step={120} />
-  <OptionSlider name="Высота окна" bind:input={$params.launchOpts.screen.height} min={0} max={2160} step={120} />
-  <OptionCheckbox name="Отвязать лаунчер от Minecraft" bind:checked={$params.launchOpts.detached}/>
+  <OptionSlider oninput={() => verifyValues('max')} name={$_('settings.pages.launch.options.maxram.name')} description={$_('settings.pages.launch.options.maxram.description')} bind:input={$params.launchOpts.memory.max} min={0} max={16384} step={512} />
+  <OptionSlider oninput={() => verifyValues('min')} name={$_('settings.pages.launch.options.minram.name')} description={$_('settings.pages.launch.options.minram.description')} bind:input={$params.launchOpts.memory.min} min={0} max={16384} step={512} />
+  <OptionSlider name={$_('settings.pages.launch.options.screenwidth.name')} description={$_('settings.pages.launch.options.screenwidth.description')} bind:input={$params.launchOpts.screen.width} min={0} max={3840} step={120} />
+  <OptionSlider name={$_('settings.pages.launch.options.screenheight.name')} description={$_('settings.pages.launch.options.screenheight.description')} bind:input={$params.launchOpts.screen.height} min={0} max={2160} step={120} />
+  <OptionCheckbox name={$_('settings.pages.launch.options.detached.name')} description={$_('settings.pages.launch.options.detached.description')} bind:checked={$params.launchOpts.detached}/>
 </main>

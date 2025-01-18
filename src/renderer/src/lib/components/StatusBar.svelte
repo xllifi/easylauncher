@@ -4,6 +4,8 @@
   import { backIn, backOut } from 'svelte/easing'
   import { ipc } from '../scripts/general.js'
   import { _ } from 'svelte-i18n'
+  import { onMount } from 'svelte'
+  import { route } from '../stores/route.svelte.js'
 
   let text, left_text, right_text_1, right_text_2, progress, endTimeout
   let hide = true
@@ -15,7 +17,7 @@
     displayText = texts[Math.floor(Math.random() * texts.length)]
   }, 2500)
 
-  async function parseContents(opts: StatusBarContents): Promise<void> {
+  function parseContents(opts: StatusBarContents): void {
     text = opts.text ? opts.text : undefined
     left_text = opts.left_text ? opts.left_text : undefined
     right_text_1 = opts.right_text_1 ? opts.right_text_1 : undefined
@@ -23,7 +25,7 @@
     fillcolor = opts.fillcolor ? opts.fillcolor : 'fa0'
     progress = opts.progress ? opts.progress : 0
   }
-  async function unsetContents(): Promise<void> {
+  function unsetContents(): void {
     hide = true
     setTimeout(() => {
       text = undefined
@@ -45,25 +47,14 @@
       }, opts.hide_after_secs * 1000)
     }
   }
-  ipc.on('start', async () => {
-    console.log('Got start')
-    hide = false
-    text = undefined
-    left_text = undefined
-    right_text_1 = undefined
-    right_text_2 = undefined
-    fillcolor = 'fa0'
-    progress = 0
 
-    clearTimeout(endTimeout)
-  })
   ipc.on('extract', (_event, { extract }) => {
     console.log(`Got Extract: ${extract}`)
   })
   ipc.on('progress', async (_event, { type, percent }) => {
     console.log(`Got Progress: ${type}, ${percent}`)
     hide = false
-    text = `Загрузка ${$_(`statusbar.progresstypes.${type}`)}...`
+    text = `${$_('statusbar.downloading')} ${$_(`statusbar.progresstypes.${type}`)}...`
     left_text = `${percent}%`
     progress = percent
     fillcolor = 'fa0'
@@ -106,6 +97,7 @@
     }, 2500)
   })
   ipc.on('close', () => {
+    $route.state = 'idle'
     hide = false
     text = `Minecraft закрыт!`
     left_text = undefined
@@ -121,11 +113,20 @@
       }, 500)
     }, 2500)
   })
+
+  onMount(() => {
+    route.subscribe(({state}) => {
+      if (state == 'launch') {
+        unsetContents()
+        hide = false
+      }
+    })
+  })
 </script>
 
 <div class="progressbarwrapper">
   {#if !hide}
-  <div class="progressbar" in:fly={{x: 0, y: 100, duration: 400, easing: backOut, opacity: 0}} out:fly={{x: 0, y: 100, duration: 400, easing: backIn, opacity: 0}}>
+  <div class="progressbar" in:fly={{x: 0, y: -100, duration: 400, easing: backOut, opacity: 0}} out:fly={{x: 0, y: -100, duration: 400, easing: backIn, opacity: 0}}>
     <clipPath class="fill" id="fill" style="width: {progress == null ? 0 : progress}%; background-color: #{fillcolor};"></clipPath>
     <div class="labels top" style="clip-path: polygon(0% 0%, 0% 100%, {progress == null ? 0 : progress}% 100%, {progress == null ? 0 : progress}% 0%);">
       <p class="primary">{!text ? displayText + '...' : text}</p>
@@ -144,21 +145,22 @@
 <style lang="scss">
   .progressbarwrapper {
     width: 100%;
-    height: 5rem;
+    height: calc(100% - 2rem);
 
     position: fixed;
     bottom: 0;
 
     overflow: hidden;
     pointer-events: none;
+    display: flex;
+    justify-content: center;
   }
   .progressbar {
+    width: calc(100% - 1rem);
     height: 2rem;
 
-    position: absolute;
-    bottom: calc(0.5rem + 1px);
-    right: 0.5rem;
-    left: 0.5rem;
+    position: relative;
+    top: 0.5rem;
 
     background-color: #000;
     border-radius: 0.2rem;
@@ -247,8 +249,8 @@
     }
   }
   @media (min-width: 600px) {
-    .progressbarwrapper {
-      width: 600px;
+    .progressbar {
+      width: calc(600px - 1rem);
     }
   }
 </style>

@@ -1,15 +1,17 @@
 <script lang="ts">
-  import type { MouseEventHandler } from 'svelte/elements'
   import { ipc } from '../../scripts/general.js'
   import { CircleUserRound, KeySquare } from 'lucide-svelte'
   import { params } from '../../stores/params.svelte.js'
+  import { _ } from 'svelte-i18n'
 
   interface Props {
-    next: MouseEventHandler<any>
+    next: Function
   }
   let { next = $bindable() }: Props = $props()
   let username = $state('')
   let password = $state('')
+
+  let passwordInput: HTMLInputElement
 
   let isUsernameValid: boolean = $state(false)
   let showUsernameInvalid: boolean = $state(false)
@@ -17,12 +19,17 @@
   let isPasswordValid: boolean = $state(false)
   let showPasswordInvalid: boolean = $state(false)
 
+  let isLoggingIn: boolean = $state(false)
+
   function oninputUsername(): void {
     onunfocusUsername()
     isUsernameValid = username.match(/^[a-zA-Z0-9_]{3,16}$/) != null
   }
   function onunfocusUsername(): void {
     showUsernameInvalid = true
+  }
+  function onkeypressUsername(e: KeyboardEvent): void {
+    if (e.key === 'Enter') passwordInput.focus()
   }
 
   function oninputPassword(): void {
@@ -32,45 +39,51 @@
   function onunfocusPassword(): void {
     showPasswordInvalid = true
   }
+  function onkeypressPassword(e: KeyboardEvent): void {
+    if (e.key === 'Enter') login()
+  }
 
   function login(): void {
-    if (!isUsernameValid) return
+    isLoggingIn = true
     ipc.send('loginrequest', { username, password })
   }
 
   ipc.on('loginresponse', (_event, { launchCredentials }) => {
+    console.log(`Got loginresponse`)
+    isLoggingIn = false
     if (!launchCredentials.uuid) {
-      username = ""
-      password = ""
+      username = ''
+      password = ''
       isUsernameValid = false
       isPasswordValid = false
       return
     }
     $params.launchCredentials = launchCredentials
-    next(new MouseEvent('fake'))
+    next()
+    ipc.removeAllListeners('loginresponse')
   })
 </script>
 
 <!-- TODO: IMPROVE UI -->
 
-<h1>Вход в аккаунт</h1>
+<h1>{$_('login.title')}</h1>
 <p class="description">Если у тебя нет данных для входа, то их можно найти в [ДОБАВИТЬ ИСТОЧНИК]</p>
 <div class="form">
   <div class="textinput" class:incorrect={!isUsernameValid && showUsernameInvalid}>
     <div class="label">
       <CircleUserRound />
-      <p>Никнейм</p>
+      <p>{$_('login.form.username')}</p>
     </div>
-    <input type="text" bind:value={username} oninput={oninputUsername} onfocusout={onunfocusUsername} />
+    <input type="text" bind:value={username} disabled={isLoggingIn} oninput={oninputUsername} onfocusout={onunfocusUsername} onkeypress={onkeypressUsername} />
   </div>
   <div class="textinput" class:incorrect={!isPasswordValid && showPasswordInvalid}>
     <div class="label">
       <KeySquare />
-      <p>Пароль</p>
+      <p>{$_('login.form.password')}</p>
     </div>
-    <input type="password" bind:value={password} oninput={oninputPassword} onfocusout={onunfocusPassword} />
+    <input type="password" bind:this={passwordInput} bind:value={password} disabled={isLoggingIn} oninput={oninputPassword} onfocusout={onunfocusPassword} onkeypress={onkeypressPassword} />
   </div>
-  <button onclick={login} class="login" disabled={!isUsernameValid || !isPasswordValid}>Войти!</button>
+  <button onclick={login} class="login" disabled={!isUsernameValid || !isPasswordValid || isLoggingIn}>{$_('login.form.action')}</button>
 </div>
 
 <style lang="scss">
@@ -112,7 +125,11 @@
         }
       }
 
-      .label {
+      &:has(>input:disabled) {
+        filter: brightness(50%);
+      }
+
+      div.label {
         display: flex;
         justify-content: end;
         align-content: end;
@@ -123,6 +140,8 @@
         outline: none;
         height: 100%;
         width: 100%;
+
+        position: relative;
 
         &:focus {
           filter: none;

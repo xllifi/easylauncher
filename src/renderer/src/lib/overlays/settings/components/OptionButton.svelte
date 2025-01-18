@@ -4,12 +4,13 @@
   interface Props {
     onclick: MouseEventHandler<HTMLButtonElement>
     name: string
+    description: string
     actionLabel: string
   }
-  let { onclick, name, actionLabel }: Props = $props()
+  let { onclick, name, description, actionLabel }: Props = $props()
 </script>
 
-<label class="button">
+<label class="button" data-title={description}>
   <p>{name}</p>
   <button {onclick} aria-label={name}>{actionLabel}</button>
 </label>

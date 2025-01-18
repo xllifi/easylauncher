@@ -1,13 +1,14 @@
 <script lang="ts">
   interface Props {
     name: string
+    description: string
     input?: number
     min: number
     max: number
     step: number
     oninput?: any
   }
-  let { name, input = $bindable(), min, max, step, oninput }: Props = $props()
+  let { name, description, input = $bindable(), min, max, step, oninput }: Props = $props()
 
   function verifyInput() {
     if (!input) return
@@ -35,7 +36,7 @@
   }
 </script>
 
-<label class="text-input">
+<label class="text-input" data-title={description}>
   <p>{name}</p>
   <input type="text" bind:value={input} onfocusout={verifyInput} />
   <input {oninput} type="range" bind:value={input} {min} {max} {step} onwheel={handleScroll} />
@@ -90,7 +91,7 @@
         transition: outline-color 200ms;
       }
 
-      &:hover{
+      &:hover {
         outline: solid 2px var(--theme-accent-active);
         filter: drop-shadow(0 0 3px var(--theme-accent-active-darker));
         &::-webkit-slider-thumb {

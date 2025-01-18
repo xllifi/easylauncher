@@ -16,11 +16,11 @@
   const pages = $state([
     {
       component: 'SettingsPageGeneral',
-      title: $_('settings.pages.general')
+      title: $_('settings.pages.general.tab')
     },
     {
       component: 'SettingsPageLaunch',
-      title: $_('settings.pages.launch')
+      title: $_('settings.pages.launch.tab')
     }
   ])
 
@@ -33,7 +33,7 @@
       case 'SettingsPageLaunch':
         return (Page = SettingsPageLaunch)
       default:
-        pageTitle = $_('settings.pages.404')
+        pageTitle = $_('settings.pages.404.tab')
         return (Page = SettingsPage404)
     }
   }
@@ -217,16 +217,57 @@
       overflow-y: scroll;
       // margin-right: -0.2rem;
       padding-right: 0.2rem;
+      // background-color: var(--color-background);
 
       &::-webkit-scrollbar {
         width: 0.25rem;
+        height: 0.25rem;
         background-color: transparent;
         border-radius: 999px;
       }
-
+      &::-webkit-scrollbar-corner {
+        background-color: transparent;
+      }
       &::-webkit-scrollbar-thumb {
         background-color: #0006;
         border-radius: 999px;
+      }
+
+      :global(label) {
+        &:hover::after {
+          content: attr(data-title);
+          width: 100%;
+          position: absolute;
+          top: -1.5rem;
+          left: 50%;
+          font-size: 0.8rem;
+          line-height: 1;
+          transform: translateX(-50%);
+          background-color: var(--color-background);
+          padding: 0.2rem 0.3rem;
+          padding-top: 0.3rem;
+          box-shadow: 0 0 8px #0006;
+          border: solid 1px #fff2;
+          border-radius: 0.4rem;
+          animation: 1s appearDelay;
+          pointer-events: none;
+          z-index: 5;
+        }
+        &:first-of-type:hover::after {
+          top: unset;
+          bottom: -1.5rem;
+        }
+        @keyframes appearDelay {
+          0% {
+            opacity: 0;
+          }
+          99% {
+            opacity: 0;
+          }
+          100% {
+            opacity: 1;
+          }
+        }
       }
     }
   }

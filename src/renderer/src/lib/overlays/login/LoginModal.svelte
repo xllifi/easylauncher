@@ -3,6 +3,7 @@
   import type { MouseEventHandler } from 'svelte/elements'
   import { ipc } from '../../scripts/general.js'
   import { route } from '../../stores/route.svelte.js'
+  import { _ } from 'svelte-i18n'
 
   interface Props {
     exit: MouseEventHandler<any>,
@@ -12,6 +13,8 @@
 
   let username = $state('')
   let password = $state('')
+
+  let passwordInput: HTMLInputElement
 
   let isUsernameValid: boolean = $state(false)
   let showUsernameInvalid: boolean = $state(false)
@@ -26,6 +29,9 @@
   function onunfocusUsername(): void {
     showUsernameInvalid = true
   }
+  function onkeypressUsername(e: KeyboardEvent): void {
+    if (e.key === 'Enter') passwordInput.focus()
+  }
 
   function oninputPassword(): void {
     onunfocusPassword()
@@ -33,6 +39,9 @@
   }
   function onunfocusPassword(): void {
     showPasswordInvalid = true
+  }
+  function onkeypressPassword(e: KeyboardEvent): void {
+    if (e.key === 'Enter') login(new MouseEvent('fake'))
   }
 
   function login(e): void {
@@ -45,25 +54,25 @@
 <div class="layout">
   <div class="title">
     <button class="back" class:hidden={$route.overlay.previous == 'none'} onclick={back}><ArrowLeft /></button>
-    <h2>Вход в аккаунт</h2>
+    <h2>{$_('login.title')}</h2>
     <button class="close" onclick={exit}><X /></button>
   </div>
   <div class="form">
     <div class="textinput" class:incorrect={!isUsernameValid && showUsernameInvalid}>
       <div class="label">
         <CircleUserRound />
-        <p>Никнейм</p>
+        <p>{$_('login.form.username')}</p>
       </div>
-      <input type="text" bind:value={username} oninput={oninputUsername} onfocusout={onunfocusUsername} />
+      <input type="text" bind:value={username} oninput={oninputUsername} onfocusout={onunfocusUsername} onkeypress={onkeypressUsername}/>
     </div>
     <div class="textinput" class:incorrect={!isPasswordValid && showPasswordInvalid}>
       <div class="label">
         <KeySquare />
-        <p>Пароль</p>
+        <p>{$_('login.form.password')}</p>
       </div>
-      <input type="password" bind:value={password} oninput={oninputPassword} onfocusout={onunfocusPassword} />
+      <input type="password" bind:this={passwordInput} bind:value={password} oninput={oninputPassword} onfocusout={onunfocusPassword} onkeypress={onkeypressPassword}/>
     </div>
-    <button onclick={login} class="login" disabled={!isUsernameValid || !isPasswordValid}>Войти!</button>
+    <button onclick={login} class="login" disabled={!isUsernameValid || !isPasswordValid}>{$_('login.form.action')}</button>
   </div>
 </div>
 

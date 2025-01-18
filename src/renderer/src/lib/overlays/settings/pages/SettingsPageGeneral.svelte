@@ -11,17 +11,21 @@
   }
 
   function handleLocaleChange(newLocal: string) {
+    $route.overlay.previous = 'none'
+    $route.overlay.current = 'none'
     $route.loaded = false
     locale.set(newLocal)
     $params.lang = newLocal
-    location.reload()
+    setTimeout(() => {
+      $route.loaded = true
+    }, 1000)
   }
 </script>
 
 <main>
-  <OptionButton name="Вход в аккаунт" actionLabel="Перейти ко входу" onclick={() => {goTo('login')}} />
-  <OptionButton name="Изменить тип сборки" actionLabel="Перейти к выбору" onclick={() => {goTo('modpack')}} />
-  <OptionDropdown name="Язык" actionLabel="Выбрать язык" onclick={() => {}} options={[
+  <OptionButton name={$_('settings.pages.general.options.login.name')} description={$_('settings.pages.general.options.login.description')} actionLabel={$_('settings.pages.general.options.login.label')} onclick={() => {goTo('login')}} />
+  <OptionButton name={$_('settings.pages.general.options.modpack.name')} description={$_('settings.pages.general.options.modpack.description')} actionLabel={$_('settings.pages.general.options.modpack.label')} onclick={() => {goTo('modpack')}} />
+  <OptionDropdown name={$_('settings.pages.general.options.language.name')} description={$_('settings.pages.general.options.language.description')} actionLabel={$_('settings.pages.general.options.language.label')} onclick={() => {}} options={[
     {
       name: `${$_('meta.langnames.ru')} (Русский)`,
       action: () => {handleLocaleChange('ru')}

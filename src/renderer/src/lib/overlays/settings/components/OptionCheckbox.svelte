@@ -1,12 +1,13 @@
 <script lang="ts">
   interface Props {
     checked?: boolean
+    description: string
     name: string
   }
-  let { checked = $bindable(), name }: Props = $props()
+  let { checked = $bindable(), name, description }: Props = $props()
 </script>
 
-<label class="checkbox-input">
+<label class="checkbox-input" data-title={description}>
   <p>{name}</p>
   <input type="checkbox" bind:checked />
 </label>

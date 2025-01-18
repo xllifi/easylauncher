@@ -3,6 +3,7 @@
   import { onMount } from 'svelte'
   import { fade } from 'svelte/transition'
   import { params } from '../../stores/params.svelte.js'
+  import { _ } from 'svelte-i18n'
 
   interface Props {
     next: Function
@@ -24,32 +25,32 @@
   onMount(isWrapperScrolled)
 </script>
 
-<h1>Выберите тип сборки</h1>
+<h1>{$_('modpacktype.title')}</h1>
 <div class="wrapper" class:scrolled bind:this={wrapper} onscroll={isWrapperScrolled}>
   {#if scrolled}
     <span class="scrolled" transition:fade={{ duration: 160 }}></span>
   {/if}
-  <p class="description">Наведитесь на кнопку, чтобы узнать больше о сборке.<br />Изменить этот выбор можно в любое время в настройках лаунчера.</p>
-  <button class="full" onclick={() => {chooseModpack('ful')}}>
+  <p class="description">{$_('modpacktype.description')}<br />{$_('modpacktype.onboardingextra')}</p>
+  <button class="ful" onclick={() => {chooseModpack('ful')}}>
     <div class="cover">
       <PackagePlus />
-      <h2>Полная установка</h2>
+      <h2>{$_('modpacktype.options.ful.title')}</h2>
     </div>
-    <p class="description">Установить все моды, не исключить ничего. Рекомендуемый вариант для большинства игроков.<br />Для компьютеров средней-высокой мощности.</p>
+    <p class="description">{$_('modpacktype.options.ful.description')}</p>
   </button>
-  <button class="essential" onclick={() => {chooseModpack('ess')}}>
+  <button class="ess" onclick={() => {chooseModpack('ess')}}>
     <div class="cover">
       <PackageX />
-      <h2>Только необходимое</h2>
+      <h2>{$_('modpacktype.options.ess.title')}</h2>
     </div>
-    <p class="description">Не устанавливать ничего, кроме Minecraft и нескольких необходимых модов.<br />Не включает моды на оптимизацию.</p>
+    <p class="description">{$_('modpacktype.options.ess.description')}</p>
   </button>
-  <button class="minimal" onclick={() => {chooseModpack('min')}}>
+  <button class="min" onclick={() => {chooseModpack('min')}}>
     <div class="cover">
       <PackageCheck />
-      <h2>Минимальная установка</h2>
+      <h2>{$_('modpacktype.options.min.title')}</h2>
     </div>
-    <p class="description">Установить только Minecraft и несколько модов на оптимизацию.<br />Для слабых компьютеров.</p>
+    <p class="description">{$_('modpacktype.options.min.description')}</p>
   </button>
 </div>
 
@@ -137,7 +138,7 @@
         }
       }
 
-      &.full {
+      &.ful {
         grid-column: 1 / -1;
       }
     }

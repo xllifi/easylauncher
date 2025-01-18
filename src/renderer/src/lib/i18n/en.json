@@ -5,9 +5,12 @@
       "en": "English"
     }
   },
+  "main": {
+    "play": "PLAY"
+  },
   "dragbar": {
     "title": "easylauncher",
-    "prealpha": "pre-αlpha"
+    "edition": "pre-αlpha"
   },
   "statusbar": {
     "texts": [
@@ -26,7 +29,15 @@
       "Checking up with the manifest",
       "Looking for files",
       "Mourning wiki.vg"
-    ]
+    ],
+    "downloading": "Downloading",
+    "progresstypes": {
+      "java": "Java",
+      "assets": "assets",
+      "libraries": "libraries",
+      "modpack": "modpack",
+      "meta": "metadata"
+    }
   },
   "statusfeed": {
     "messages": {
@@ -45,15 +56,124 @@
       "gotonline": {
         "title": "You're online!",
         "description": "Internet is back, all features are now working."
+      },
+      "nolog": {
+        "title": "Error!",
+        "description": "Unable to view latest log, There's no file."
+      },
+      "login-error-401": {
+        "title": "Failed to log in!",
+        "description": "Seems like your credentials are incorrect. Try again."
+      },
+      "login-error-unknown": {
+        "title": "Failed to log in!",
+        "description": "Full reason: $1"
+      },
+      "login-success": {
+        "title": "You've logged in!",
+        "description": "Your username - $1"
+      },
+      "launch-error-timeout": {
+        "title": "Timed out",
+        "description": "Detailed description: $1\n\nIMPORTANT: this issue might not be critical, there's a chance Minecraft will launch. If launcher seems like it does nothing, please let the developer know and restart the launcher."
+      },
+      "launch-error-unknown": {
+        "title": "Error!",
+        "description": "Detailed description: $1\n\nIMPORTANT: this issue might not be critical, there's a chance Minecraft will launch. If launcher seems like it does nothing, please let the developer know and restart the launcher."
+      },
+      "game-error-unknown": {
+        "title": "Error!",
+        "description": "Detailed description: $1\n\nIMPORTANT: this issue might not be critical, there's a chance everyting will work. If launcher seems like it does nothing, please let the developer know and restart the launcher."
       }
     }
   },
   "settings": {
     "title": "Settings",
     "pages": {
-      "general": "General",
-      "launch": "Launch",
-      "404": "No page"
+      "general": {
+        "tab": "General",
+        "options": {
+          "login": {
+            "name": "Account login",
+            "description": "Log into EasyMain account",
+            "label": "Go to login"
+          },
+          "modpack": {
+            "name": "Change modpack type",
+            "description": "Select another modpack type",
+            "label": "Go to selection"
+          },
+          "language": {
+            "name": "Language",
+            "description": "Change launcher's language",
+            "label": "Select language"
+          }
+        }
+      },
+      "launch": {
+        "tab": "Launch",
+        "options": {
+          "maxram": {
+            "name": "Max RAM (MB)",
+            "description": "Maximum amount of RAM that Minecraft will be able to use"
+          },
+          "minram": {
+            "name": "Min RAM (MB)",
+            "description": "Minimal (initial) amount of RAM that Minecraft will be able to use"
+          },
+          "screenwidth": {
+            "name": "Screen width",
+            "description": "Window width when the game launches"
+          },
+          "screenheight": {
+            "name": "Screen height",
+            "description": "Window height when the game launches"
+          },
+          "detached": {
+            "name": "Detach Minecraft from launcher",
+            "description": "If enabled, you'll be able to close the launcher without closing Minecraft."
+          }
+        }
+      },
+      "404": {
+        "tab": "No page",
+        "h2": "Page not found! ☹️",
+        "p": "Choose a page from the left side."
+      }
+    }
+  },
+  "login": {
+    "title": "Account login",
+    "form": {
+      "username": "Username",
+      "password": "Password",
+      "action": "Log in!"
+    }
+  },
+  "modpacktype": {
+    "title": "Modpack type",
+    "description": "Hover over a button to see description.",
+    "onboardingextra": "This choice can be changed later.",
+    "options": {
+      "ful": {
+        "title": "Full install",
+        "description": "Install everything without exception. Recommended type for most players.\n\nFor average/powerful PCs."
+      },
+      "min": {
+        "title": "Minimal install",
+        "description": "Install only Minecraft, essential and optimization mods.\n\nFor weak PCs."
+      },
+      "ess": {
+        "title": "Only essential",
+        "description": "Only install Minecraft and a few essential mods.\n\nDoes NOT include optimization mods."
+      }
+    }
+  },
+  "onboarding": {
+    "welcome": {
+      "title": "Hi there!",
+      "description": "Let's set everything up...",
+      "button": "Next"
     }
   }
 }

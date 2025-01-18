@@ -1,15 +1,17 @@
 <script lang="ts">
   interface Props {
     name: string
+    description: string
     input?: string
   }
   let {
     name,
+    description,
     input = $bindable()
   }: Props = $props()
 </script>
 
-<label class="text-input">
+<label class="text-input" data-title={description}>
   <p>{name}</p>
   <input type="text" bind:value={input}>
 </label>

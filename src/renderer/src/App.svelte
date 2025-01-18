@@ -51,13 +51,13 @@
 
 <svelte:window onkeyup={exitByPressingEsc} />
 
+<Dragbar />
 {#if $isLoading || !$route.loaded}
   <div class="wrapper" out:fade>
     <span class="loading"></span>
   </div>
 {:else}
-  <Dragbar />
-  <div class="body" in:fade>
+  <div class="body" transition:fade={{duration: 200}}>
     <!-- Page -->
     {#key $route.page}
       <div class="inner" transition:fade>
@@ -102,7 +102,7 @@
     -webkit-app-region: drag;
 
     width: 100%;
-    height: 100%;
+    height: calc(100% - 2rem);
 
     > span.loading {
       position: fixed;
@@ -147,12 +147,13 @@
       position: fixed;
     }
 
-    .overlay {
+    > .overlay {
       position: absolute;
       width: 100%;
       height: calc(100dvh - 2rem);
-      backdrop-filter: blur(5px);
       padding: 5dvh 3.5dvw;
+      backdrop-filter: blur(5px);
+      z-index: 1;
 
       top: 0;
       left: 0;
@@ -161,7 +162,7 @@
       justify-content: center;
       align-items: center;
 
-      .inner {
+      > .inner {
         position: fixed;
 
         display: flex;
@@ -177,8 +178,7 @@
         border-radius: 0.5rem;
         border: solid var(--color-border) 1px;
         background-color: var(--color-background-lighter);
-        backdrop-filter: blur(5px);
-        opacity: 98%;
+        overflow: hidden;
       }
     }
   }

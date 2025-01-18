@@ -5,6 +5,7 @@ import icon from '../../resources/icon.png?asset'
 import { startGame } from './launch.js'
 import { DraslAuth, launchCredentials, genDirs } from 'xlicore'
 import * as Sentry from '@sentry/electron/main'
+import { existsSync } from 'fs'
 
 Sentry.init({ dsn: 'https://f3c5d61a7f01460390091cfcb30e6f91@sentry.xllifi.ru/1' })
 
@@ -121,6 +122,11 @@ ipcMain.on('minimize', () => {
 ipcMain.on('quit', () => {
   mainWindow.destroy()
 })
+ipcMain.on('viewlogs', () => {
+  const logPath = path.resolve(gamePath, 'instance/logs/latest.log')
+  if (!existsSync(logPath)) renderer.send('feed-push', { id: 'nolog' })
+  shell.openPath(logPath)
+})
 
 ipcMain.on('launch', (_event, { params }) => {
   startGame(params)
@@ -137,9 +143,9 @@ ipcMain.on('loginrequest', async (_event, { username, password }) => {
   const resp = await drasl.first().catch((err) => {
     renderer.send('loginresponse', { launchCredentials: {} })
     if (err.response && err.response.status == 401) {
-      return renderer.send('feed-push', { title: `Не удалось войти!`, description: `Похоже, что вы ввели неверные данные. \nКод ошибки: ${err.response.status}` })
+      return renderer.send('feed-push', { id: 'login-error-401' })
     }
-    renderer.send('feed-push', { title: `Не удалось войти!`, description: `Полная причина: ${err}` })
+    renderer.send('feed-push', { id: 'login-error-unknown', additional: [err] })
   })
   if (!resp) {
     return
@@ -153,6 +159,6 @@ ipcMain.on('loginrequest', async (_event, { username, password }) => {
     userType: 'mojang',
     drasl: { server: drasl.authserver }
   }
-  renderer.send('feed-push', { title: `Вы успешно вошли`, description: `Ваш никнейм - ${launchCredentials.name}` })
+  renderer.send('feed-push', { id: 'login-success', additional: [launchCredentials.name] })
   renderer.send('loginresponse', { launchCredentials })
 })

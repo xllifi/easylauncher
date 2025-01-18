@@ -1,7 +1,9 @@
 <script lang="ts">
   import { X, Minus, Bug } from 'lucide-svelte'
   import { ipc } from '../scripts/general.js'
-  import { _ } from 'svelte-i18n'
+  import { _, isLoading } from 'svelte-i18n'
+  import { route } from '../stores/route.svelte.js'
+  import { fade } from 'svelte/transition'
 
   function quit(): void {
     ipc.send('quit')
@@ -16,7 +18,9 @@
 
 <div class="dragbar">
   <div class="text">
-    <p>{$_('dragbar.title')} • {$_('dragbar.prealpha')}</p>
+    {#if !$isLoading && $route.loaded}
+      <p transition:fade={{duration: 200}}>{$_('dragbar.title')} • {$_('dragbar.edition')}</p>
+    {/if}
   </div>
   <div class="buttons">
     <button class="report" on:click|stopPropagation={report}><Bug width="18px" height="18px" /></button>
@@ -64,44 +68,36 @@
         height: 2rem;
 
         margin: 0;
-        padding: 0;
+        padding: 0.4rem;
 
         border: none;
         border-radius: 0;
         outline: none;
         background-color: transparent;
+        color: var(--color-text-primary);
+        filter: none;
         cursor: pointer;
+        opacity: 0.4;
 
         display: flex;
         justify-content: center;
         align-items: center;
 
-        transition: background-color 100ms;
+        transition: opacity 100ms, color 100ms;
 
-        :global(.lucide) {
-          width: 18px;
-          height: 18px;
-          position: relative;
-          padding: 0;
-          margin: 0;
-          color: var(--color-text-primary);
-          opacity: 0.4;
-          transition: opacity 100ms color 200ms;
-        }
-
-        &:is(:hover, :focus-visible) :global(.lucide) {
+        &:is(:hover, :focus-visible) {
           opacity: 1;
         }
 
-        &.report:is(:hover, :focus-visible) :global(.lucide) {
+        &.report:is(:hover, :focus-visible) {
           color: #88f;
         }
 
-        &.minimize:is(:hover, :focus-visible) :global(.lucide) {
+        &.minimize:is(:hover, :focus-visible) {
           color: #8bb;
         }
 
-        &.close:is(:hover, :focus-visible) :global(.lucide) {
+        &.close:is(:hover, :focus-visible) {
           color: #f88;
         }
       }

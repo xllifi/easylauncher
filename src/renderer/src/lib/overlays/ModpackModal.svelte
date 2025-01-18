@@ -3,6 +3,7 @@
   import { params } from '../stores/params.svelte.js'
   import { route } from '../stores/route.svelte.js'
   import type { MouseEventHandler } from 'svelte/elements'
+  import { _ } from 'svelte-i18n'
 
   interface Props {
     exit: MouseEventHandler<any>
@@ -18,46 +19,52 @@
 
 <div class="title">
   <button class="back" class:hidden={$route.overlay.previous == 'none' && back != null} onclick={back}><ArrowLeft /></button>
-  <h2>Выбор типа сборки</h2>
+  <h2>{$_('modpacktype.title')}</h2>
   <button class="close" onclick={exit}><X /></button>
 </div>
 <div class="wrapper">
-  <p class="description">Наведитесь на кнопку, чтобы узнать больше о сборке.</p>
+  <p class="description">{$_('modpacktype.description')}</p>
   <button
-    class="full"
+    class="modpack ful"
+    data-selected="ВЫБРАНО"
+    class:selected={$params.modpackType === 'ful'}
     onclick={(e) => {
       chooseModpack('ful', e)
     }}
   >
     <div class="cover">
       <PackagePlus />
-      <h2>Полная установка</h2>
+      <h2>{$_('modpacktype.options.ful.title')}</h2>
     </div>
-    <p class="description">Установить все моды, не исключить ничего. Рекомендуемый вариант для большинства игроков.<br />Для компьютеров средней-высокой мощности.</p>
+    <p class="description">{$_('modpacktype.options.ful.description')}</p>
   </button>
   <button
-    class="essential"
+    class="modpack ess"
+    data-selected="ВЫБРАНО"
+    class:selected={$params.modpackType === 'ess'}
     onclick={(e) => {
       chooseModpack('ess', e)
     }}
   >
     <div class="cover">
       <PackageX />
-      <h2>Только необходимое</h2>
+      <h2>{$_('modpacktype.options.ess.title')}</h2>
     </div>
-    <p class="description">Не устанавливать ничего, кроме Minecraft и нескольких необходимых модов.<br />Не включает моды на оптимизацию.</p>
+    <p class="description">{$_('modpacktype.options.ess.description')}</p>
   </button>
   <button
-    class="minimal"
+    class="modpack min"
+    data-selected="ВЫБРАНО"
+    class:selected={$params.modpackType === 'min'}
     onclick={(e) => {
       chooseModpack('min', e)
     }}
   >
     <div class="cover">
       <PackageCheck />
-      <h2>Минимальная установка</h2>
+      <h2>{$_('modpacktype.options.min.title')}</h2>
     </div>
-    <p class="description">Установить только Minecraft и несколько модов на оптимизацию.<br />Для слабых компьютеров.</p>
+    <p class="description">{$_('modpacktype.options.min.description')}</p>
   </button>
 </div>
 
@@ -113,8 +120,9 @@
   div.wrapper {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: auto repeat(2, 1fr);
-    padding: 0 calc(2rem - 14px) 2rem 2rem;
+    grid-template-rows: 18px repeat(2, 8.4rem) auto;
+    padding: 0 2rem 2rem 2rem;
+    margin-left: 14px;
     gap: 0.4rem;
     flex-wrap: wrap;
 
@@ -124,6 +132,7 @@
     height: 100%;
 
     &::-webkit-scrollbar {
+      height: 14px;
       width: 14px;
     }
     &::-webkit-scrollbar-thumb {
@@ -132,7 +141,11 @@
       background-color: #fff1;
       border-radius: 9999px;
     }
+    &::-webkit-scrollbar-corner {
+      background-color: transparent;
+    }
     &::-webkit-scrollbar-button {
+      width: 4px;
       height: 4px;
     }
 
@@ -146,7 +159,8 @@
       margin-bottom: -0.2rem;
     }
 
-    > button {
+    button.modpack {
+      position: relative;
       display: grid;
       grid: 1fr;
       padding: 0.6rem;
@@ -174,6 +188,7 @@
         font-size: 0.9em;
         opacity: 0;
         transition: opacity 200ms;
+        white-space: pre-line;
       }
 
       &:hover {
@@ -185,8 +200,45 @@
         }
       }
 
-      &.full {
+      &.ful {
         grid-column: 1 / -1;
+
+        color: mix(#5f5, #fff, 10%)
+      }
+      &.min {
+        color: mix(#55f, #fff, 10%)
+      }
+      &.ess {
+        color: mix(#f55, #fff, 5%)
+      }
+
+      &.selected::after {
+        position: absolute;
+        top: 0.2rem;
+        right: -0.8rem;
+        transform: rotateZ(10deg);
+        content: attr(data-selected);
+        background-color: #5f5;
+        color: #000;
+        font-family: Unbounded;
+        font-size: 1.35rem;
+        font-weight: 700;
+        padding: 0.3rem;
+        padding-bottom: 0.1rem;
+        border-radius: 0.4rem;
+
+        perspective: 5.5cm;
+
+        transition: font-size 400ms ease-out, opacity 200ms;
+
+      }
+      @media (max-width: 720px) {
+        &:not(.ful).selected::after {
+          font-size: 0.9rem;
+        }
+      }
+      &.selected:hover::after {
+        opacity: 0;
       }
     }
   }
