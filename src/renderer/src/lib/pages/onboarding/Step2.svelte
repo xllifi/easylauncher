@@ -3,6 +3,7 @@
   import { CircleUserRound, KeySquare } from 'lucide-svelte'
   import { params } from '../../stores/params.svelte.js'
   import { _ } from 'svelte-i18n'
+  import { onMount } from 'svelte'
 
   interface Props {
     next: Function
@@ -11,7 +12,7 @@
   let username = $state('')
   let password = $state('')
 
-  let passwordInput: HTMLInputElement
+  let usernameInput: HTMLInputElement, passwordInput: HTMLInputElement
 
   let isUsernameValid: boolean = $state(false)
   let showUsernameInvalid: boolean = $state(false)
@@ -62,6 +63,10 @@
     next()
     ipc.removeAllListeners('loginresponse')
   })
+
+  onMount(() => {
+    usernameInput.focus()
+  })
 </script>
 
 <!-- TODO: IMPROVE UI -->
@@ -74,7 +79,7 @@
       <CircleUserRound />
       <p>{$_('login.form.username')}</p>
     </div>
-    <input type="text" bind:value={username} disabled={isLoggingIn} oninput={oninputUsername} onfocusout={onunfocusUsername} onkeypress={onkeypressUsername} />
+    <input type="text" bind:this={usernameInput} bind:value={username} disabled={isLoggingIn} oninput={oninputUsername} onfocusout={onunfocusUsername} onkeypress={onkeypressUsername} />
   </div>
   <div class="textinput" class:incorrect={!isPasswordValid && showPasswordInvalid}>
     <div class="label">

@@ -4,6 +4,7 @@
   import { ipc } from '../../scripts/general.js'
   import { route } from '../../stores/route.svelte.js'
   import { _ } from 'svelte-i18n'
+  import { onMount } from 'svelte'
 
   interface Props {
     exit: MouseEventHandler<any>,
@@ -14,7 +15,7 @@
   let username = $state('')
   let password = $state('')
 
-  let passwordInput: HTMLInputElement
+  let usernameInput: HTMLInputElement, passwordInput: HTMLInputElement
 
   let isUsernameValid: boolean = $state(false)
   let showUsernameInvalid: boolean = $state(false)
@@ -49,6 +50,10 @@
     exit(e)
     ipc.send('loginrequest', { username, password })
   }
+
+  onMount(() => {
+    usernameInput.focus()
+  })
 </script>
 
 <div class="layout">
@@ -63,7 +68,7 @@
         <CircleUserRound />
         <p>{$_('login.form.username')}</p>
       </div>
-      <input type="text" bind:value={username} oninput={oninputUsername} onfocusout={onunfocusUsername} onkeypress={onkeypressUsername}/>
+      <input type="text" bind:this={usernameInput} bind:value={username} oninput={oninputUsername} onfocusout={onunfocusUsername} onkeypress={onkeypressUsername}/>
     </div>
     <div class="textinput" class:incorrect={!isPasswordValid && showPasswordInvalid}>
       <div class="label">
