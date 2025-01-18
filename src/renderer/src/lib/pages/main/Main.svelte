@@ -84,6 +84,12 @@
     $route.state = 'launch'
   }
 
+  ipc.on('start', () => {
+    if ($route.state === 'launch') {
+      $route.state = 'idle'
+    }
+  })
+
   ipc.on('loginresponse', async (_event, { launchCredentials }) => {
     $params.launchCredentials = launchCredentials
 
