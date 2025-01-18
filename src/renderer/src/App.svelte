@@ -12,6 +12,7 @@
   import ModpackModal from './lib/overlays/ModpackModal.svelte'
   import StatusBar from './lib/components/StatusBar.svelte'
   import StatusFeed from './lib/components/StatusFeed.svelte'
+  import RulesModal from './lib/overlays/RulesModal.svelte'
 
   window.addEventListener('DOMContentLoaded', () => {
     $route.loaded = true
@@ -81,6 +82,8 @@
               <LoginModal exit={exitButtonClick} back={backButtonClick} />
             {:else if $route.overlay.current == 'modpack'}
               <ModpackModal exit={exitButtonClick} back={backButtonClick} />
+            {:else if $route.overlay.current == 'rules'}
+              <RulesModal exit={exitButtonClick} back={backButtonClick} />
             {/if}
           </div>
         {/key}

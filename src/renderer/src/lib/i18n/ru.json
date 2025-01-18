@@ -183,5 +183,24 @@
       "description": "Давай всё настроим...",
       "button": "Далее"
     }
+  },
+  "rules": {
+    "title": "Правила",
+    "description": "Согласитесь с правилами сервера, чтобы играть",
+    "entries": {
+      "respect": {
+        "title": "Уважайте всех",
+        "content": "We do not tolerate bullying or harassment, in any way, shape or form. All members of our community should be treated with dignity and respect."
+      },
+      "integrity": {
+        "title": "Играйте честно",
+        "content": "Fair gameplay is core to the experience. Progression is earned through good, clean gameplay. Cheating, griefing or other threats to fair play will not be tolerated."
+      },
+      "vigilant": {
+        "title": "Сохраняйте бдительность",
+        "content": "Working tagether we can keep the game fair and fun for all. To promote an enjoyable gameplay experience, report any incidents or inappropriate behaviors you encounter to moderation staff."
+      }
+    },
+    "continue": "Продолжить"
   }
 }

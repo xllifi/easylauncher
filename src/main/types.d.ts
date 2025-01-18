@@ -4,6 +4,7 @@ export type LauncherParams = {
   lang?: string
   modpackType: 'min' | 'ess' | 'ful'
   onboardingComplete: boolean
+  rulesConfirmed: boolean
   launchCredentials: launchCredentials
   launchOpts: {
     memory: {

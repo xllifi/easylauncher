@@ -80,6 +80,18 @@
 
   function launchGame(): void {
     if ($route.state == 'launch') return
+
+    if (!$params.rulesConfirmed) {
+      $route.overlay.current = 'rules'
+      const unsub = params.subscribe(({rulesConfirmed}) => {
+        if (rulesConfirmed) {
+          unsub()
+          launchGame()
+        }
+      })
+      return
+    }
+
     ipc.send('launch', { params: $params })
     $route.state = 'launch'
   }

@@ -6,6 +6,7 @@ export const params: Persisted<LauncherParams> = persisted('preferences', {
   launchCredentials: {} as launchCredentials,
   modpackType: 'ful',
   onboardingComplete: false,
+  rulesConfirmed: false,
   launchOpts: {
     memory: {
       min: 512,
