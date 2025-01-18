@@ -7,7 +7,7 @@ import { DraslAuth, launchCredentials, genDirs } from 'xlicore'
 import * as Sentry from '@sentry/electron/main'
 import { existsSync } from 'fs'
 
-Sentry.init({ dsn: 'https://f3c5d61a7f01460390091cfcb30e6f91@sentry.xllifi.ru/1' })
+Sentry.init({ dsn: import.meta.env.VITE_SENTRY_URL })
 
 const isDev = !app.isPackaged
 
@@ -139,7 +139,7 @@ ipcMain.on('loginrequest', async (_event, { username, password }) => {
   const drasl = new DraslAuth({
     username,
     password,
-    server: 'https://auth.easy-main.ru',
+    server: import.meta.env.VITE_AUTH_HOST,
     saveDir: path.resolve(gamePath, 'instance')
   })
 
