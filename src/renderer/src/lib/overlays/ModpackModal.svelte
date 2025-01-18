@@ -26,7 +26,7 @@
   <p class="description">{$_('modpacktype.description')}</p>
   <button
     class="modpack ful"
-    data-selected="ВЫБРАНО"
+    data-selected={$_('modpacktype.selected')}
     class:selected={$params.modpackType === 'ful'}
     onclick={(e) => {
       chooseModpack('ful', e)
@@ -40,7 +40,7 @@
   </button>
   <button
     class="modpack ess"
-    data-selected="ВЫБРАНО"
+    data-selected={$_('modpacktype.selected')}
     class:selected={$params.modpackType === 'ess'}
     onclick={(e) => {
       chooseModpack('ess', e)
@@ -54,7 +54,7 @@
   </button>
   <button
     class="modpack min"
-    data-selected="ВЫБРАНО"
+    data-selected={$_('modpacktype.selected')}
     class:selected={$params.modpackType === 'min'}
     onclick={(e) => {
       chooseModpack('min', e)

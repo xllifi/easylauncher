@@ -154,6 +154,7 @@
     "title": "Modpack type",
     "description": "Hover over a button to see description.",
     "onboardingextra": "This choice can be changed later.",
+    "selected": "SELECTED",
     "options": {
       "ful": {
         "title": "Full install",
