@@ -9,7 +9,7 @@ export async function getSkinUrls() {
   console.log(`Getting skin for UUID ${uuid}`)
   if (!uuid) return {} as getSkinReturn
 
-  const skin: sessionResp = await ky.get(`https://auth.easy-main.ru/session/minecraft/profile/${uuid}`, { timeout: 3000 }).json()
+  const skin: sessionResp = await ky.get(`https://auth.easy-main.ru/session/minecraft/profile/${uuid}`, { timeout: 10000 }).json()
   const skinvalues: texturesValue = JSON.parse(atob(skin.properties.filter((x) => x.name == 'textures')[0].value))
 
   return {
