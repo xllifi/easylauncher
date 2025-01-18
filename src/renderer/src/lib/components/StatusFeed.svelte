@@ -146,7 +146,7 @@
           line-height: 1.2;
           max-width: 16rem;
           text-wrap: balance;
-          word-break: break-all;
+          word-wrap: break-word;
           white-space: all;
           pointer-events: all;
 
