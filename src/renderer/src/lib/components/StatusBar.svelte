@@ -165,7 +165,7 @@
     background-color: #000;
     border-radius: 0.2rem;
     overflow: hidden;
-    box-shadow: 0 2px 8px #000;
+    box-shadow: 0 -2px 8px #000;
 
     display: flex;
     justify-content: center;
