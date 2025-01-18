@@ -136,7 +136,7 @@ ipcMain.on('loginrequest', async (_event, { username, password }) => {
   const drasl = new DraslAuth({
     username,
     password,
-    server: 'https://testauth.xllifi.ru',
+    server: 'https://auth.easy-main.ru/',
     saveDir: path.resolve(gamePath, 'instance')
   })
 
