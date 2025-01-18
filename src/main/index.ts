@@ -11,7 +11,7 @@ Sentry.init({ dsn: 'https://f3c5d61a7f01460390091cfcb30e6f91@sentry.xllifi.ru/1'
 
 const isDev = !app.isPackaged
 
-export const gamePath = path.resolve(app.getPath('appData'), '.easylauncher')
+export const gamePath = path.resolve(app.getPath('home'), '.easylauncher')
 export let loadingWindow: BrowserWindow, mainWindow: BrowserWindow, renderer: WebContents
 
 function createWindow(): void {
@@ -124,7 +124,10 @@ ipcMain.on('quit', () => {
 })
 ipcMain.on('viewlogs', () => {
   const logPath = path.resolve(gamePath, 'instance/logs/latest.log')
-  if (!existsSync(logPath)) renderer.send('feed-push', { id: 'nolog' })
+  if (!existsSync(logPath)) {
+    renderer.send('feed-push', { id: 'nolog' })
+    return
+  }
   shell.openPath(logPath)
 })
 
