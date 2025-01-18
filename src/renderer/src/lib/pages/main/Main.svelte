@@ -122,9 +122,9 @@
     <p class="username">{$params.launchCredentials.name}</p>
     <button class="start" class:disabled={$route.state == 'launch'} onclick={launchGame}>{$_('main.play')}</button>
     <div class="buttons">
-      <button class="logs right" data-title={$_('main.tooltips.buttons.modpack')} onclick={() => ipc.send($route.overlay.current = 'modpack')}><PackageSearch /></button>
-      <button class="logs right" data-title={$_('main.tooltips.buttons.logs')} onclick={() => ipc.send('viewlogs')}><ScrollText /></button>
-      <button class="settings right" data-title={$_('main.tooltips.buttons.settings')} onclick={() => ($route.overlay.current = 'settings')}><Settings2 /></button>
+      <button class="right" data-title={$_('main.tooltips.buttons.modpack')} onclick={() => ipc.send($route.overlay.current = 'modpack')}><PackageSearch /></button>
+      <button class="right" data-title={$_('main.tooltips.buttons.logs')} onclick={() => ipc.send('viewlogs')}><ScrollText /></button>
+      <button class="right" data-title={$_('main.tooltips.buttons.settings')} onclick={() => ($route.overlay.current = 'settings')}><Settings2 /></button>
     </div>
   </div>
 </div>
