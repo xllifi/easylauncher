@@ -156,7 +156,7 @@
       height: 100%;
       position: absolute;
       z-index: 1;
-      animation: infinite 1.5s glint;
+      animation: infinite 1.5s glint 3s;
       background: linear-gradient(to right, rgba(255, 255, 255, 0) 40%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0) 60%);
     }
     @keyframes glint {
