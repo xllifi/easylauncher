@@ -48,9 +48,6 @@
     }
   }
 
-  ipc.on('extract', (_event, { extract }) => {
-    console.log(`Got Extract: ${extract}`)
-  })
   ipc.on('progress', async (_event, { type, percent }) => {
     console.log(`Got Progress: ${type}, ${percent}`)
     hide = false
@@ -61,28 +58,10 @@
 
     clearTimeout(endTimeout)
   })
-  ipc.on('check', async (_event, { type, percent }) => {
-    console.log(`Got check: ${type}, ${percent}`)
-    hide = false
-    text = `Проверка ${type}...`
-    left_text = `${percent}%`
-    progress = percent
-    fillcolor = '80f'
-
-    clearTimeout(endTimeout)
-  })
-  ipc.on('eta', (_event, { eta }) => {
-    console.log(`Got ETA: ${eta}`)
-    right_text_2 = `ещё ${eta}`
-  })
-  ipc.on('speed', (_event, { speed }) => {
-    console.log(`Got speed: ${speed}`)
-    right_text_1 = speed
-  })
   ipc.on('start', async () => {
     console.log('Got start')
     hide = false
-    text = `Minecraft запускается...`
+    text = $_('statusbar.minecraft_started')
     left_text = undefined
     right_text_1 = undefined
     right_text_2 = undefined
@@ -99,7 +78,7 @@
   ipc.on('close', () => {
     $route.state = 'idle'
     hide = false
-    text = `Minecraft закрыт!`
+    text = $_('statusbar.minecraft_closed')
     left_text = undefined
     right_text_1 = undefined
     right_text_2 = undefined
@@ -115,7 +94,7 @@
   })
 
   onMount(() => {
-    route.subscribe(({state}) => {
+    route.subscribe(({ state }) => {
       if (state == 'launch') {
         unsetContents()
         hide = false
@@ -126,19 +105,17 @@
 
 <div class="progressbarwrapper">
   {#if !hide}
-  <div class="progressbar" in:fly={{x: 0, y: -100, duration: 400, easing: backOut, opacity: 0}} out:fly={{x: 0, y: -100, duration: 400, easing: backIn, opacity: 0}}>
-    <clipPath class="fill" id="fill" style="width: {progress == null ? 0 : progress}%; background-color: #{fillcolor};"></clipPath>
-    <div class="labels top" style="clip-path: polygon(0% 0%, 0% 100%, {progress == null ? 0 : progress}% 100%, {progress == null ? 0 : progress}% 0%);">
-      <p class="primary">{!text ? displayText + '...' : text}</p>
-      <p class="secondary left" style="filter: drop-shadow(0 0 2px #{fillcolor}) drop-shadow(0 0 2px #{fillcolor});">{left_text}</p>
-      <p class="secondary right" style="filter: drop-shadow(0 0 2px #{fillcolor}) drop-shadow(0 0 2px #{fillcolor});">{right_text_1} {!right_text_1 ? '' : '•'} {right_text_2}</p>
+    <div class="progressbar" in:fly={{ x: 0, y: -100, duration: 400, easing: backOut, opacity: 0 }} out:fly={{ x: 0, y: -100, duration: 400, easing: backIn, opacity: 0 }}>
+      <clipPath class="fill" id="fill" style="width: {progress == null ? 0 : progress}%; background-color: #{fillcolor};"></clipPath>
+      <div class="labels top" style="clip-path: polygon(0% 0%, 0% 100%, {progress == null ? 0 : progress}% 100%, {progress == null ? 0 : progress}% 0%);">
+        <p class="primary">{!text ? displayText + '...' : text}</p>
+        <p class="secondary left" style="filter: drop-shadow(0 0 2px #{fillcolor}) drop-shadow(0 0 2px #{fillcolor});">{left_text}</p>
+      </div>
+      <div class="labels bottom">
+        <p class="primary">{!text ? displayText + '...' : text}</p>
+        <p class="secondary left">{left_text}</p>
+      </div>
     </div>
-    <div class="labels bottom">
-      <p class="primary">{!text ? displayText + '...' : text}</p>
-      <p class="secondary left">{left_text}</p>
-      <p class="secondary right">{right_text_1} {!right_text_1 ? '' : '•'} {right_text_2}</p>
-    </div>
-  </div>
   {/if}
 </div>
 
@@ -179,14 +156,13 @@
       height: 100%;
       position: absolute;
       z-index: 1;
-      animation: glint 2s infinite 3s;
+      animation: infinite 1.5s glint 3s;
       background: linear-gradient(to right, rgba(255, 255, 255, 0) 40%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0) 60%);
     }
     @keyframes glint {
       0% {
         transform: translateX(-100%) skewX(-25deg);
       }
-      75%,
       100% {
         transform: translateX(100%) skewX(-25deg);
       }
@@ -231,9 +207,6 @@
 
         &.left {
           left: 0.5rem;
-        }
-        &.right {
-          right: 0.5rem;
         }
       }
     }

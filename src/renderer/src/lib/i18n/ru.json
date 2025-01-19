@@ -44,7 +44,9 @@
       "libraries": "библиотек",
       "modpack": "сборки",
       "meta": "метаданных"
-    }
+    },
+    "minecraft_started": "Minecraft запускается...",
+    "minecraft_closed": "Minecraft закрыт!"
   },
   "statusfeed": {
     "messages": {
