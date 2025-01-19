@@ -21,7 +21,7 @@
     if (input < min) {
       input = min
     }
-    oninput()
+    if (oninput) oninput()
   }
 
   function handleScroll(e: WheelEvent) {
