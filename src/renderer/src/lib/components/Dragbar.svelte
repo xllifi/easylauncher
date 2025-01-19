@@ -19,7 +19,7 @@
 <div class="dragbar">
   <div class="text">
     {#if !$isLoading && $route.loaded}
-      <p transition:fade={{duration: 200}}>{$_('dragbar.title')} • {$_('dragbar.edition')}</p>
+      <p transition:fade={{duration: 200}}>{$_('dragbar.title')} • {$_('dragbar.edition')} {import.meta.env.VITE_APP_VERSION}</p>
     {/if}
   </div>
   <div class="buttons">
@@ -54,7 +54,8 @@
       align-items: center;
 
       padding-left: 0.75rem;
-      color: var(--color-border);
+      color: var(--color-text-primary);
+      opacity: 0.2;
     }
     .buttons {
       display: inline-flex;
