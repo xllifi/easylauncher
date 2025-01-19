@@ -11,7 +11,7 @@
     actionLabel: string
     options: {
         name: string
-        action: MouseEventHandler<HTMLLIElement>
+        action: MouseEventHandler<HTMLButtonElement>
       }[]
   }
   let { onclick, name, description, actionLabel, options }: Props = $props()
@@ -26,17 +26,18 @@
   }
 </script>
 
-<label class="dropdown" data-title={description} onmouseover={mIn} onmouseleave={mOut} onfocus={mIn} onfocusout={mOut}>
+<!-- svelte-ignore a11y_mouse_events_have_key_events -->
+<label class="dropdown" data-title={description} onmouseover={mIn} onmouseleave={mOut}>
   <p>{name}</p>
-  <button {onclick} aria-label={name} class:rotateChev={lblHov} onfocus={mIn} onfocusout={mOut}>{actionLabel} <ChevronDown /></button>
+  <button {onclick} aria-label={name} class:rotateChev={lblHov} onfocus={mIn}>{actionLabel} <ChevronDown /></button>
   {#if lblHov}
-    <ul class="options" transition:fly={{ duration: 100, y: -20, easing: cubicOut }}>
+    <div class="options" transition:fly={{ duration: 100, y: -20, easing: cubicOut }}>
       {#each options as opt}
         <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
         <!-- svelte-ignore a11y_click_events_have_key_events -->
-        <li onclick={opt.action}>{opt.name}</li>
+        <button onfocusout={options.indexOf(opt) == options.length-1 ? mOut : null} id="dropdown_button" onclick={opt.action}>{opt.name}</button>
       {/each}
-    </ul>
+    </div>
   {/if}
 </label>
 
@@ -44,6 +45,7 @@
   label.dropdown {
     display: flex;
     position: relative;
+    z-index: 2;
 
     align-items: center;
     cursor: pointer;
@@ -63,7 +65,7 @@
       flex: 1 1 0;
     }
 
-    button {
+    > button {
       pointer-events: none;
       height: 1.25rem;
       font-size: 0.9rem;
@@ -85,26 +87,31 @@
       }
     }
 
-    ul.options {
+    div.options {
       position: absolute;
       right: 0;
       bottom: 0;
 
-      transform: translateY(100%);
+      transform: translateY(calc(100% - 0.2rem));
 
-      background-color: #0006;
+      background-color: var(--color-background);
       border-radius: 0.2rem;
-      outline: solid 2px #fff1;
+      outline: solid 2px var(--theme-accent-inactive);
       list-style: none;
       padding: 0.4rem;
 
-      & > li {
+      display: flex;
+      flex-direction: column;
+
+      & > button {
         margin: 0;
-        padding: 0 0.8rem;
+        padding: 0.4rem 0.8rem;
 
         background-color: #fff1;
         outline: solid 2px #0000;
         border-radius: 0.2rem;
+
+        pointer-events: all;
 
         transition:
           background-color 200ms,
@@ -114,7 +121,7 @@
           margin-bottom: 0.4rem;
         }
 
-        &:hover {
+        &:is(:hover, :focus-visible) {
           background-color: #0000;
           outline: solid 2px var(--theme-accent-active);
           filter: drop-shadow(0 0 3px var(--theme-accent-active-darker));
