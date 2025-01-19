@@ -52,11 +52,10 @@ input:is([type='text'], [type='password']) {
   transition:
     outline-color 100ms,
     filter 100ms;
-  &:hover {
+  &:is(:hover, :focus-visible) {
     outline: solid var(--theme-accent-active) 2px;
   }
   &:focus {
-    outline: solid var(--theme-accent-active) 2px;
     filter: drop-shadow(0 0 3px var(--theme-accent-active-darker));
   }
 }

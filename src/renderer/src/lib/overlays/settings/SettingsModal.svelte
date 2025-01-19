@@ -233,8 +233,8 @@
         border-radius: 999px;
       }
 
-      :global(label) {
-        &:hover::after {
+      :global(label:hover) {
+        &::after {
           content: attr(data-title);
           width: 100%;
           position: absolute;
@@ -253,7 +253,7 @@
           pointer-events: none;
           z-index: 5;
         }
-        &:first-of-type:hover::after {
+        &:first-of-type::after {
           top: unset;
           bottom: -1.5rem;
         }

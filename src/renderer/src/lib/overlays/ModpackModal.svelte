@@ -191,7 +191,7 @@
         white-space: pre-line;
       }
 
-      &:hover {
+      &:is(:hover, :focus-visible) {
         div.cover {
           opacity: 0;
         }
@@ -237,7 +237,7 @@
           font-size: 0.9rem;
         }
       }
-      &.selected:hover::after {
+      &.selected:is(:hover, :focus-visible)::after {
         opacity: 0;
       }
     }

@@ -91,7 +91,7 @@
         transition: outline-color 200ms;
       }
 
-      &:hover {
+      &:is(:hover, :focus-visible) {
         outline: solid 2px var(--theme-accent-active);
         filter: drop-shadow(0 0 3px var(--theme-accent-active-darker));
         &::-webkit-slider-thumb {
