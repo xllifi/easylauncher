@@ -130,6 +130,14 @@ ipcMain.on('viewlogs', () => {
   }
   shell.openPath(logPath)
 })
+ipcMain.on('opengamedir', () => {
+  const gameDir = path.resolve(gamePath, 'instance/')
+  if (!existsSync(gameDir)) {
+    renderer.send('feed-push', { id: 'nogamedir' })
+    return
+  }
+  shell.openPath(gameDir)
+})
 
 ipcMain.on('launch', (_event, { params }) => {
   startGame(params)

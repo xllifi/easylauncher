@@ -7,7 +7,7 @@
   import { getSkinUrls, setupSkin } from './Main.svelte.js'
   import noskin from '../../../assets/unknownplayer.png'
   import BgLogs from './BgLogs.svelte'
-  import { PackageSearch, ScrollText, Settings2 } from 'lucide-svelte'
+  import { FolderOpen, Package, ScrollText, Settings2 } from 'lucide-svelte'
   import { _ } from 'svelte-i18n'
   let skinCv: HTMLCanvasElement, skinVw: skinview3d.SkinViewer
   let skin: string = noskin
@@ -122,8 +122,9 @@
     <p class="username">{$params.launchCredentials.name}</p>
     <button class="start" class:disabled={$route.state == 'launch'} onclick={launchGame}>{$_('main.play')}</button>
     <div class="buttons">
-      <button class="right" data-title={$_('main.tooltips.buttons.modpack')} onclick={() => ipc.send($route.overlay.current = 'modpack')}><PackageSearch /></button>
+      <button class="right" data-title={$_('main.tooltips.buttons.gamedir')} onclick={() => ipc.send('opengamedir')}><FolderOpen /></button>
       <button class="right" data-title={$_('main.tooltips.buttons.logs')} onclick={() => ipc.send('viewlogs')}><ScrollText /></button>
+      <button class="right" data-title={$_('main.tooltips.buttons.modpack')} onclick={() => ($route.overlay.current = 'modpack')}><Package /></button>
       <button class="right" data-title={$_('main.tooltips.buttons.settings')} onclick={() => ($route.overlay.current = 'settings')}><Settings2 /></button>
     </div>
   </div>

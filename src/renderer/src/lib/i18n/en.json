@@ -9,8 +9,9 @@
     "play": "PLAY",
     "tooltips": {
       "buttons": {
-        "modpack": "Open modpack selection menu",
+        "gamedir": "Open game directory",
         "logs": "Open last log in default editor",
+        "modpack": "Open modpack selection menu",
         "settings": "Open settings"
       }
     }
@@ -68,7 +69,11 @@
       },
       "nolog": {
         "title": "Error!",
-        "description": "Unable to view latest log, There's no file."
+        "description": "Unable to view latest log. There's no file."
+      },
+      "nogamedir": {
+        "title": "Error!",
+        "description": "Unable to open game directory. There's no directory."
       },
       "login-error-401": {
         "title": "Failed to log in!",
