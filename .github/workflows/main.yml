@@ -51,3 +51,4 @@ jobs:
         with:
           name: artifact
           pattern: prep-*
+          delete-merged: true
