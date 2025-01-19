@@ -7,7 +7,7 @@
   import { onMount } from 'svelte'
   import { route } from '../stores/route.svelte.js'
 
-  let text, left_text, right_text_1, right_text_2, progress, endTimeout
+  let text, left_text, progress, endTimeout
   let hide = true
   let fillcolor = 'fa0'
 
@@ -20,8 +20,6 @@
   function parseContents(opts: StatusBarContents): void {
     text = opts.text ? opts.text : undefined
     left_text = opts.left_text ? opts.left_text : undefined
-    right_text_1 = opts.right_text_1 ? opts.right_text_1 : undefined
-    right_text_2 = opts.right_text_2 ? opts.right_text_2 : undefined
     fillcolor = opts.fillcolor ? opts.fillcolor : 'fa0'
     progress = opts.progress ? opts.progress : 0
   }
@@ -30,8 +28,6 @@
     setTimeout(() => {
       text = undefined
       left_text = undefined
-      right_text_1 = undefined
-      right_text_2 = undefined
       fillcolor = 'fa0'
       progress = 0
     }, 400)
@@ -63,8 +59,6 @@
     hide = false
     text = $_('statusbar.minecraft_started')
     left_text = undefined
-    right_text_1 = undefined
-    right_text_2 = undefined
     progress = 100
     fillcolor = '5d5'
     endTimeout = setTimeout(() => {
@@ -80,8 +74,6 @@
     hide = false
     text = $_('statusbar.minecraft_closed')
     left_text = undefined
-    right_text_1 = undefined
-    right_text_2 = undefined
     progress = 100
     fillcolor = 'd44'
     endTimeout = setTimeout(() => {
