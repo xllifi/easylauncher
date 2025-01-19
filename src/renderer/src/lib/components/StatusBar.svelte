@@ -48,9 +48,6 @@
     }
   }
 
-  ipc.on('extract', (_event, { extract }) => {
-    console.log(`Got Extract: ${extract}`)
-  })
   ipc.on('progress', async (_event, { type, percent }) => {
     console.log(`Got Progress: ${type}, ${percent}`)
     hide = false
@@ -60,24 +57,6 @@
     fillcolor = 'fa0'
 
     clearTimeout(endTimeout)
-  })
-  ipc.on('check', async (_event, { type, percent }) => {
-    console.log(`Got check: ${type}, ${percent}`)
-    hide = false
-    text = `Проверка ${type}...`
-    left_text = `${percent}%`
-    progress = percent
-    fillcolor = '80f'
-
-    clearTimeout(endTimeout)
-  })
-  ipc.on('eta', (_event, { eta }) => {
-    console.log(`Got ETA: ${eta}`)
-    right_text_2 = `ещё ${eta}`
-  })
-  ipc.on('speed', (_event, { speed }) => {
-    console.log(`Got speed: ${speed}`)
-    right_text_1 = speed
   })
   ipc.on('start', async () => {
     console.log('Got start')
@@ -131,12 +110,10 @@
     <div class="labels top" style="clip-path: polygon(0% 0%, 0% 100%, {progress == null ? 0 : progress}% 100%, {progress == null ? 0 : progress}% 0%);">
       <p class="primary">{!text ? displayText + '...' : text}</p>
       <p class="secondary left" style="filter: drop-shadow(0 0 2px #{fillcolor}) drop-shadow(0 0 2px #{fillcolor});">{left_text}</p>
-      <p class="secondary right" style="filter: drop-shadow(0 0 2px #{fillcolor}) drop-shadow(0 0 2px #{fillcolor});">{right_text_1} {!right_text_1 ? '' : '•'} {right_text_2}</p>
     </div>
     <div class="labels bottom">
       <p class="primary">{!text ? displayText + '...' : text}</p>
       <p class="secondary left">{left_text}</p>
-      <p class="secondary right">{right_text_1} {!right_text_1 ? '' : '•'} {right_text_2}</p>
     </div>
   </div>
   {/if}
@@ -231,9 +208,6 @@
 
         &.left {
           left: 0.5rem;
-        }
-        &.right {
-          right: 0.5rem;
         }
       }
     }
