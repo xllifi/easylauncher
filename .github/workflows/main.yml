@@ -32,14 +32,14 @@ jobs:
           windows_certs: ${{ secrets.windows_certs }}
           windows_certs_password: ${{ secrets.windows_certs_password }}
 
-      - name: Publish Artifact
+      - name: Create Appx Artifact
         uses: actions/upload-artifact@v4
         with:
           name: prep-appx
           path: dist/easylauncher*.appx
           if-no-files-found: error
 
-      - name: Publish Artifact
+      - name: Create Cert Artifact
         uses: actions/upload-artifact@v4
         with:
           name: prep-cert
