@@ -13,9 +13,10 @@
     "svelte-check": "svelte-check --tsconfig ./tsconfig.json",
     "typecheck": "yarn typecheck:node && yarn svelte-check",
     "dev": "electron-vite dev",
-    "build": "yarn typecheck && electron-vite build && electron-builder --win",
     "postinstall": "electron-builder install-app-deps",
-    "build:unpack": "yarn build && electron-builder --dir"
+    "build": "yarn typecheck && electron-vite build",
+    "build:unpack": "yarn build && electron-builder --dir",
+    "build:win": "yarn build && electron-builder --win"
   },
   "dependencies": {
     "@electron-toolkit/preload": "^3.0.1",
