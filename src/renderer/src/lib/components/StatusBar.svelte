@@ -156,14 +156,13 @@
       height: 100%;
       position: absolute;
       z-index: 1;
-      animation: glint 2s infinite 3s;
+      animation: infinite 1.5s glint;
       background: linear-gradient(to right, rgba(255, 255, 255, 0) 40%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0) 60%);
     }
     @keyframes glint {
       0% {
         transform: translateX(-100%) skewX(-25deg);
       }
-      75%,
       100% {
         transform: translateX(100%) skewX(-25deg);
       }
