@@ -13,7 +13,7 @@
     "svelte-check": "svelte-check --tsconfig ./tsconfig.json",
     "typecheck": "yarn typecheck:node && yarn svelte-check",
     "dev": "electron-vite dev",
-    "build": "yarn typecheck && electron-builder --win",
+    "build": "yarn typecheck && electron-vite build && electron-builder --win",
     "postinstall": "electron-builder install-app-deps",
     "build:unpack": "yarn build && electron-builder --dir"
   },
