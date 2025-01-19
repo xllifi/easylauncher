@@ -61,7 +61,7 @@
   ipc.on('start', async () => {
     console.log('Got start')
     hide = false
-    text = `Minecraft запускается...`
+    text = $_('statusbar.minecraft_started')
     left_text = undefined
     right_text_1 = undefined
     right_text_2 = undefined
@@ -78,7 +78,7 @@
   ipc.on('close', () => {
     $route.state = 'idle'
     hide = false
-    text = `Minecraft закрыт!`
+    text = $_('statusbar.minecraft_closed')
     left_text = undefined
     right_text_1 = undefined
     right_text_2 = undefined
@@ -94,7 +94,7 @@
   })
 
   onMount(() => {
-    route.subscribe(({state}) => {
+    route.subscribe(({ state }) => {
       if (state == 'launch') {
         unsetContents()
         hide = false
@@ -105,17 +105,17 @@
 
 <div class="progressbarwrapper">
   {#if !hide}
-  <div class="progressbar" in:fly={{x: 0, y: -100, duration: 400, easing: backOut, opacity: 0}} out:fly={{x: 0, y: -100, duration: 400, easing: backIn, opacity: 0}}>
-    <clipPath class="fill" id="fill" style="width: {progress == null ? 0 : progress}%; background-color: #{fillcolor};"></clipPath>
-    <div class="labels top" style="clip-path: polygon(0% 0%, 0% 100%, {progress == null ? 0 : progress}% 100%, {progress == null ? 0 : progress}% 0%);">
-      <p class="primary">{!text ? displayText + '...' : text}</p>
-      <p class="secondary left" style="filter: drop-shadow(0 0 2px #{fillcolor}) drop-shadow(0 0 2px #{fillcolor});">{left_text}</p>
+    <div class="progressbar" in:fly={{ x: 0, y: -100, duration: 400, easing: backOut, opacity: 0 }} out:fly={{ x: 0, y: -100, duration: 400, easing: backIn, opacity: 0 }}>
+      <clipPath class="fill" id="fill" style="width: {progress == null ? 0 : progress}%; background-color: #{fillcolor};"></clipPath>
+      <div class="labels top" style="clip-path: polygon(0% 0%, 0% 100%, {progress == null ? 0 : progress}% 100%, {progress == null ? 0 : progress}% 0%);">
+        <p class="primary">{!text ? displayText + '...' : text}</p>
+        <p class="secondary left" style="filter: drop-shadow(0 0 2px #{fillcolor}) drop-shadow(0 0 2px #{fillcolor});">{left_text}</p>
+      </div>
+      <div class="labels bottom">
+        <p class="primary">{!text ? displayText + '...' : text}</p>
+        <p class="secondary left">{left_text}</p>
+      </div>
     </div>
-    <div class="labels bottom">
-      <p class="primary">{!text ? displayText + '...' : text}</p>
-      <p class="secondary left">{left_text}</p>
-    </div>
-  </div>
   {/if}
 </div>
 

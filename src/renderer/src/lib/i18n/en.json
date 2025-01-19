@@ -37,7 +37,9 @@
       "libraries": "libraries",
       "modpack": "modpack",
       "meta": "metadata"
-    }
+    },
+    "minecraft_started": "Minecraft is starting...",
+    "minecraft_closed": "Minecraft got closed!"
   },
   "statusfeed": {
     "messages": {
