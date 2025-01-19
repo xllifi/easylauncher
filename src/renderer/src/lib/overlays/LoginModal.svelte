@@ -1,8 +1,8 @@
 <script lang="ts">
   import { ArrowLeft, CircleUserRound, KeySquare, X } from 'lucide-svelte'
   import type { MouseEventHandler } from 'svelte/elements'
-  import { ipc } from '../../scripts/general.js'
-  import { route } from '../../stores/route.svelte.js'
+  import { ipc } from '../scripts/general.js'
+  import { route } from '../stores/route.svelte.js'
   import { _ } from 'svelte-i18n'
   import { onMount } from 'svelte'
 

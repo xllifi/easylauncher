@@ -5,7 +5,7 @@
   import { route } from './lib/stores/route.svelte'
   import { fade, fly, scale } from 'svelte/transition'
   import { backIn, backOut } from 'svelte/easing'
-  import LoginModal from './lib/overlays/login/LoginModal.svelte'
+  import LoginModal from './lib/overlays/LoginModal.svelte'
   import { getLocaleFromNavigator, init, isLoading, register } from 'svelte-i18n'
   import { params } from './lib/stores/params.svelte.js'
   import Step1 from './lib/pages/onboarding/Index.svelte'
