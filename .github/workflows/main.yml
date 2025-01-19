@@ -35,6 +35,19 @@ jobs:
       - name: Publish Artifact
         uses: actions/upload-artifact@v4
         with:
-          path: |
-            dist/easylauncher*.appx
-            build/include/*
+          name: prep-appx
+          path: dist/easylauncher*.appx
+          if-no-files-found: error
+
+      - name: Publish Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: prep-cert
+          path: build/include/*
+          if-no-files-found: error
+
+      - name: Merge Artifacts
+        uses: actions/upload-artifact/merge@v4
+        with:
+          name: artifact
+          pattern: prep-*
