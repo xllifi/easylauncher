@@ -6,7 +6,14 @@
     }
   },
   "main": {
-    "play": "PLAY"
+    "play": "PLAY",
+    "tooltips": {
+      "buttons": {
+        "modpack": "Open modpack selection menu",
+        "logs": "Open last log in default editor",
+        "settings": "Open settings"
+      }
+    }
   },
   "dragbar": {
     "title": "easylauncher",
