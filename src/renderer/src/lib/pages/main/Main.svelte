@@ -9,6 +9,7 @@
   import BgLogs from './BgLogs.svelte'
   import { FolderOpen, Package, ScrollText, Settings2 } from 'lucide-svelte'
   import { _ } from 'svelte-i18n'
+  import { appstate } from '../../stores/appstate.svelte.js'
   let skinCv: HTMLCanvasElement, skinVw: skinview3d.SkinViewer
   let skin: string = noskin
   let cape: string
@@ -79,7 +80,7 @@
   }
 
   function launchGame(): void {
-    if ($route.state == 'launch') return
+    if ($appstate.current == 'launch') return
 
     if (!$params.rulesConfirmed) {
       $route.overlay.current = 'rules'
@@ -93,14 +94,8 @@
     }
 
     ipc.send('launch', { params: $params })
-    $route.state = 'launch'
+    $appstate.current = 'launch'
   }
-
-  ipc.on('start', () => {
-    if ($route.state === 'launch') {
-      $route.state = 'idle'
-    }
-  })
 
   ipc.on('loginresponse', async (_event, { launchCredentials }) => {
     $params.launchCredentials = launchCredentials
@@ -120,7 +115,7 @@
 <div class="main">
   <div class="bottom">
     <p class="username">{$params.launchCredentials.name}</p>
-    <button class="start" class:disabled={$route.state == 'launch'} onclick={launchGame}>{$_('page.main.play')}</button>
+    <button class="start" class:disabled={$appstate.current == 'launch'} onclick={launchGame}>{$_('page.main.play')}</button>
     <div class="buttons">
       <button class="" data-title={$_('page.main.tooltips.buttons.gamedir')} onclick={() => ipc.send('opengamedir')}><FolderOpen /></button>
       <button class="right" data-title={$_('page.main.tooltips.buttons.logs')} onclick={() => ipc.send('viewlogs')}><ScrollText /></button>

@@ -5,7 +5,7 @@
   import { ipc } from '../scripts/general.js'
   import { _ } from 'svelte-i18n'
   import { onMount } from 'svelte'
-  import { route } from '../stores/route.svelte.js'
+  import { appstate } from '../stores/appstate.svelte.js'
 
   let text, left_text, progress, endTimeout
   let hide = true
@@ -70,7 +70,7 @@
     }, 2500)
   })
   ipc.on('close', () => {
-    $route.state = 'idle'
+    $appstate.current = 'idle'
     hide = false
     text = $_('statusbar.minecraft_closed')
     left_text = undefined
@@ -86,8 +86,8 @@
   })
 
   onMount(() => {
-    route.subscribe(({ state }) => {
-      if (state == 'launch') {
+    appstate.subscribe(({ current }) => {
+      if (current == 'launch') {
         unsetContents()
         hide = false
       }
