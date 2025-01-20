@@ -19,7 +19,7 @@
 <div class="dragbar">
   <div class="text">
     {#if !$isLoading && $route.loaded}
-      <p transition:fade={{duration: 200}}>{$_('dragbar.title')} • {$_('dragbar.edition')} {import.meta.env.VITE_APP_VERSION}</p>
+      <p transition:fade={{duration: 200}}>{$_('dragbar.title')} • {$_('dragbar.edition')} {import.meta.env.APP_VERSION}</p>
     {/if}
   </div>
   <div class="buttons">

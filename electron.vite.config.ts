@@ -3,6 +3,9 @@ import { svelte } from '@sveltejs/vite-plugin-svelte'
 
 export default defineConfig({
   main: {
+    define: {
+      'import.meta.env.APP_VERSION': JSON.stringify(process.env.npm_package_version)
+    },
     plugins: [externalizeDepsPlugin()]
   },
   preload: {
@@ -10,7 +13,7 @@ export default defineConfig({
   },
   renderer: {
     define: {
-      'import.meta.env.VITE_APP_VERSION': JSON.stringify(process.env.npm_package_version)
+      'import.meta.env.APP_VERSION': JSON.stringify(process.env.npm_package_version)
     },
     plugins: [svelte()],
     css: {
