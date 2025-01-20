@@ -8,10 +8,14 @@ import * as Sentry from '@sentry/electron/main'
 import { existsSync } from 'fs'
 import { Updater } from './updater.js'
 
-Sentry.init({ dsn: import.meta.env.VITE_SENTRY_URL })
-
 const updater = new Updater()
 const isDev = !app.isPackaged
+
+Sentry.init({
+  dsn: import.meta.env.VITE_SENTRY_URL,
+  environment: isDev ? 'development' : 'production'
+})
+Sentry.setExtra('source', 'BACKEND')
 
 export const gamePath = path.resolve(app.getPath('home'), '.easylauncher')
 export let loadingWindow: BrowserWindow, mainWindow: BrowserWindow, renderer: WebContents
