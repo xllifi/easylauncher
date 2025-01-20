@@ -36,9 +36,9 @@
 </script>
 
 <main>
-  <OptionSlider oninput={() => verifyValues('max')} name={$_('settings.pages.launch.options.maxram.name')} description={$_('settings.pages.launch.options.maxram.description')} bind:input={$params.launchOpts.memory.max} min={0} max={16384} step={512} />
-  <OptionSlider oninput={() => verifyValues('min')} name={$_('settings.pages.launch.options.minram.name')} description={$_('settings.pages.launch.options.minram.description')} bind:input={$params.launchOpts.memory.min} min={0} max={16384} step={512} />
-  <OptionSlider name={$_('settings.pages.launch.options.screenwidth.name')} description={$_('settings.pages.launch.options.screenwidth.description')} bind:input={$params.launchOpts.screen.width} min={0} max={3840} step={120} />
-  <OptionSlider name={$_('settings.pages.launch.options.screenheight.name')} description={$_('settings.pages.launch.options.screenheight.description')} bind:input={$params.launchOpts.screen.height} min={0} max={2160} step={120} />
-  <OptionCheckbox name={$_('settings.pages.launch.options.detached.name')} description={$_('settings.pages.launch.options.detached.description')} bind:checked={$params.launchOpts.detached}/>
+  <OptionSlider oninput={() => verifyValues('max')} name={$_('modal.settings.pages.launch.options.maxram.name')} description={$_('modal.settings.pages.launch.options.maxram.description')} bind:input={$params.launchOpts.memory.max} min={0} max={16384} step={512} />
+  <OptionSlider oninput={() => verifyValues('min')} name={$_('modal.settings.pages.launch.options.minram.name')} description={$_('modal.settings.pages.launch.options.minram.description')} bind:input={$params.launchOpts.memory.min} min={0} max={16384} step={512} />
+  <OptionSlider name={$_('modal.settings.pages.launch.options.screenwidth.name')} description={$_('modal.settings.pages.launch.options.screenwidth.description')} bind:input={$params.launchOpts.screen.width} min={0} max={3840} step={120} />
+  <OptionSlider name={$_('modal.settings.pages.launch.options.screenheight.name')} description={$_('modal.settings.pages.launch.options.screenheight.description')} bind:input={$params.launchOpts.screen.height} min={0} max={2160} step={120} />
+  <OptionCheckbox name={$_('modal.settings.pages.launch.options.detached.name')} description={$_('modal.settings.pages.launch.options.detached.description')} bind:checked={$params.launchOpts.detached}/>
 </main>

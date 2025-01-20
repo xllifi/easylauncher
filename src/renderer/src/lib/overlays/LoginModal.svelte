@@ -59,25 +59,25 @@
 <div class="layout">
   <div class="title">
     <button class="back" class:hidden={$route.overlay.previous == 'none'} onclick={back}><ArrowLeft /></button>
-    <h2>{$_('login.title')}</h2>
+    <h2>{$_('modal.login.title')}</h2>
     <button class="close" onclick={exit}><X /></button>
   </div>
   <div class="form">
     <div class="textinput" class:incorrect={!isUsernameValid && showUsernameInvalid}>
       <div class="label">
         <CircleUserRound />
-        <p>{$_('login.form.username')}</p>
+        <p>{$_('modal.login.form.username')}</p>
       </div>
       <input type="text" bind:this={usernameInput} bind:value={username} oninput={oninputUsername} onfocusout={onunfocusUsername} onkeypress={onkeypressUsername}/>
     </div>
     <div class="textinput" class:incorrect={!isPasswordValid && showPasswordInvalid}>
       <div class="label">
         <KeySquare />
-        <p>{$_('login.form.password')}</p>
+        <p>{$_('modal.login.form.password')}</p>
       </div>
       <input type="password" bind:this={passwordInput} bind:value={password} oninput={oninputPassword} onfocusout={onunfocusPassword} onkeypress={onkeypressPassword}/>
     </div>
-    <button onclick={login} class="login" disabled={!isUsernameValid || !isPasswordValid}>{$_('login.form.action')}</button>
+    <button onclick={login} class="login" disabled={!isUsernameValid || !isPasswordValid}>{$_('modal.login.form.action')}</button>
   </div>
 </div>
 

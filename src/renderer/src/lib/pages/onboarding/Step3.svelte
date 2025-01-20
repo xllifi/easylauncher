@@ -25,32 +25,32 @@
   onMount(isWrapperScrolled)
 </script>
 
-<h1>{$_('modpacktype.title')}</h1>
+<h1>{$_('modal.modpack.title')}</h1>
 <div class="wrapper" class:scrolled bind:this={wrapper} onscroll={isWrapperScrolled}>
   {#if scrolled}
     <span class="scrolled" transition:fade={{ duration: 160 }}></span>
   {/if}
-  <p class="description">{$_('modpacktype.description')}<br />{$_('modpacktype.onboardingextra')}</p>
+  <p class="description">{$_('modal.modpack.description')}<br />{$_('modal.modpack.onboardingextra')}</p>
   <button class="ful" onclick={() => {chooseModpack('ful')}}>
     <div class="cover">
       <PackagePlus />
-      <h2>{$_('modpacktype.options.ful.title')}</h2>
+      <h2>{$_('modal.modpack.options.ful.title')}</h2>
     </div>
-    <p class="description">{$_('modpacktype.options.ful.description')}</p>
+    <p class="description">{$_('modal.modpack.options.ful.description')}</p>
   </button>
   <button class="ess" onclick={() => {chooseModpack('ess')}}>
     <div class="cover">
       <PackageX />
-      <h2>{$_('modpacktype.options.ess.title')}</h2>
+      <h2>{$_('modal.modpack.options.ess.title')}</h2>
     </div>
-    <p class="description">{$_('modpacktype.options.ess.description')}</p>
+    <p class="description">{$_('modal.modpack.options.ess.description')}</p>
   </button>
   <button class="min" onclick={() => {chooseModpack('min')}}>
     <div class="cover">
       <PackageCheck />
-      <h2>{$_('modpacktype.options.min.title')}</h2>
+      <h2>{$_('modal.modpack.options.min.title')}</h2>
     </div>
-    <p class="description">{$_('modpacktype.options.min.description')}</p>
+    <p class="description">{$_('modal.modpack.options.min.description')}</p>
   </button>
 </div>
 

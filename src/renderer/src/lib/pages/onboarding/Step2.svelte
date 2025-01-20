@@ -71,24 +71,24 @@
 
 <!-- TODO: IMPROVE UI -->
 
-<h1>{$_('login.title')}</h1>
+<h1>{$_('modal.login.title')}</h1>
 <p class="description">Если у тебя нет данных для входа, то их можно найти в [ДОБАВИТЬ ИСТОЧНИК]</p>
 <div class="form">
   <div class="textinput" class:incorrect={!isUsernameValid && showUsernameInvalid}>
     <div class="label">
       <CircleUserRound />
-      <p>{$_('login.form.username')}</p>
+      <p>{$_('modal.login.form.username')}</p>
     </div>
     <input type="text" bind:this={usernameInput} bind:value={username} disabled={isLoggingIn} oninput={oninputUsername} onfocusout={onunfocusUsername} onkeypress={onkeypressUsername} />
   </div>
   <div class="textinput" class:incorrect={!isPasswordValid && showPasswordInvalid}>
     <div class="label">
       <KeySquare />
-      <p>{$_('login.form.password')}</p>
+      <p>{$_('modal.login.form.password')}</p>
     </div>
     <input type="password" bind:this={passwordInput} bind:value={password} disabled={isLoggingIn} oninput={oninputPassword} onfocusout={onunfocusPassword} onkeypress={onkeypressPassword} />
   </div>
-  <button onclick={login} class="login" disabled={!isUsernameValid || !isPasswordValid || isLoggingIn}>{$_('login.form.action')}</button>
+  <button onclick={login} class="login" disabled={!isUsernameValid || !isPasswordValid || isLoggingIn}>{$_('modal.login.form.action')}</button>
 </div>
 
 <style lang="scss">

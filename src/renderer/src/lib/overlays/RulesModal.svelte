@@ -12,16 +12,16 @@
   let { exit = $bindable(), back = $bindable() }: Props = $props()
   const rules = [
     {
-      title: 'rules.entries.respect.title',
-      content: 'rules.entries.respect.content'
+      title: 'modal.rules.entries.respect.title',
+      content: 'modal.rules.entries.respect.content'
     },
     {
-      title: 'rules.entries.integrity.title',
-      content: 'rules.entries.integrity.content'
+      title: 'modal.rules.entries.integrity.title',
+      content: 'modal.rules.entries.integrity.content'
     },
     {
-      title: 'rules.entries.vigilant.title',
-      content: 'rules.entries.vigilant.content'
+      title: 'modal.rules.entries.vigilant.title',
+      content: 'modal.rules.entries.vigilant.content'
     }
   ]
   const ruleEls: HTMLInputElement[] = $state([])
@@ -47,11 +47,11 @@
 
 <div class="title">
   <button class="back" class:hidden={$route.overlay.previous == 'none' && back != null} onclick={back}><ArrowLeft /></button>
-  <h2>{$_('rules.title')}</h2>
+  <h2>{$_('modal.rules.title')}</h2>
   <button class="close" onclick={exit}><X /></button>
 </div>
 <div class="wrapper">
-  <p class="description">{$_('rules.description')}</p>
+  <p class="description">{$_('modal.rules.description')}</p>
   {#each rules as rule}
     <label class="rule">
       <input type="checkbox" class="button" bind:this={ruleEls[rules.indexOf(rule)]} onclick={ruleConfirmed} />
@@ -59,7 +59,7 @@
       <p class="content">{$_(rule.content)}</p>
     </label>
   {/each}
-  <button class="continue" disabled={!confirmedAll} onclick={confirm}>{$_('rules.continue')}</button>
+  <button class="continue" disabled={!confirmedAll} onclick={confirm}>{$_('modal.rules.continue')}</button>
 </div>
 
 <style lang="scss">

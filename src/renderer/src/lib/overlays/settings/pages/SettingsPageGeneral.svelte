@@ -23,9 +23,9 @@
 </script>
 
 <main>
-  <OptionButton name={$_('settings.pages.general.options.login.name')} description={$_('settings.pages.general.options.login.description')} actionLabel={$_('settings.pages.general.options.login.label')} onclick={() => {goTo('login')}} />
-  <OptionButton name={$_('settings.pages.general.options.modpack.name')} description={$_('settings.pages.general.options.modpack.description')} actionLabel={$_('settings.pages.general.options.modpack.label')} onclick={() => {goTo('modpack')}} />
-  <OptionDropdown name={$_('settings.pages.general.options.language.name')} description={$_('settings.pages.general.options.language.description')} actionLabel={$_('settings.pages.general.options.language.label')} onclick={() => {}} options={[
+  <OptionButton name={$_('modal.settings.pages.general.options.login.name')} description={$_('modal.settings.pages.general.options.login.description')} actionLabel={$_('modal.settings.pages.general.options.login.label')} onclick={() => {goTo('login')}} />
+  <OptionButton name={$_('modal.settings.pages.general.options.modpack.name')} description={$_('modal.settings.pages.general.options.modpack.description')} actionLabel={$_('modal.settings.pages.general.options.modpack.label')} onclick={() => {goTo('modpack')}} />
+  <OptionDropdown name={$_('modal.settings.pages.general.options.language.name')} description={$_('modal.settings.pages.general.options.language.description')} actionLabel={$_('modal.settings.pages.general.options.language.label')} onclick={() => {}} options={[
     {
       name: `${$_('meta.langnames.ru')} (Русский)`,
       action: () => {handleLocaleChange('ru')}

@@ -19,14 +19,14 @@
 
 <div class="title">
   <button class="back" class:hidden={$route.overlay.previous == 'none' && back != null} onclick={back}><ArrowLeft /></button>
-  <h2>{$_('modpacktype.title')}</h2>
+  <h2>{$_('modal.modpack.title')}</h2>
   <button class="close" onclick={exit}><X /></button>
 </div>
 <div class="wrapper">
-  <p class="description">{$_('modpacktype.description')}</p>
+  <p class="description">{$_('modal.modpack.description')}</p>
   <button
     class="modpack ful"
-    data-selected={$_('modpacktype.selected')}
+    data-selected={$_('modal.modpack.selected')}
     class:selected={$params.modpackType === 'ful'}
     onclick={(e) => {
       chooseModpack('ful', e)
@@ -34,13 +34,13 @@
   >
     <div class="cover">
       <PackagePlus />
-      <h2>{$_('modpacktype.options.ful.title')}</h2>
+      <h2>{$_('modal.modpack.options.ful.title')}</h2>
     </div>
-    <p class="description">{$_('modpacktype.options.ful.description')}</p>
+    <p class="description">{$_('modal.modpack.options.ful.description')}</p>
   </button>
   <button
     class="modpack ess"
-    data-selected={$_('modpacktype.selected')}
+    data-selected={$_('modal.modpack.selected')}
     class:selected={$params.modpackType === 'ess'}
     onclick={(e) => {
       chooseModpack('ess', e)
@@ -48,13 +48,13 @@
   >
     <div class="cover">
       <PackageX />
-      <h2>{$_('modpacktype.options.ess.title')}</h2>
+      <h2>{$_('modal.modpack.options.ess.title')}</h2>
     </div>
-    <p class="description">{$_('modpacktype.options.ess.description')}</p>
+    <p class="description">{$_('modal.modpack.options.ess.description')}</p>
   </button>
   <button
     class="modpack min"
-    data-selected={$_('modpacktype.selected')}
+    data-selected={$_('modal.modpack.selected')}
     class:selected={$params.modpackType === 'min'}
     onclick={(e) => {
       chooseModpack('min', e)
@@ -62,9 +62,9 @@
   >
     <div class="cover">
       <PackageCheck />
-      <h2>{$_('modpacktype.options.min.title')}</h2>
+      <h2>{$_('modal.modpack.options.min.title')}</h2>
     </div>
-    <p class="description">{$_('modpacktype.options.min.description')}</p>
+    <p class="description">{$_('modal.modpack.options.min.description')}</p>
   </button>
 </div>
 

@@ -8,6 +8,6 @@
   let { next = $bindable() }: Props = $props()
 </script>
 
-<h1>{$_('onboarding.welcome.title')}</h1>
-<p>{$_('onboarding.welcome.description')}</p>
-<button onclick={next}>{$_('onboarding.welcome.button')}</button>
+<h1>{$_('page.onboarding.welcome.title')}</h1>
+<p>{$_('page.onboarding.welcome.description')}</p>
+<button onclick={next}>{$_('page.onboarding.welcome.button')}</button>

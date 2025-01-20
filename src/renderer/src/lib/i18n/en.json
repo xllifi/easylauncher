@@ -5,14 +5,127 @@
       "en": "English"
     }
   },
-  "main": {
-    "play": "PLAY",
-    "tooltips": {
-      "buttons": {
-        "gamedir": "Open game directory",
-        "logs": "Open last log in default editor",
-        "modpack": "Open modpack selection menu",
-        "settings": "Open settings"
+  "modal": {
+    "settings": {
+      "title": "Settings",
+      "pages": {
+        "general": {
+          "tab": "General",
+          "options": {
+            "login": {
+              "name": "Account login",
+              "description": "Log into EasyMain account",
+              "label": "Go to login"
+            },
+            "modpack": {
+              "name": "Change modpack type",
+              "description": "Select another modpack type",
+              "label": "Go to selection"
+            },
+            "language": {
+              "name": "Language",
+              "description": "Change launcher's language",
+              "label": "Select language"
+            }
+          }
+        },
+        "launch": {
+          "tab": "Launch",
+          "options": {
+            "maxram": {
+              "name": "Max RAM (MB)",
+              "description": "Maximum amount of RAM that Minecraft will be able to use"
+            },
+            "minram": {
+              "name": "Min RAM (MB)",
+              "description": "Minimal (initial) amount of RAM that Minecraft will be able to use"
+            },
+            "screenwidth": {
+              "name": "Screen width",
+              "description": "Window width when the game launches"
+            },
+            "screenheight": {
+              "name": "Screen height",
+              "description": "Window height when the game launches"
+            },
+            "detached": {
+              "name": "Detach Minecraft from launcher",
+              "description": "If enabled, you'll be able to close the launcher without closing Minecraft."
+            }
+          }
+        },
+        "404": {
+          "tab": "No page",
+          "h2": "Page not found! ☹️",
+          "p": "Choose a page from the left side."
+        }
+      }
+    },
+    "login": {
+      "title": "Account login",
+      "form": {
+        "username": "Username",
+        "password": "Password",
+        "action": "Log in!"
+      }
+    },
+    "modpack": {
+      "title": "Modpack type",
+      "description": "Hover over a button to see description.",
+      "onboardingextra": "This choice can be changed later.",
+      "selected": "SELECTED",
+      "options": {
+        "ful": {
+          "title": "Full install",
+          "description": "Install everything without exception. Recommended type for most players.\n\nFor average/powerful PCs."
+        },
+        "min": {
+          "title": "Minimal install",
+          "description": "Install only Minecraft, essential and optimization mods.\n\nFor weak PCs."
+        },
+        "ess": {
+          "title": "Only essential",
+          "description": "Only install Minecraft and a few essential mods.\n\nDoes NOT include optimization mods."
+        }
+      }
+    },
+    "rules": {
+      "title": "Rules",
+      "description": "Agree to server rules to play",
+      "entries": {
+        "respect": {
+          "title": "Treat everyone with respect",
+          "content": "We do not tolerate bullying or harassment, in any way, shape or form. All members of our community should be treated with dignity and respect."
+        },
+        "integrity": {
+          "title": "Play with integrity",
+          "content": "Fair gameplay is core to the experience. Progression is earned through good, clean gameplay. Cheating, griefing or other threats to fair play will not be tolerated."
+        },
+        "vigilant": {
+          "title": "Stay vigilant",
+          "content": "Working tagether we can keep the game fair and fun for all. To promote an enjoyable gameplay experience, report any incidents or inappropriate behaviors you encounter to moderation staff."
+        }
+      },
+      "continue": "Continue"
+    }
+  },
+  "page": {
+    "main": {
+      "play": "PLAY",
+      "tooltips": {
+        "buttons": {
+          "gamedir": "Open game directory",
+          "logs": "Open last log in default editor",
+          "modpack": "Open modpack selection menu",
+          "settings": "Open settings"
+        }
+      }
+    },
+    "onboarding": {
+      "welcome": {
+        "title": "Hi there!",
+        "description": "Let's set everything up...",
+        "button": "Next"
       }
     }
   },
@@ -108,114 +221,5 @@
         "description": "Detailed description: $1\n\nIMPORTANT: this issue might not be critical, there's a chance everyting will work. If launcher seems like it does nothing, please let the developer know and restart the launcher."
       }
     }
-  },
-  "settings": {
-    "title": "Settings",
-    "pages": {
-      "general": {
-        "tab": "General",
-        "options": {
-          "login": {
-            "name": "Account login",
-            "description": "Log into EasyMain account",
-            "label": "Go to login"
-          },
-          "modpack": {
-            "name": "Change modpack type",
-            "description": "Select another modpack type",
-            "label": "Go to selection"
-          },
-          "language": {
-            "name": "Language",
-            "description": "Change launcher's language",
-            "label": "Select language"
-          }
-        }
-      },
-      "launch": {
-        "tab": "Launch",
-        "options": {
-          "maxram": {
-            "name": "Max RAM (MB)",
-            "description": "Maximum amount of RAM that Minecraft will be able to use"
-          },
-          "minram": {
-            "name": "Min RAM (MB)",
-            "description": "Minimal (initial) amount of RAM that Minecraft will be able to use"
-          },
-          "screenwidth": {
-            "name": "Screen width",
-            "description": "Window width when the game launches"
-          },
-          "screenheight": {
-            "name": "Screen height",
-            "description": "Window height when the game launches"
-          },
-          "detached": {
-            "name": "Detach Minecraft from launcher",
-            "description": "If enabled, you'll be able to close the launcher without closing Minecraft."
-          }
-        }
-      },
-      "404": {
-        "tab": "No page",
-        "h2": "Page not found! ☹️",
-        "p": "Choose a page from the left side."
-      }
-    }
-  },
-  "login": {
-    "title": "Account login",
-    "form": {
-      "username": "Username",
-      "password": "Password",
-      "action": "Log in!"
-    }
-  },
-  "modpacktype": {
-    "title": "Modpack type",
-    "description": "Hover over a button to see description.",
-    "onboardingextra": "This choice can be changed later.",
-    "selected": "SELECTED",
-    "options": {
-      "ful": {
-        "title": "Full install",
-        "description": "Install everything without exception. Recommended type for most players.\n\nFor average/powerful PCs."
-      },
-      "min": {
-        "title": "Minimal install",
-        "description": "Install only Minecraft, essential and optimization mods.\n\nFor weak PCs."
-      },
-      "ess": {
-        "title": "Only essential",
-        "description": "Only install Minecraft and a few essential mods.\n\nDoes NOT include optimization mods."
-      }
-    }
-  },
-  "onboarding": {
-    "welcome": {
-      "title": "Hi there!",
-      "description": "Let's set everything up...",
-      "button": "Next"
-    }
-  },
-  "rules": {
-    "title": "Rules",
-    "description": "Agree to server rules to play",
-    "entries": {
-      "respect": {
-        "title": "Treat everyone with respect",
-        "content": "We do not tolerate bullying or harassment, in any way, shape or form. All members of our community should be treated with dignity and respect."
-      },
-      "integrity": {
-        "title": "Play with integrity",
-        "content": "Fair gameplay is core to the experience. Progression is earned through good, clean gameplay. Cheating, griefing or other threats to fair play will not be tolerated."
-      },
-      "vigilant": {
-        "title": "Stay vigilant",
-        "content": "Working tagether we can keep the game fair and fun for all. To promote an enjoyable gameplay experience, report any incidents or inappropriate behaviors you encounter to moderation staff."
-      }
-    },
-    "continue": "Continue"
   }
 }
