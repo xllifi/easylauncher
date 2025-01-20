@@ -92,7 +92,7 @@
       right: 0;
       bottom: 0;
 
-      transform: translateY(calc(100% - 0.2rem));
+      transform: translateY(100%);
 
       background-color: var(--color-background);
       border-radius: 0.2rem;
