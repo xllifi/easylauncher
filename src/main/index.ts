@@ -1,4 +1,4 @@
-import { app, shell, BrowserWindow, ipcMain, WebContents } from 'electron'
+import { app, shell, BrowserWindow, ipcMain, WebContents, Tray } from 'electron'
 import path, { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
@@ -6,9 +6,11 @@ import { startGame } from './launch.js'
 import { DraslAuth, launchCredentials, genDirs } from 'xlicore'
 import * as Sentry from '@sentry/electron/main'
 import { existsSync } from 'fs'
+import { Updater } from './updater.js'
 
 Sentry.init({ dsn: import.meta.env.VITE_SENTRY_URL })
 
+const updater = new Updater()
 const isDev = !app.isPackaged
 
 export const gamePath = path.resolve(app.getPath('home'), '.easylauncher')
@@ -40,7 +42,7 @@ function createWindow(): void {
     // fullscreenable: false,
     show: false,
     titleBarStyle: 'hidden',
-    title: 'easylauncher',
+    title: 'EasyLauncher',
     autoHideMenuBar: true,
     fullscreenable: true,
     icon: icon,
@@ -83,6 +85,9 @@ app.whenReady().then(() => {
   genDirs(gamePath)
   // Set app user model id for windows
   electronApp.setAppUserModelId('ru.xllifi.launcher')
+  updater.checkForUpdates().then(() => {
+    renderer.send('updatefound')
+  })
 
   // Default open or close DevTools by F12 in development
   // and ignore CommandOrControl + R in production.
@@ -99,12 +104,16 @@ app.whenReady().then(() => {
     // dock icon is clicked and there are no other windows open.
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
   })
+
+  const tray = new Tray(icon)
+  tray.setToolTip('easylauncher')
 })
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
 app.on('window-all-closed', () => {
+  if (updater.updateFound) return
   if (process.platform !== 'darwin') {
     app.quit()
   }
@@ -141,6 +150,9 @@ ipcMain.on('opengamedir', () => {
 
 ipcMain.on('launch', (_event, { params }) => {
   startGame(params)
+})
+ipcMain.on('installupdate', () => {
+  updater.installUpdate()
 })
 
 ipcMain.on('loginrequest', async (_event, { username, password }) => {

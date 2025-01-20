@@ -3,6 +3,7 @@
 
 interface ImportMetaEnv {
   readonly VITE_SENTRY_URL: string
+  readonly VITE_AUTOUPDATE_GITHUB_REPO: string
   // more env variables...
 }
 

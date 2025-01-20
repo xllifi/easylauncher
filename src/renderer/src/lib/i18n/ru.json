@@ -18,7 +18,15 @@
   },
   "dragbar": {
     "title": "easylauncher",
-    "edition": "αльфа"
+    "edition": "αльфа",
+    "tooltips": {
+      "buttons": {
+        "update": "Скачать обновление",
+        "bugs": "Сообщить об ошибке",
+        "minimize": "Свернуть окно",
+        "close": "Закрыть окно"
+      }
+    }
   },
   "statusbar": {
     "texts": [

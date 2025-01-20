@@ -18,7 +18,15 @@
   },
   "dragbar": {
     "title": "easylauncher",
-    "edition": "αlpha"
+    "edition": "αlpha",
+    "tooltips": {
+      "buttons": {
+        "update": "Install update",
+        "bugs": "Report a bug",
+        "minimize": "Minimize window",
+        "close": "Close window"
+      }
+    }
   },
   "statusbar": {
     "texts": [
