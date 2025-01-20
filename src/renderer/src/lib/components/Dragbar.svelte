@@ -5,6 +5,8 @@
   import { route } from '../stores/route.svelte.js'
   import { fade } from 'svelte/transition'
 
+  let updateFound = $state(false)
+
   function quit(): void {
     ipc.send('quit')
   }
@@ -12,13 +14,17 @@
     ipc.send('minimize')
   }
   function report(): void {
-    ipc.send('report')
+    if ($route.overlay.current == 'feedback') return
+    $route.overlay.previous = $route.overlay.current
+    $route.overlay.current = 'feedback'
   }
   function update(): void {
     ipc.send('installupdate')
   }
 
-  ipc.on('updatefound', () => {})
+  ipc.on('updatefound', () => {
+    updateFound = true
+  })
 </script>
 
 <div class="dragbar">
@@ -27,10 +33,12 @@
       <p transition:fade={{ duration: 200 }}>{$_('dragbar.title')} • {$_('dragbar.edition')} {import.meta.env.APP_VERSION}</p>
     </div>
     <div class="buttons">
-      <button class="update" data-title={$_('dragbar.tooltips.buttons.update')} on:click|stopPropagation={update}><Download /></button>
-      <button class="report" data-title={$_('dragbar.tooltips.buttons.bugs')} on:click|stopPropagation={report}><Bug /></button>
-      <button class="right minimize" data-title={$_('dragbar.tooltips.buttons.minimize')} on:click|stopPropagation={minimize}><Minus /></button>
-      <button class="right close" data-title={$_('dragbar.tooltips.buttons.close')} on:click|stopPropagation={quit}><X /></button>
+      {#if updateFound}
+        <button class="update" data-title={$_('dragbar.tooltips.buttons.update')} onclick={update}><Download /></button>
+      {/if}
+      <button class="report" data-title={$_('dragbar.tooltips.buttons.bugs')} onclick={report}><Bug /></button>
+      <button class="right minimize" data-title={$_('dragbar.tooltips.buttons.minimize')} onclick={minimize}><Minus /></button>
+      <button class="right close" data-title={$_('dragbar.tooltips.buttons.close')} onclick={quit}><X /></button>
     </div>
   {/if}
 </div>

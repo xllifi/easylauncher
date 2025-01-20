@@ -33,6 +33,7 @@ body {
   }
 }
 
+textarea,
 input:is([type='text'], [type='password']) {
   min-width: 0;
   width: 4rem;

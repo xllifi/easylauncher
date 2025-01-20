@@ -13,15 +13,34 @@
   import StatusBar from './lib/components/StatusBar.svelte'
   import StatusFeed from './lib/components/StatusFeed.svelte'
   import RulesModal from './lib/overlays/RulesModal.svelte'
+  import FeedbackModal from './lib/overlays/FeedbackModal.svelte'
+  import UnknownModal from './lib/overlays/UnknownModal.svelte'
 
   window.addEventListener('DOMContentLoaded', () => {
     $route.loaded = true
   })
 
-  function exitButtonClick(e: Event) {
-    e.stopPropagation()
+  // this is insanity
+  // svelte-ignore non_reactive_update
+  let statusFeed: StatusFeed
+
+  let readyForExit: boolean = $state(false)
+
+  function exitButtonClick() {
     $route.overlay.previous = 'none'
     $route.overlay.current = 'none'
+  }
+
+  function exitOverlayStart(e: Event) {
+    e.stopPropagation()
+    readyForExit = true
+  }
+  function exitOverlayCancel(e: Event) {
+    e.stopPropagation()
+    readyForExit = false
+  }
+  function exitOverlayEnd() {
+    if (readyForExit) exitButtonClick()
   }
 
   function backButtonClick() {
@@ -58,7 +77,7 @@
     <span class="loading"></span>
   </div>
 {:else}
-  <div class="body" transition:fade={{duration: 200}}>
+  <div class="body" transition:fade={{ duration: 200 }}>
     <!-- Page -->
     {#key $route.page}
       <div class="inner" transition:fade>
@@ -73,9 +92,9 @@
     {#if $route.overlay.current != 'none'}
       <!-- svelte-ignore a11y_no_static_element_interactions -->
       <!-- svelte-ignore a11y_click_events_have_key_events -->
-      <div class="overlay" onclick={exitButtonClick} tabindex="-1" out:scale={{ duration: 200, start: 0, easing: backIn }} in:scale={{ duration: 200, start: 1.5, easing: backOut }}>
+      <div class="overlay" onmousedown={exitOverlayStart} onmouseleave={exitOverlayCancel} onmouseup={exitOverlayEnd} tabindex="-1" out:scale={{ duration: 200, start: 0, easing: backIn }} in:scale={{ duration: 200, start: 1.5, easing: backOut }}>
         {#key $route.overlay.current}
-          <div class="inner" onclick={(e) => e.stopPropagation()} out:fly={{ duration: 200, y: 100 }} in:fly={{ delay: 60, duration: 200, y: -100 }}>
+          <div class="inner" onmouseenter={exitOverlayCancel} onmousedown={(e) => e.stopPropagation()} onmouseleave={(e) => e.stopPropagation()} onmouseup={(e) => e.stopPropagation()} out:fly={{ duration: 200, y: 100 }} in:fly={{ delay: 60, duration: 200, y: -100 }}>
             {#if $route.overlay.current == 'settings'}
               <Settings exit={exitButtonClick} />
             {:else if $route.overlay.current == 'login'}
@@ -84,6 +103,10 @@
               <ModpackModal exit={exitButtonClick} back={backButtonClick} />
             {:else if $route.overlay.current == 'rules'}
               <RulesModal exit={exitButtonClick} back={backButtonClick} />
+            {:else if $route.overlay.current == 'feedback'}
+              <FeedbackModal exit={backButtonClick} back={backButtonClick} statusFeed={statusFeed} />
+            {:else}
+              <UnknownModal exit={exitButtonClick} back={backButtonClick} />
             {/if}
           </div>
         {/key}
@@ -91,7 +114,7 @@
     {/if}
     <!-- Unconditional elements -->
     <StatusBar />
-    <StatusFeed />
+    <StatusFeed bind:this={statusFeed}/>
   </div>
 {/if}
 

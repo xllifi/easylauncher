@@ -2,7 +2,7 @@ import './assets/main.scss'
 
 import { mount } from 'svelte'
 import App from './App.svelte'
-import * as Sentry from '@sentry/electron'
+import * as Sentry from '@sentry/svelte'
 import { params } from './lib/stores/params.svelte.js'
 import { get } from 'svelte/store'
 

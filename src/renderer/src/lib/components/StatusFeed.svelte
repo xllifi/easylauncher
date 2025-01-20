@@ -10,7 +10,15 @@
 
   let list: StatusFeedEntry[] = []
 
-  ipc.on('feed-push', (_event, { id, additional }) => {
+  ipc.on('feed-push', (_event, { id, additional }) => createNotification(id, additional))
+  ipc.on('feed-push-literal', (_event, { title, description }) => {
+    let opts: StatusFeedEntry = {
+      title: title,
+      description: description
+    }
+    pushEntry(opts)
+  })
+  export function createNotification(id: string, additional?: string): void {
     let description = $_(`statusfeed.messages.${id}.description`)
     if (additional) {
       for (const add of additional) {
@@ -23,15 +31,9 @@
       description
     }
     pushEntry(opts)
-  })
-  ipc.on('feed-push-literal', (_event, { title, description }) => {
-    let opts: StatusFeedEntry = {
-      title: title,
-      description: description
-    }
-    pushEntry(opts)
-  })
-  export function pushEntry(entry: StatusFeedEntry): void {
+  }
+
+  function pushEntry(entry: StatusFeedEntry): void {
     let entryID = 0
     if (list.length > 0 && list[0].id != undefined) {
       entryID = list[0].id + 1

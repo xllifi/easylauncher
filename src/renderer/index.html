@@ -6,7 +6,7 @@
     <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'self'; connect-src 'self' %VITE_AUTH_HOST% ; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: %VITE_AUTH_HOST%"
+      content="default-src 'self'; connect-src 'self' %VITE_AUTH_HOST% %VITE_SENTRY_HOST% ; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: %VITE_AUTH_HOST%"
     />
   </head>
 
