@@ -16,11 +16,11 @@
   const pages = $state([
     {
       component: 'SettingsPageGeneral',
-      title: $_('modal.settings.pages.general.tab')
+      title: 'modal.settings.pages.general.tab'
     },
     {
       component: 'SettingsPageLaunch',
-      title: $_('modal.settings.pages.launch.tab')
+      title: 'modal.settings.pages.launch.tab'
     }
   ])
 
@@ -33,7 +33,7 @@
       case 'SettingsPageLaunch':
         return (Page = SettingsPageLaunch)
       default:
-        pageTitle = $_('modal.settings.pages.404.tab')
+        pageTitle = 'modal.settings.pages.404.tab'
         return (Page = SettingsPage404)
     }
   }
@@ -46,7 +46,7 @@
 <div class="layout">
   <div class="title">
     {#key pageTitle}
-      <h2 class="text">{$_('modal.settings.title')} <span class="arrow">/</span> <span in:tilt={{ duration: 200 }}>{pageTitle}</span></h2>
+      <h2 class="text">{$_('modal.settings.title')} <span class="arrow">/</span> <span in:tilt={{ duration: 200 }}>{$_(pageTitle)}</span></h2>
     {/key}
     <button class="close" onclick={exit}>
       <X />
