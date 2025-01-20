@@ -54,7 +54,7 @@
   </div>
   <div class="left">
     {#each pages as page}
-      <button tabindex="0" class="tab" id={page.component} onclick={changePage} class:selected={currentPageComponentName === page.component}>{page.title}</button>
+      <button tabindex="0" class="tab" id={page.component} onclick={changePage} class:selected={currentPageComponentName === page.component}>{$_(page.title)}</button>
     {/each}
   </div>
   {#key Page}
