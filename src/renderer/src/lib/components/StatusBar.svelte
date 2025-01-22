@@ -85,6 +85,7 @@
     isHidden = true
   }
   function show() {
+    clearTimeout(hideTimeout)
     isHidden = false
   }
 
