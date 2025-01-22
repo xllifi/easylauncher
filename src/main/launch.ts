@@ -1,9 +1,9 @@
 import { Launch, LaunchOpts } from 'xlicore'
 import { LauncherParams } from './types.js'
 import { gamePath, renderer } from './index.js'
-import { TimeoutError } from 'ky'
+import { ChildProcessWithoutNullStreams } from 'child_process'
 
-export function startGame(params: LauncherParams) {
+export async function startGame(params: LauncherParams): Promise<ChildProcessWithoutNullStreams> {
   let modpack: null | { url: string; verify?: { hash: string; algorithm: 'sha1' | 'sha256' } } = null
   switch (params.modpackType) {
     case 'ess':
@@ -40,13 +40,15 @@ export function startGame(params: LauncherParams) {
       dlOnProgress(progress, _chunk, file, _lastProgress) {
         renderer.send('progress', { type: file.type, percent: (progress.percent * 100).toFixed(2) })
       },
-      gameOnStart() {
+      gameOnStart(pid) {
         console.log(`MC started`)
         renderer.send('start')
+        renderer.send('addmcpid', { pid })
       },
-      gameOnExit() {
+      gameOnExit(pid) {
         console.log(`MC closed`)
         renderer.send('close')
+        renderer.send('rmmcpid', { pid })
       },
       gameOnError(err) {
         renderer.send('feed-push', {
@@ -63,16 +65,6 @@ export function startGame(params: LauncherParams) {
   if (modpack) launchOpts.mrpack = modpack
 
   const launch = new Launch(launchOpts)
-  launch.start().catch((err) => {
-    if (err instanceof TimeoutError) {
-      renderer.send('feed-push', {
-        id: 'launch-error-timeout',
-        additional: [err]
-      })
-    }
-    renderer.send('feed-push', {
-      id: 'launch-error-unknown',
-      additional: [err]
-    })
-  })
+  const process = await launch.start()
+  return process
 }

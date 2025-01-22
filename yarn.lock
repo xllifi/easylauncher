@@ -3777,6 +3777,13 @@ lucide-svelte@^0.447.0:
   resolved "https://registry.yarnpkg.com/lucide-svelte/-/lucide-svelte-0.447.0.tgz#733504d1182b8b8c6ad233479b14b8a6656f7e98"
   integrity sha512-DDCVy79q9H1IAGmrbGDG4GZmCZK+5elK3Fxzu0RzbHKr2Khg7EMc8S6C12bzWcnfW263raqo3grthEjB5gxAjw==
 
+magic-string@^0.30.0, magic-string@^0.30.15:
+  version "0.30.17"
+  resolved "https://registry.yarnpkg.com/magic-string/-/magic-string-0.30.17.tgz#450a449673d2460e5bbcfba9a61916a1714c7453"
+  integrity sha512-sNPKHvyjVf7gyjwS4xGTaW/mCnF8wnjtifKBEhxfZ7E/S8tQ0rssrwGNn6q8JH/ohItJfSQp9mBtQYuTlH5QnA==
+  dependencies:
+    "@jridgewell/sourcemap-codec" "^1.5.0"
+
 magic-string@^0.30.10:
   version "0.30.11"
   resolved "https://registry.yarnpkg.com/magic-string/-/magic-string-0.30.11.tgz#301a6f93b3e8c2cb13ac1a7a673492c0dfd12954"
@@ -3788,13 +3795,6 @@ magic-string@^0.30.11:
   version "0.30.12"
   resolved "https://registry.yarnpkg.com/magic-string/-/magic-string-0.30.12.tgz#9eb11c9d072b9bcb4940a5b2c2e1a217e4ee1a60"
   integrity sha512-Ea8I3sQMVXr8JhN4z+H/d8zwo+tYDgHE9+5G4Wnrwhs0gaK9fXTKx0Tw5Xwsd/bCPTTZNRAdpyzvoeORe9LYpw==
-  dependencies:
-    "@jridgewell/sourcemap-codec" "^1.5.0"
-
-magic-string@^0.30.15:
-  version "0.30.17"
-  resolved "https://registry.yarnpkg.com/magic-string/-/magic-string-0.30.17.tgz#450a449673d2460e5bbcfba9a61916a1714c7453"
-  integrity sha512-sNPKHvyjVf7gyjwS4xGTaW/mCnF8wnjtifKBEhxfZ7E/S8tQ0rssrwGNn6q8JH/ohItJfSQp9mBtQYuTlH5QnA==
   dependencies:
     "@jridgewell/sourcemap-codec" "^1.5.0"
 
@@ -5270,10 +5270,10 @@ wrappy@1:
   resolved "https://registry.yarnpkg.com/wrappy/-/wrappy-1.0.2.tgz#b5243d8f3ec1aa35f1364605bc0d1036e30ab69f"
   integrity sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==
 
-xlicore@^0.0.4:
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/xlicore/-/xlicore-0.0.4.tgz#0afcc38f956648b00fbc2e1f1d0125d38c9629de"
-  integrity sha512-2hJvfp6X64QGpjZInE4yaAdcoIYmGR3v6jelNn27WEP4DrpPFrahUAUSy7Neasz4mBjLXyWxsEOCD56SJPWWWQ==
+xlicore@^0.0.5:
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/xlicore/-/xlicore-0.0.5.tgz#f2fcb9e01ee198d5b643338fab14e19977ae2685"
+  integrity sha512-fnRorgSYiQG8Wdc1YTVPU/aFHlye19Rm+6MfglvO4PaU1y8tH5Ak8Zir3Uqx0grKGXxujvuBPEscT07lg58G0A==
   dependencies:
     dotenv "^16.4.7"
     extract-zip "^2.0.1"

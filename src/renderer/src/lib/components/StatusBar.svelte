@@ -8,7 +8,7 @@
   import { appstate } from '../stores/appstate.svelte.js'
 
   let text, left_text, progress, endTimeout
-  let hide = true
+  let isHidden = true
   let fillcolor = 'fa0'
 
   let texts = $_('statusbar.texts')
@@ -24,17 +24,17 @@
     progress = opts.progress ? opts.progress : 0
   }
   function unsetContents(): void {
-    hide = true
+    hide()
     setTimeout(() => {
       text = undefined
       left_text = undefined
       fillcolor = 'fa0'
       progress = 0
-    }, 400)
+    }, 500)
   }
 
-  export function sendStatus(opts: StatusBarContents): void {
-    hide = false
+  export function setStatus(opts: StatusBarContents): void {
+    show()
     parseContents(opts)
 
     if (opts.hide_after_secs) {
@@ -46,7 +46,7 @@
 
   ipc.on('progress', async (_event, { type, percent }) => {
     console.log(`Got Progress: ${type}, ${percent}`)
-    hide = false
+    show()
     text = `${$_('statusbar.downloading')} ${$_(`statusbar.progresstypes.${type}`)}...`
     left_text = `${percent}%`
     progress = percent
@@ -54,49 +54,49 @@
 
     clearTimeout(endTimeout)
   })
-  ipc.on('start', async () => {
-    console.log('Got start')
-    hide = false
+  ipc.on('start', () => {
+    show()
     text = $_('statusbar.minecraft_started')
     left_text = undefined
     progress = 100
     fillcolor = '5d5'
-    endTimeout = setTimeout(() => {
-      hide = true
-      endTimeout = setTimeout(() => {
-        progress = undefined
-        fillcolor = 'fa0'
-      }, 500)
-    }, 2500)
+
+    hidetimeout()
   })
   ipc.on('close', () => {
-    $appstate.current = 'idle'
-    hide = false
+    show()
     text = $_('statusbar.minecraft_closed')
     left_text = undefined
     progress = 100
-    fillcolor = 'd44'
-    endTimeout = setTimeout(() => {
-      hide = true
-      endTimeout = setTimeout(() => {
-        progress = undefined
-        fillcolor = 'fa0'
-      }, 500)
-    }, 2500)
+    fillcolor = 'd55'
+
+    hidetimeout()
   })
+
+  function hidetimeout() {
+    return setTimeout(() => {
+      hide()
+      setTimeout(() => unsetContents(), 500)
+    }, 2500)
+  }
+  function hide() {
+    isHidden = true
+  }
+  function show() {
+    isHidden = false
+  }
 
   onMount(() => {
     appstate.subscribe(({ current }) => {
       if (current == 'launch') {
-        unsetContents()
-        hide = false
+        show()
       }
     })
   })
 </script>
 
 <div class="progressbarwrapper">
-  {#if !hide}
+  {#if !isHidden}
     <div class="progressbar" in:fly={{ x: 0, y: -100, duration: 400, easing: backOut, opacity: 0 }} out:fly={{ x: 0, y: -100, duration: 400, easing: backIn, opacity: 0 }}>
       <clipPath class="fill" id="fill" style="width: {progress == null ? 0 : progress}%; background-color: #{fillcolor};"></clipPath>
       <div class="labels top" style="clip-path: polygon(0% 0%, 0% 100%, {progress == null ? 0 : progress}% 100%, {progress == null ? 0 : progress}% 0%);">

@@ -4,14 +4,16 @@ import { Readable } from 'stream'
 import { ReadableStream } from 'stream/web'
 import path from 'path'
 import { app, shell } from 'electron'
+import { renderer } from './index.js'
 
 export class Updater {
   appxPath: null | string = null
   updateFound: boolean = false
 
-  async checkForUpdates(): Promise<string | void> {
+  async checkForUpdates(): Promise<void> {
     const latestRelease: githubReleasesResponse = await ky.get(`https://api.github.com/repos/${import.meta.env.VITE_AUTOUPDATE_GITHUB_REPO}/releases/latest`).then((res) => res.json())
-    if (parseInt(latestRelease.tag_name.replaceAll('.', '')) > parseInt(import.meta.env.APP_VERSION)) {
+    if (parseInt(latestRelease.tag_name.replaceAll('.', '')) > parseInt(import.meta.env.APP_VERSION.replaceAll('.', ''))) {
+      renderer.send('updatefound')
       this.updateFound = true
 
       const appxAsset = latestRelease.assets.filter((x) => x.name.match(/\.appx$/))[0]

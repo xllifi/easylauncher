@@ -15,6 +15,8 @@
   import RulesModal from './lib/overlays/RulesModal.svelte'
   import FeedbackModal from './lib/overlays/FeedbackModal.svelte'
   import UnknownModal from './lib/overlays/UnknownModal.svelte'
+  import { ipc } from './lib/scripts/general.js'
+  import { appstate } from './lib/stores/appstate.svelte.js'
 
   window.addEventListener('DOMContentLoaded', () => {
     $route.loaded = true
@@ -62,6 +64,26 @@
   register('en', () => import('./lib/i18n/en.json'))
 
   if (!$params.lang) $params.lang = getLocaleFromNavigator()!
+
+  ipc.on('start', () => {
+    if ($appstate.current === 'launch') {
+      $appstate.current = 'idle'
+    }
+  })
+  ipc.on('launch-cancelled', () => {
+    if ($appstate.current === 'launch') {
+      $appstate.current = 'idle'
+    }
+  })
+
+  ipc.on('addmcpid', (_event, { pid }) => {
+    $appstate.minecraftPids = [...$appstate.minecraftPids, pid]
+    console.log($appstate.minecraftPids)
+  })
+  ipc.on('rmmcpid', (_event, { pid }) => {
+    $appstate.minecraftPids = $appstate.minecraftPids.filter(x => x != pid)
+    console.log($appstate.minecraftPids)
+  })
 
   init({
     fallbackLocale: 'en',
@@ -175,14 +197,14 @@
 
     > .overlay {
       position: absolute;
-      width: 100%;
-      height: calc(100dvh - 2rem);
+      width: calc(100% + 12rem);
+      height: calc(100dvh - 2rem + 12rem);
+      top: -6rem;
+      left: -6rem;
+
       padding: 5dvh 3.5dvw;
       backdrop-filter: blur(5px);
       z-index: 1;
-
-      top: 0;
-      left: 0;
 
       display: flex;
       justify-content: center;

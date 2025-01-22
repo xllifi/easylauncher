@@ -3,10 +3,12 @@ import path, { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 import { startGame } from './launch.js'
-import { DraslAuth, launchCredentials, genDirs } from 'xlicore'
+import { DraslAuth, launchCredentials, genDirs, MrpackParseError } from 'xlicore'
 import * as Sentry from '@sentry/electron/main'
 import { existsSync } from 'fs'
 import { Updater } from './updater.js'
+import { ChildProcess } from 'child_process'
+import { TimeoutError } from 'ky'
 
 const updater = new Updater()
 const isDev = !app.isPackaged
@@ -89,9 +91,7 @@ app.whenReady().then(() => {
   genDirs(gamePath)
   // Set app user model id for windows
   electronApp.setAppUserModelId('ru.xllifi.launcher')
-  updater.checkForUpdates().then(() => {
-    renderer.send('updatefound')
-  })
+  updater.checkForUpdates()
 
   // Default open or close DevTools by F12 in development
   // and ignore CommandOrControl + R in production.
@@ -126,6 +126,8 @@ app.on('window-all-closed', () => {
 // In this file you can include the rest of your app"s specific main process
 // code. You can also put them in separate files and require them here.
 
+const processes: ChildProcess[] = []
+
 ipcMain.on('report', () => {
   shell.openExternal('https://t.me/xllifi')
 })
@@ -152,9 +154,34 @@ ipcMain.on('opengamedir', () => {
   shell.openPath(gameDir)
 })
 
-ipcMain.on('launch', (_event, { params }) => {
-  startGame(params)
+ipcMain.on('launch', async (_event, { params }) => {
+  const process = await startGame(params).catch((err) => {
+    renderer.send('launch-cancelled')
+
+    if (err instanceof TimeoutError) {
+      renderer.send('feed-push', {
+        id: 'launch-error-timeout',
+        additional: [err]
+      })
+      return
+    }
+    if (err instanceof MrpackParseError && err.reason === 'files_locked') {
+      renderer.send('feed-push', { id: 'launch-error-modslocked' })
+      return
+    }
+    renderer.send('feed-push', {
+      id: 'launch-error-unknown',
+      additional: [err]
+    })
+    return
+  })
+
+  if (process) processes.push(process)
 })
+ipcMain.on('stopgame', () => {
+  processes.forEach((x) => x.kill())
+})
+
 ipcMain.on('installupdate', () => {
   updater.installUpdate()
 })

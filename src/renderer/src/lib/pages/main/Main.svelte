@@ -11,9 +11,9 @@
   import { _ } from 'svelte-i18n'
   import { appstate } from '../../stores/appstate.svelte.js'
   let skinCv: HTMLCanvasElement, skinVw: skinview3d.SkinViewer
-  let skin: string = noskin
+  let skin: string = $state(noskin)
   let cape: string
-  let skinLoaded: boolean = false
+  let skinLoaded: boolean = $state(false)
 
   function resizeCv(cv: HTMLCanvasElement, sw: skinview3d.SkinViewer) {
     if (!cv || !sw) return
@@ -97,6 +97,10 @@
     $appstate.current = 'launch'
   }
 
+  function stopGame(): void {
+    ipc.send('stopgame', { params: $params })
+  }
+
   ipc.on('loginresponse', async (_event, { launchCredentials }) => {
     $params.launchCredentials = launchCredentials
 
@@ -115,7 +119,8 @@
 <div class="main">
   <div class="bottom">
     <p class="username">{$params.launchCredentials.name}</p>
-    <button class="start" class:disabled={$appstate.current == 'launch'} onclick={launchGame}>{$_('page.main.play')}</button>
+    <button class="start" class:disabled={$appstate.current == 'launch' || $appstate.minecraftPids.length > 0} onclick={launchGame}>{$_('page.main.play')}</button>
+    <button class="stop" class:disabled={$appstate.current == 'launch' || $appstate.minecraftPids.length <= 0} onclick={stopGame}>ЗАКРЫТЬ<!-- {$_('page.main.stop')} !--></button>
     <div class="buttons">
       <button class="" data-title={$_('page.main.tooltips.buttons.gamedir')} onclick={() => ipc.send('opengamedir')}><FolderOpen /></button>
       <button class="right" data-title={$_('page.main.tooltips.buttons.logs')} onclick={() => ipc.send('viewlogs')}><ScrollText /></button>
@@ -150,41 +155,54 @@
       align-items: center;
       position: relative;
 
-      button.start {
-        scale: 1.4;
+      button:is(.start, .stop) {
         top: -0.6rem;
-        position: relative;
+        position: absolute;
+
+        z-index: 2;
 
         font-family: Unbounded;
         font-weight: 700;
         font-size: 1rem;
         padding-bottom: 0.15rem;
-        background-color: #5f5;
         color: var(--color-background);
         outline: none;
-        filter: drop-shadow(0 0 5px #5f53);
         transform-origin: bottom;
 
         transition:
+          opacity 500ms,
           scale 100ms ease-out,
           transform 100ms ease-out,
           filter 100ms ease-out;
 
+        &.start {
+          scale: 1.4;
+          background-color: #5f5;
+          filter: drop-shadow(0 0 8px #5f53);
+          &:hover {
+            filter: drop-shadow(0 0 8px #5f53);
+          }
+        }
+
+        &.stop {
+          scale: 1.3;
+          background-color: #f55;
+          filter: drop-shadow(0 0 8px #f553);
+          &:hover {
+            filter: drop-shadow(0 0 8px #f553);
+          }
+        }
+
         &:hover {
           transform: scale(1.08);
-          filter: drop-shadow(0 0 8px #5f53);
         }
         &.disabled {
-          scale: 1.3;
-          background-color: mix(#5f5, #222, 5%);
+          opacity: 0;
+          z-index: 1;
+          top: -0.2rem;
+          background-color: var(--color-background-lighter);
           filter: none;
           pointer-events: none;
-
-          // keeping for correct animation after disabling
-          &:hover {
-            scale: 1.3;
-            transform: none;
-          }
         }
       }
 
