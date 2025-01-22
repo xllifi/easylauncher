@@ -7,7 +7,7 @@
   import { getSkinUrls, setupSkin } from './Main.svelte.js'
   import noskin from '../../../assets/unknownplayer.png'
   import BgLogs from './BgLogs.svelte'
-  import { FolderOpen, Package, ScrollText, Settings2 } from 'lucide-svelte'
+  import { Cog, FolderOpen, Package, ScrollText } from 'lucide-svelte'
   import { _ } from 'svelte-i18n'
   import { appstate } from '../../stores/appstate.svelte.js'
   let skinCv: HTMLCanvasElement, skinVw: skinview3d.SkinViewer
@@ -125,7 +125,7 @@
       <button class="" data-title={$_('page.main.tooltips.buttons.gamedir')} onclick={() => ipc.send('opengamedir')}><FolderOpen /></button>
       <button class="right" data-title={$_('page.main.tooltips.buttons.logs')} onclick={() => ipc.send('viewlogs')}><ScrollText /></button>
       <button class="right" data-title={$_('page.main.tooltips.buttons.modpack')} onclick={() => ($route.overlay.current = 'modpack')}><Package /></button>
-      <button class="right" data-title={$_('page.main.tooltips.buttons.settings')} onclick={() => ($route.overlay.current = 'settings')}><Settings2 /></button>
+      <button class="right" data-title={$_('page.main.tooltips.buttons.settings')} onclick={() => ($route.overlay.current = 'settings')}><Cog /></button>
     </div>
   </div>
 </div>
