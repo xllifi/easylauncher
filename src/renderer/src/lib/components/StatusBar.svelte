@@ -7,7 +7,7 @@
   import { onMount } from 'svelte'
   import { appstate } from '../stores/appstate.svelte.js'
 
-  let text, left_text, progress, endTimeout
+  let text, left_text, progress, hideTimeout
   let isHidden = true
   let fillcolor = 'fa0'
 
@@ -52,7 +52,7 @@
     progress = percent
     fillcolor = 'fa0'
 
-    clearTimeout(endTimeout)
+    clearTimeout(hideTimeout)
   })
   ipc.on('start', () => {
     show()
@@ -74,7 +74,8 @@
   })
 
   function hidetimeout() {
-    return setTimeout(() => {
+    clearTimeout(hideTimeout)
+    hideTimeout = setTimeout(() => {
       hide()
       setTimeout(() => unsetContents(), 500)
     }, 2500)
