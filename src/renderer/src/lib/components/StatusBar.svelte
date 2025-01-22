@@ -72,6 +72,7 @@
 
     hidetimeout()
   })
+  ipc.on('launch-cancelled', () => hide())
 
   function hidetimeout() {
     clearTimeout(hideTimeout)
