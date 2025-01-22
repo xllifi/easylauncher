@@ -1,11 +1,11 @@
 <script lang="ts">
   import { _, locale } from "svelte-i18n"
-  import { route } from "../../../stores/route.svelte.js"
+  import { route, type RouteOverlay } from "../../../stores/route.svelte.js"
   import OptionButton from "../components/OptionButton.svelte"
   import OptionDropdown from "../components/OptionDropdown.svelte"
   import { params } from "../../../stores/params.svelte.js"
 
-  function goTo(page: string) {
+  function goTo(page: RouteOverlay) {
     $route.overlay.previous = 'settings'
     $route.overlay.current = page
   }

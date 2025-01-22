@@ -19,4 +19,4 @@ export type Route = {
   }
 }
 
-type RouteOverlay = 'none' | 'settings' | 'login' | 'modpack' | 'rules' | 'feedback' | 'unknown'
+export type RouteOverlay = 'none' | 'settings' | 'login' | 'modpack' | 'rules' | 'feedback' | 'unknown'
