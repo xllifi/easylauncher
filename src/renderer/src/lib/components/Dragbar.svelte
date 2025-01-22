@@ -44,8 +44,6 @@
 </div>
 
 <style lang="scss">
-  @import '../../assets/base.scss';
-
   .dragbar {
     z-index: 100;
 
