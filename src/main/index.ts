@@ -128,9 +128,6 @@ app.on('window-all-closed', () => {
 
 const processes: ChildProcess[] = []
 
-ipcMain.on('report', () => {
-  shell.openExternal('https://t.me/xllifi')
-})
 ipcMain.on('minimize', () => {
   mainWindow.minimize()
 })
