@@ -29,10 +29,10 @@
 
 <div class="dragbar">
   {#if !$isLoading && $route.loaded}
-    <div class="text">
-      <p transition:fade={{ duration: 200 }}>{$_('dragbar.title')} • {$_('dragbar.edition')} {import.meta.env.APP_VERSION}</p>
+    <div class="text" transition:fade={{ duration: 200 }}>
+      <p>{$_('dragbar.title')} • {$_('dragbar.edition')} {import.meta.env.APP_VERSION}</p>
     </div>
-    <div class="buttons">
+    <div class="buttons" transition:fade={{ duration: 200 }}>
       {#if updateFound}
         <button class="update" data-title={$_('dragbar.tooltips.buttons.update')} onclick={update}><Download /></button>
       {/if}
