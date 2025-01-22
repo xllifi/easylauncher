@@ -120,7 +120,7 @@
   <div class="bottom">
     <p class="username">{$params.launchCredentials.name}</p>
     <button class="start" class:disabled={$appstate.current == 'launch' || $appstate.minecraftPids.length > 0} onclick={launchGame}>{$_('page.main.play')}</button>
-    <button class="stop" class:disabled={$appstate.current == 'launch' || $appstate.minecraftPids.length <= 0} onclick={stopGame}>ЗАКРЫТЬ<!-- {$_('page.main.stop')} !--></button>
+    <button class="stop" class:disabled={$appstate.current == 'launch' || $appstate.minecraftPids.length <= 0} onclick={stopGame}>{$_('page.main.stop')}</button>
     <div class="buttons">
       <button class="" data-title={$_('page.main.tooltips.buttons.gamedir')} onclick={() => ipc.send('opengamedir')}><FolderOpen /></button>
       <button class="right" data-title={$_('page.main.tooltips.buttons.logs')} onclick={() => ipc.send('viewlogs')}><ScrollText /></button>

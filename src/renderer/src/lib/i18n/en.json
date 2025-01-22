@@ -112,6 +112,7 @@
   "page": {
     "main": {
       "play": "PLAY",
+      "stop": "STOP",
       "tooltips": {
         "buttons": {
           "gamedir": "Open game directory",
@@ -210,15 +211,15 @@
       },
       "launch-error-timeout": {
         "title": "Timed out",
-        "description": "Detailed description: $1\n\nIMPORTANT: this issue might not be critical, there's a chance Minecraft will launch. If launcher seems like it does nothing, please let the developer know and restart the launcher."
+        "description": "Detailed description: $1"
       },
       "launch-error-unknown": {
         "title": "Error!",
-        "description": "Detailed description: $1\n\nIMPORTANT: this issue might not be critical, there's a chance Minecraft will launch. If launcher seems like it does nothing, please let the developer know and restart the launcher."
+        "description": "Detailed description: $1"
       },
       "game-error-unknown": {
         "title": "Error!",
-        "description": "Detailed description: $1\n\nIMPORTANT: this issue might not be critical, there's a chance everyting will work. If launcher seems like it does nothing, please let the developer know and restart the launcher."
+        "description": "Detailed description: $1"
       },
       "feedback-sent": {
         "title": "Feedback sent",
