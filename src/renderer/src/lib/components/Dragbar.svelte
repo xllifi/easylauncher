@@ -1,11 +1,12 @@
 <script lang="ts">
-  import { X, Minus, Bug, Download } from 'lucide-svelte'
+  import { X, Minus, Bug, Download, Loader } from 'lucide-svelte'
   import { ipc } from '../scripts/general.js'
   import { _, isLoading } from 'svelte-i18n'
   import { route } from '../stores/route.svelte.js'
   import { fade } from 'svelte/transition'
+  import { appstate } from '../stores/appstate.svelte.js'
 
-  let updateFound = $state(false)
+  let loadingUpdate = $state(false)
 
   function quit(): void {
     ipc.send('quit')
@@ -19,12 +20,9 @@
     $route.overlay.current = 'feedback'
   }
   function update(): void {
+    loadingUpdate = true
     ipc.send('installupdate')
   }
-
-  ipc.on('updatefound', () => {
-    updateFound = true
-  })
 </script>
 
 <div class="dragbar">
@@ -33,8 +31,14 @@
       <p>{$_('dragbar.title')} • {$_('dragbar.edition')} {import.meta.env.APP_VERSION}</p>
     </div>
     <div class="buttons" transition:fade={{ duration: 200 }}>
-      {#if updateFound}
-        <button class="update" data-title={$_('dragbar.tooltips.buttons.update')} onclick={update}><Download /></button>
+      {#if $appstate.updateFound}
+        <button class="update" class:loading={loadingUpdate} data-title={loadingUpdate ? $_('dragbar.tooltips.buttons.updating') : $_('dragbar.tooltips.buttons.update')} onclick={update}>
+          {#if loadingUpdate}
+            <Loader />
+          {:else}
+            <Download />
+          {/if}
+        </button>
       {/if}
       <button class="report" data-title={$_('dragbar.tooltips.buttons.bugs')} onclick={report}><Bug /></button>
       <button class="right minimize" data-title={$_('dragbar.tooltips.buttons.minimize')} onclick={minimize}><Minus /></button>
@@ -138,6 +142,18 @@
 
         &.update {
           color: #88f;
+
+          &.loading > :global(.lucide) {
+            animation: infinite loading 6s linear;
+          }
+          @keyframes loading {
+            0% {
+              transform: rotate(0deg);
+            }
+            100% {
+              transform: rotate(360deg);
+            }
+          }
         }
 
         &.report:is(:hover, :focus-visible) {

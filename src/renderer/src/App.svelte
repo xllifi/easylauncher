@@ -78,12 +78,14 @@
 
   ipc.on('addmcpid', (_event, { pid }) => {
     $appstate.minecraftPids = [...$appstate.minecraftPids, pid]
-    console.log($appstate.minecraftPids)
   })
   ipc.on('rmmcpid', (_event, { pid }) => {
     $appstate.minecraftPids = $appstate.minecraftPids.filter(x => x != pid)
-    console.log($appstate.minecraftPids)
   })
+
+  ipc.on('updatefound', () => $appstate.updateFound = true)
+
+  ipc.on('loginresponse', (_event, { launchCredentials }) => $params.launchCredentials = launchCredentials)
 
   init({
     fallbackLocale: 'en',

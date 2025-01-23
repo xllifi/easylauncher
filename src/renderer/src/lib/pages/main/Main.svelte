@@ -101,11 +101,7 @@
     ipc.send('stopgame', { params: $params })
   }
 
-  ipc.on('loginresponse', async (_event, { launchCredentials }) => {
-    $params.launchCredentials = launchCredentials
-
-    changeSkin()
-  })
+  ipc.on('loginresponse', () => changeSkin())
   onMount(() => {
     setSkin()
   })

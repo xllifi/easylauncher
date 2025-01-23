@@ -136,6 +136,7 @@
     "tooltips": {
       "buttons": {
         "update": "Install update",
+        "updating": "Update downloading",
         "bugs": "Report a bug",
         "minimize": "Minimize window",
         "close": "Close window"

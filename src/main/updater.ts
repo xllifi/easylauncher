@@ -4,35 +4,36 @@ import { Readable } from 'stream'
 import { ReadableStream } from 'stream/web'
 import path from 'path'
 import { app, shell } from 'electron'
-import { renderer } from './index.js'
+import { mainWindow, renderer } from './index.js'
 
 export class Updater {
-  appxPath: null | string = null
   updateFound: boolean = false
+  appxAsset: null | githubReleaseAsset = null
+  appxPath: null | string = null
 
   async checkForUpdates(): Promise<void> {
     const latestRelease: githubReleasesResponse = await ky.get(`https://api.github.com/repos/${import.meta.env.VITE_AUTOUPDATE_GITHUB_REPO}/releases/latest`).then((res) => res.json())
     if (parseInt(latestRelease.tag_name.replaceAll('.', '')) > parseInt(import.meta.env.APP_VERSION.replaceAll('.', ''))) {
-      renderer.send('updatefound')
       this.updateFound = true
+      this.appxAsset = latestRelease.assets.filter((x) => x.name.match(/\.appx$/))[0]
 
-      const appxAsset = latestRelease.assets.filter((x) => x.name.match(/\.appx$/))[0]
-      const dest = path.resolve(app.getPath('temp'), appxAsset.name)
-      console.log(`downloading new release to ${dest}`)
-
-      await this.download(dest, appxAsset.browser_download_url, appxAsset.size)
-      this.appxPath = dest
+      mainWindow.webContents.on('dom-ready', () => renderer.send('updatefound'))
     }
   }
 
-  installUpdate() {
+  async installUpdate() {
     if (!this.updateFound) throw new Error(`Update not found!`)
-    if (this.appxPath == null) {
-      setTimeout(() => {
-        this.installUpdate()
-      }, 1500)
-    }
+    if (this.appxAsset == null) throw new Error(`Installer file not found in update! Please tell this to developer ASAP!`)
+
+    const dest = path.resolve(app.getPath('temp'), this.appxAsset.name)
+    console.log(`downloading new release to ${dest}`)
+
+    await this.download(dest, this.appxAsset.browser_download_url, this.appxAsset.size)
+    this.appxPath = dest
+
     shell.openPath(this.appxPath!)
+
+    mainWindow.close()
     app.quit()
   }
 
@@ -67,9 +68,10 @@ export class Updater {
 
 type githubReleasesResponse = {
   tag_name: string
-  assets: {
-    name: string
-    browser_download_url: string
-    size: number
-  }[]
+  assets: githubReleaseAsset[]
+}
+type githubReleaseAsset = {
+  name: string
+  browser_download_url: string
+  size: number
 }
