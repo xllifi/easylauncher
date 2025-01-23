@@ -10,6 +10,7 @@
   import { Cog, FolderOpen, Package, ScrollText } from 'lucide-svelte'
   import { _ } from 'svelte-i18n'
   import { appstate } from '../../stores/appstate.svelte.js'
+  import { tooltip } from '../../actions/tooltip.svelte.js'
   let skinCv: HTMLCanvasElement, skinVw: skinview3d.SkinViewer
   let skin: string = $state(noskin)
   let cape: string
@@ -118,10 +119,10 @@
     <button class="start" class:disabled={$appstate.current == 'launch' || $appstate.minecraftPids.length > 0} onclick={launchGame}>{$_('page.main.play')}</button>
     <button class="stop" class:disabled={$appstate.current == 'launch' || $appstate.minecraftPids.length <= 0} onclick={stopGame}>{$_('page.main.stop')}</button>
     <div class="buttons">
-      <button class="" data-title={$_('page.main.tooltips.buttons.gamedir')} onclick={() => ipc.send('opengamedir')}><FolderOpen /></button>
-      <button class="right" data-title={$_('page.main.tooltips.buttons.logs')} onclick={() => ipc.send('viewlogs')}><ScrollText /></button>
-      <button class="right" data-title={$_('page.main.tooltips.buttons.modpack')} onclick={() => ($route.overlay.current = 'modpack')}><Package /></button>
-      <button class="right" data-title={$_('page.main.tooltips.buttons.settings')} onclick={() => ($route.overlay.current = 'settings')}><Cog /></button>
+      <button use:tooltip={$_('page.main.tooltips.buttons.gamedir')} onclick={() => ipc.send('opengamedir')}><FolderOpen /></button>
+      <button use:tooltip={$_('page.main.tooltips.buttons.logs')} onclick={() => ipc.send('viewlogs')}><ScrollText /></button>
+      <button use:tooltip={$_('page.main.tooltips.buttons.modpack')} onclick={() => ($route.overlay.current = 'modpack')}><Package /></button>
+      <button use:tooltip={$_('page.main.tooltips.buttons.settings')} onclick={() => ($route.overlay.current = 'settings')}><Cog /></button>
     </div>
   </div>
 </div>
@@ -240,37 +241,6 @@
 
           transition: opacity 100ms;
 
-          &:hover::after {
-            content: attr(data-title);
-            width: max-content;
-            position: absolute;
-            top: -1.5rem;
-            font-size: 0.8rem;
-            line-height: 1;
-            background-color: var(--color-background);
-            padding: 0.2rem 0.3rem;
-            padding-top: 0.3rem;
-            box-shadow: 0 0 8px #0006;
-            border: solid 1px #fff2;
-            border-radius: 0.4rem;
-            animation: 1s appearDelay;
-            pointer-events: none;
-            z-index: 5;
-          }
-          &.right:hover::after {
-            right: 0.2rem;
-          }
-          @keyframes appearDelay {
-            0% {
-              opacity: 0;
-            }
-            99% {
-              opacity: 0;
-            }
-            100% {
-              opacity: 1;
-            }
-          }
 
           &:is(:hover, :focus-visible) {
             opacity: 1;

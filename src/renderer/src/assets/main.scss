@@ -1,4 +1,14 @@
 @use './base.scss';
+@use 'svooltip/styles.css';
+
+.svooltip {
+  --svooltip-bg: var(--color-background);
+	--svooltip-padding: 0 0.3rem;
+	--svooltip-text-size: 12px;
+  --svooltip-weight: 400;
+  --svooltip-arrow-size: 0;
+  outline: solid 1px #fff2;
+}
 
 body {
   min-height: 100vh;

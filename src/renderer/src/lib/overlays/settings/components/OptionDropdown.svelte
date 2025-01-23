@@ -3,6 +3,7 @@
   import { cubicOut } from 'svelte/easing'
   import type { MouseEventHandler } from 'svelte/elements'
   import { fly } from 'svelte/transition'
+  import { tooltip } from '../../../actions/tooltip.svelte.js'
 
   interface Props {
     onclick: MouseEventHandler<HTMLButtonElement>
@@ -27,7 +28,7 @@
 </script>
 
 <!-- svelte-ignore a11y_mouse_events_have_key_events -->
-<label class="dropdown" data-title={description} onmouseover={mIn} onmouseleave={mOut}>
+<label class="dropdown" use:tooltip={description} onmouseover={mIn} onmouseleave={mOut}>
   <p>{name}</p>
   <button {onclick} aria-label={name} class:rotateChev={lblHov} onfocus={mIn}>{actionLabel} <ChevronDown /></button>
   {#if lblHov}

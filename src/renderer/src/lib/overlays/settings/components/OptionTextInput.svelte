@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { tooltip } from "../../../actions/tooltip.svelte.js"
+
   interface Props {
     name: string
     description: string
@@ -11,7 +13,7 @@
   }: Props = $props()
 </script>
 
-<label class="text-input" data-title={description}>
+<label class="text-input" use:tooltip={description}>
   <p>{name}</p>
   <input type="text" bind:value={input}>
 </label>

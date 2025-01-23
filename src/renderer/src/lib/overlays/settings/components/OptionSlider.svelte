@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { tooltip } from "../../../actions/tooltip.svelte.js"
+
   interface Props {
     name: string
     description: string
@@ -36,7 +38,7 @@
   }
 </script>
 
-<label class="text-input" data-title={description}>
+<label class="text-input" use:tooltip={description}>
   <p>{name}</p>
   <input type="text" bind:value={input} onfocusout={verifyInput} />
   <input {oninput} type="range" bind:value={input} {min} {max} {step} onwheel={handleScroll} />

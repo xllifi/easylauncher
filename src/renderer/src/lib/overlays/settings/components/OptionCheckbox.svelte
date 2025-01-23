@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { tooltip } from "../../../actions/tooltip.svelte.js"
+
   interface Props {
     checked?: boolean
     description: string
@@ -7,7 +9,7 @@
   let { checked = $bindable(), name, description }: Props = $props()
 </script>
 
-<label class="checkbox-input" data-title={description}>
+<label class="checkbox-input" use:tooltip={description}>
   <p>{name}</p>
   <input type="checkbox" bind:checked />
 </label>

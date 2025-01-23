@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { MouseEventHandler } from "svelte/elements"
+  import { tooltip } from "../../../actions/tooltip.svelte.js"
 
   interface Props {
     onclick: MouseEventHandler<HTMLButtonElement>
@@ -10,7 +11,7 @@
   let { onclick, name, description, actionLabel }: Props = $props()
 </script>
 
-<label class="button" data-title={description}>
+<label class="button" use:tooltip={description}>
   <p>{name}</p>
   <button {onclick} aria-label={name}>{actionLabel}</button>
 </label>

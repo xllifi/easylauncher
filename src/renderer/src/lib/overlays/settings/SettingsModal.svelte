@@ -65,6 +65,9 @@
 </div>
 
 <style lang="scss">
+  :global(.svooltip) {
+    max-width: min(60dvw, 32rem);
+  }
   div.layout {
     width: 100%;
     height: 100%;
@@ -231,43 +234,6 @@
       &::-webkit-scrollbar-thumb {
         background-color: #0006;
         border-radius: 999px;
-      }
-
-      :global(label:hover) {
-        &::after {
-          content: attr(data-title);
-          width: 100%;
-          position: absolute;
-          top: -1.5rem;
-          left: 50%;
-          font-size: 0.8rem;
-          line-height: 1;
-          transform: translateX(-50%);
-          background-color: var(--color-background);
-          padding: 0.2rem 0.3rem;
-          padding-top: 0.3rem;
-          box-shadow: 0 0 8px #0006;
-          border: solid 1px #fff2;
-          border-radius: 0.4rem;
-          animation: 1s appearDelay;
-          pointer-events: none;
-          z-index: 5;
-        }
-        &:first-of-type::after {
-          top: unset;
-          bottom: -1.5rem;
-        }
-        @keyframes appearDelay {
-          0% {
-            opacity: 0;
-          }
-          99% {
-            opacity: 0;
-          }
-          100% {
-            opacity: 1;
-          }
-        }
       }
     }
   }

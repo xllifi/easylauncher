@@ -5,6 +5,7 @@
   import { route } from '../stores/route.svelte.js'
   import { fade } from 'svelte/transition'
   import { appstate } from '../stores/appstate.svelte.js'
+  import { tooltip } from '../actions/tooltip.svelte.js'
 
   let loadingUpdate = $state(false)
 
@@ -32,7 +33,7 @@
     </div>
     <div class="buttons" transition:fade={{ duration: 200 }}>
       {#if $appstate.updateFound}
-        <button class="update" class:loading={loadingUpdate} data-title={loadingUpdate ? $_('dragbar.tooltips.buttons.updating') : $_('dragbar.tooltips.buttons.update')} onclick={update}>
+        <button class="update" class:loading={loadingUpdate} use:tooltip={loadingUpdate ? $_('dragbar.tooltips.buttons.updating') : $_('dragbar.tooltips.buttons.update')} onclick={update}>
           {#if loadingUpdate}
             <Loader />
           {:else}
@@ -40,9 +41,9 @@
           {/if}
         </button>
       {/if}
-      <button class="report" data-title={$_('dragbar.tooltips.buttons.bugs')} onclick={report}><Bug /></button>
-      <button class="right minimize" data-title={$_('dragbar.tooltips.buttons.minimize')} onclick={minimize}><Minus /></button>
-      <button class="right close" data-title={$_('dragbar.tooltips.buttons.close')} onclick={quit}><X /></button>
+      <button class="report" use:tooltip={$_('dragbar.tooltips.buttons.bugs')} onclick={report}><Bug /></button>
+      <button class="minimize" use:tooltip={$_('dragbar.tooltips.buttons.minimize')} onclick={minimize}><Minus /></button>
+      <button class="close" use:tooltip={$_('dragbar.tooltips.buttons.close')} onclick={quit}><X /></button>
     </div>
   {/if}
 </div>
@@ -102,39 +103,6 @@
         transition:
           opacity 100ms,
           color 100ms;
-
-        &:hover::after {
-          content: attr(data-title);
-          width: max-content;
-          position: absolute;
-          bottom: -1.5rem;
-          font-size: 0.8rem;
-          line-height: 1;
-          background-color: var(--color-background);
-          color: var(--color-text-primary);
-          padding: 0.2rem 0.3rem;
-          padding-top: 0.3rem;
-          box-shadow: 0 0 8px #0006;
-          border: solid 1px #fff2;
-          border-radius: 0.4rem;
-          animation: 1s appearDelay;
-          pointer-events: none;
-          z-index: 5;
-        }
-        &.right:hover::after {
-          right: 0.2rem;
-        }
-        @keyframes appearDelay {
-          0% {
-            opacity: 0;
-          }
-          99% {
-            opacity: 0;
-          }
-          100% {
-            opacity: 1;
-          }
-        }
 
         &:is(:hover, :focus-visible) {
           opacity: 1;
