@@ -83,8 +83,6 @@
     $appstate.minecraftPids = $appstate.minecraftPids.filter(x => x != pid)
   })
 
-  ipc.on('updatefound', () => $appstate.updateFound = true)
-
   ipc.on('loginresponse', (_event, { launchCredentials }) => $params.launchCredentials = launchCredentials)
 
   init({

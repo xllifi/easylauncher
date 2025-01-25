@@ -215,16 +215,28 @@
         "description": "Detailed description: $1"
       },
       "launch-error-unknown": {
-        "title": "Error!",
+        "title": "Launch error!",
         "description": "Detailed description: $1"
       },
       "game-error-unknown": {
-        "title": "Error!",
+        "title": "Game error!",
         "description": "Detailed description: $1"
       },
       "feedback-sent": {
         "title": "Feedback sent",
         "description": "Thank you for your feedback!"
+      },
+      "update-error-noupdate": {
+        "title": "No updates",
+        "description": "Failed to find any updates."
+      },
+      "update-error-nofile": {
+        "title": "No update file",
+        "description": "Failed to find installer file in update. Please report this to developer."
+      },
+      "update-error-unknown": {
+        "title": "Update error!",
+        "description": "Detailed description: $1"
       }
     }
   }

@@ -87,11 +87,11 @@ function createWindow(): void {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.whenReady().then(() => {
+app.whenReady().then(async () => {
   genDirs(gamePath)
   // Set app user model id for windows
   electronApp.setAppUserModelId('ru.xllifi.launcher')
-  updater.checkForUpdates()
+  await updater.checkForUpdates()
 
   // Default open or close DevTools by F12 in development
   // and ignore CommandOrControl + R in production.
@@ -117,7 +117,6 @@ app.whenReady().then(() => {
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
 app.on('window-all-closed', () => {
-  if (updater.updateFound) return
   if (process.platform !== 'darwin') {
     app.quit()
   }
@@ -180,7 +179,24 @@ ipcMain.on('stopgame', () => {
 })
 
 ipcMain.on('installupdate', () => {
-  updater.installUpdate()
+  updater.installUpdate().catch((err: Error) => {
+    renderer.send('cancelupdate')
+
+    if (err.cause == 'noupdate') {
+      Sentry.captureEvent(err)
+      renderer.send('feed-push', {id: 'update-error-noupdate'})
+      return
+    }
+    if (err.cause == 'nofile') {
+      Sentry.captureEvent(err)
+      renderer.send('feed-push', {id: 'update-error-nofile'})
+      return
+    }
+    renderer.send('feed-push', {
+      id: 'update-error-unknown',
+      additional: [err]
+    })
+  })
 })
 
 ipcMain.on('loginrequest', async (_event, { username, password }) => {

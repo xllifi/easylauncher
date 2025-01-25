@@ -228,20 +228,32 @@
         "description": "Подробное описание: $1"
       },
       "launch-error-modslocked": {
-        "title": "Ошибка!",
+        "title": "Ошибка запуска!",
         "description": "Не удалось запустить Minecraft, так как вы сменили тип сборки, пока запущен другой процесс игры. Закройте Minecraft и попробуйте снова."
       },
       "launch-error-unknown": {
-        "title": "Ошибка!",
+        "title": "Ошибка запуска!",
         "description": "Подробное описание: $1"
       },
       "game-error-unknown": {
-        "title": "Ошибка!",
+        "title": "Ошибка игры!",
         "description": "Подробное описание: $1"
       },
       "feedback-sent": {
         "title": "Сообщение отправлено",
         "description": "Спасибо за сообщение!"
+      },
+      "update-error-noupdate": {
+        "title": "Нет обновлений",
+        "description": "Не удалось найти обновления."
+      },
+      "update-error-nofile": {
+        "title": "Нет файла обновления",
+        "description": "Не удалось найти файл установщика в обновлении. Пожалуйста, сообщите разработчику."
+      },
+      "update-error-unknown": {
+        "title": "Ошибка обновления!",
+        "description": "Подробное описание: $1"
       }
     }
   }

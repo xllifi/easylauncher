@@ -6,6 +6,7 @@
   import { fade } from 'svelte/transition'
   import { appstate } from '../stores/appstate.svelte.js'
   import { tooltip } from '../actions/tooltip.svelte.js'
+  import { onMount } from 'svelte'
 
   let loadingUpdate = $state(false)
 
@@ -24,6 +25,20 @@
     loadingUpdate = true
     ipc.send('installupdate')
   }
+
+  ipc.on('cancelupdate', () => {
+    loadingUpdate = false
+  })
+
+  onMount(() => {
+    console.log(`trying to get update status`)
+    ipc.send('getupdatestatus')
+  })
+  ipc.on('updatefound', () => {
+    console.log(`got response, settings variable`)
+    $appstate.updateFound = true
+    console.log($appstate.updateFound)
+  })
 </script>
 
 <div class="dragbar">

@@ -3,8 +3,8 @@ import fs from 'fs'
 import { Readable } from 'stream'
 import { ReadableStream } from 'stream/web'
 import path from 'path'
-import { app, shell } from 'electron'
-import { mainWindow, renderer } from './index.js'
+import { app, ipcMain, shell } from 'electron'
+import { renderer } from './index.js'
 
 export class Updater {
   updateFound: boolean = false
@@ -12,18 +12,23 @@ export class Updater {
   appxPath: null | string = null
 
   async checkForUpdates(): Promise<void> {
+    console.log(`gettings update from https://api.github.com/repos/${import.meta.env.VITE_AUTOUPDATE_GITHUB_REPO}/releases/latest`)
     const latestRelease: githubReleasesResponse = await ky.get(`https://api.github.com/repos/${import.meta.env.VITE_AUTOUPDATE_GITHUB_REPO}/releases/latest`).then((res) => res.json())
+
     if (parseInt(latestRelease.tag_name.replaceAll('.', '')) > parseInt(import.meta.env.APP_VERSION.replaceAll('.', ''))) {
       this.updateFound = true
       this.appxAsset = latestRelease.assets.filter((x) => x.name.match(/\.appx$/))[0]
 
-      mainWindow.webContents.on('dom-ready', () => renderer.send('updatefound'))
+      ipcMain.on('getupdatestatus', () => {
+        console.log(`received get update, sending response`)
+        renderer.send('updatefound')
+      })
     }
   }
 
   async installUpdate() {
-    if (!this.updateFound) throw new Error(`Update not found!`)
-    if (this.appxAsset == null) throw new Error(`Installer file not found in update! Please tell this to developer ASAP!`)
+    if (!this.updateFound) throw new Error(`Update not found!`, { cause: 'noupdate' })
+    if (this.appxAsset == null) throw new Error(`Installer file not found in update! Please tell this to developer ASAP!`, { cause: 'nofile' })
 
     const dest = path.resolve(app.getPath('temp'), this.appxAsset.name)
     console.log(`downloading new release to ${dest}`)
@@ -33,7 +38,6 @@ export class Updater {
 
     shell.openPath(this.appxPath!)
 
-    mainWindow.close()
     app.quit()
   }
 
