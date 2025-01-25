@@ -21,8 +21,10 @@ jobs:
       - name: Build/release Electron app
         uses: Yan-Jobs/action-electron-builder@v1.7.0
         env:
+          VITE_SENTRY_HOST: ${{ vars.VITE_SENTRY_HOST }}
           VITE_SENTRY_URL: ${{ vars.VITE_SENTRY_URL }}
           VITE_AUTH_HOST: ${{ vars.VITE_AUTH_HOST }}
+          VITE_AUTOUPDATE_GITHUB_REPO: ${{ vars.VITE_AUTOUPDATE_GITHUB_REPO }}
         with:
           # GitHub token, automatically provided to the action
           # (No need to define this secret in the repo settings)
