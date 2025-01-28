@@ -180,7 +180,9 @@
       "assets": "ресурсов",
       "libraries": "библиотек",
       "modpack": "сборки",
-      "meta": "метаданных"
+      "meta": "метаданных",
+      "game": "игры",
+      "loader": "загрузчика модов"
     },
     "minecraft_started": "Minecraft запускается...",
     "minecraft_closed": "Minecraft закрыт!"

@@ -167,7 +167,9 @@
       "assets": "assets",
       "libraries": "libraries",
       "modpack": "modpack",
-      "meta": "metadata"
+      "meta": "metadata",
+      "game": "game",
+      "loader": "mod loader"
     },
     "minecraft_started": "Minecraft is starting...",
     "minecraft_closed": "Minecraft got closed!"

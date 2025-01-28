@@ -4,6 +4,14 @@ import { gamePath, renderer } from './index.js'
 import { ChildProcessWithoutNullStreams } from 'child_process'
 
 export async function startGame(params: LauncherParams): Promise<ChildProcessWithoutNullStreams> {
+  let lastUpdateTimestamp: number = 0
+  function sendProgress(type: string, percent: number) {
+    if (lastUpdateTimestamp > Date.now()) return
+
+    renderer.send('progress', { type, percent: (percent * 100).toFixed(2) })
+    lastUpdateTimestamp = Date.now() + 250
+  }
+
   let modpack: null | { url: string; verify?: { hash: string; algorithm: 'sha1' | 'sha256' } } = null
   switch (params.modpackType) {
     case 'ess':
@@ -38,7 +46,11 @@ export async function startGame(params: LauncherParams): Promise<ChildProcessWit
     },
     callbacks: {
       dlOnProgress(progress, _chunk, file, _lastProgress) {
-        renderer.send('progress', { type: file.type, percent: (progress.percent * 100).toFixed(2) })
+        sendProgress(file.type, progress.percent)
+      },
+      dlOnFinish(file, _lastProgress, percent) {
+        if (!percent && percent != 0) return
+        sendProgress(file.type, percent)
       },
       gameOnStart(pid) {
         console.log(`MC started`)
