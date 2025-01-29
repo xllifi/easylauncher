@@ -1,12 +1,13 @@
 <script lang="ts">
-  import Step1 from './Step1.svelte'
+  import Step1 from './steps/Step1.svelte'
+  import Step2 from './steps/Step2.svelte'
+  import Step3 from './steps/Step3.svelte'
+  import Step4 from './steps/Step4.svelte'
   import { fly } from 'svelte/transition'
-  import Step2 from './Step2.svelte'
   import { ArrowLeft } from 'lucide-svelte'
-  import Step3 from './Step3.svelte'
-  import Step4 from './Step4.svelte'
   import { route } from '../../stores/route.svelte.js'
   import { params } from '../../stores/params.svelte.js'
+  import MainPage from '../main/MainPage.svelte'
   let step: number = 0
   let movingFront: boolean = true
 
@@ -20,7 +21,7 @@
   }
   function finish() {
     $params.onboardingComplete = true
-    $route.page = 'main'
+    $route.page = MainPage
   }
 </script>
 

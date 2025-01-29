@@ -1,12 +1,10 @@
 <script lang="ts">
   import Dragbar from './lib/components/Dragbar.svelte'
-  import Main from './lib/pages/main/Main.svelte'
   import { route } from './lib/stores/route.svelte'
   import { fade, fly, scale } from 'svelte/transition'
   import { backIn, backOut } from 'svelte/easing'
   import { getLocaleFromNavigator, init, isLoading, register } from 'svelte-i18n'
   import { params } from './lib/stores/params.svelte.js'
-  import Step1 from './lib/pages/onboarding/Index.svelte'
   import StatusBar from './lib/components/StatusBar.svelte'
   import StatusFeed from './lib/components/StatusFeed.svelte'
   import { ipc } from './lib/scripts/general.js'
@@ -85,10 +83,11 @@
   })
 
   let Modal = $state($route.modal.current)
-
   route.subscribe((route) => {
     Modal = route.modal.current
   })
+
+  let Page = $state($route.page)
 </script>
 
 <svelte:window onkeyup={exitByPressingEsc} />
@@ -103,11 +102,7 @@
     <!-- Page -->
     {#key $route.page}
       <div class="inner" transition:fade>
-        {#if $route.page == 'main'}
-          <Main />
-        {:else if $route.page == 'onboarding'}
-          <Step1 />
-        {/if}
+        <Page />
       </div>
     {/key}
     <!-- Modal -->

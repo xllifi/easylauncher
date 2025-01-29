@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { ipc } from '../../scripts/general.js'
+  import { ipc } from '../../../scripts/general.js'
   import { CircleUserRound, KeySquare } from 'lucide-svelte'
-  import { params } from '../../stores/params.svelte.js'
+  import { params } from '../../../stores/params.svelte.js'
   import { _ } from 'svelte-i18n'
   import { onMount } from 'svelte'
 

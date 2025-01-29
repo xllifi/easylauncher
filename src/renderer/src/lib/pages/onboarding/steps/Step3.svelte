@@ -2,7 +2,7 @@
   import { PackageCheck, PackagePlus, PackageX } from 'lucide-svelte'
   import { onMount } from 'svelte'
   import { fade } from 'svelte/transition'
-  import { params } from '../../stores/params.svelte.js'
+  import { params } from '../../../stores/params.svelte.js'
   import { _ } from 'svelte-i18n'
 
   interface Props {
