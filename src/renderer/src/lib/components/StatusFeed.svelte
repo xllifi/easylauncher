@@ -149,7 +149,7 @@
           max-width: 16rem;
           text-wrap: balance;
           word-wrap: break-word;
-          white-space: all;
+          white-space: pre-line;
           pointer-events: all;
 
           &::before {

@@ -237,7 +237,7 @@
       },
       "confirm-stop": {
         "title": "Stop Minecraft?",
-        "description": "Force stopping Minecraft might cause the game to stop working correctly. Use this only if the game freezes. To confirm, press the button again within 30 seconds."
+        "description": "Force stopping Minecraft might cause the game to stop working correctly. Use this only if the game freezes.\n\nTo confirm, press the button again within 30 seconds."
       }
     }
   }
