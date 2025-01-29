@@ -1,20 +1,14 @@
 <script lang="ts">
   import Dragbar from './lib/components/Dragbar.svelte'
   import Main from './lib/pages/main/Main.svelte'
-  import Settings from './lib/modals/settings/SettingsModal.svelte'
   import { route } from './lib/stores/route.svelte'
   import { fade, fly, scale } from 'svelte/transition'
   import { backIn, backOut } from 'svelte/easing'
-  import LoginModal from './lib/modals/LoginModal.svelte'
   import { getLocaleFromNavigator, init, isLoading, register } from 'svelte-i18n'
   import { params } from './lib/stores/params.svelte.js'
   import Step1 from './lib/pages/onboarding/Index.svelte'
-  import ModpackModal from './lib/modals/ModpackModal.svelte'
   import StatusBar from './lib/components/StatusBar.svelte'
   import StatusFeed from './lib/components/StatusFeed.svelte'
-  import RulesModal from './lib/modals/RulesModal.svelte'
-  import FeedbackModal from './lib/modals/FeedbackModal.svelte'
-  import UnknownModal from './lib/modals/UnknownModal.svelte'
   import { ipc } from './lib/scripts/general.js'
   import { appstate } from './lib/stores/appstate.svelte.js'
 
@@ -29,8 +23,8 @@
   let readyForExit: boolean = $state(false)
 
   function exitButtonClick() {
-    $route.modal.previous = 'none'
-    $route.modal.current = 'none'
+    $route.modal.previous = null
+    $route.modal.current = null
   }
 
   function exitModalStart(e: Event) {
@@ -47,16 +41,16 @@
 
   function backButtonClick() {
     $route.modal.current = $route.modal.previous
-    $route.modal.previous = 'none'
+    $route.modal.previous = null
   }
 
   function exitByPressingEsc(e: KeyboardEvent): void {
-    if (e.key === 'Escape' && $route.modal.current != 'none') {
+    if (e.key === 'Escape' && $route.modal.current != null) {
       const activeEl = document.activeElement as HTMLElement | null
       if (activeEl && activeEl.tagName == 'INPUT') return activeEl.blur()
 
-      $route.modal.previous = 'none'
-      $route.modal.current = 'none'
+      $route.modal.previous = null
+      $route.modal.current = null
     }
   }
 
@@ -89,6 +83,12 @@
     fallbackLocale: 'en',
     initialLocale: $params.lang
   })
+
+  let Modal = $state($route.modal.current)
+
+  route.subscribe((route) => {
+    Modal = route.modal.current
+  })
 </script>
 
 <svelte:window onkeyup={exitByPressingEsc} />
@@ -111,25 +111,13 @@
       </div>
     {/key}
     <!-- Modal -->
-    {#if $route.modal.current != 'none'}
+    {#if Modal}
       <!-- svelte-ignore a11y_no_static_element_interactions -->
       <!-- svelte-ignore a11y_click_events_have_key_events -->
       <div class="modal" onmousedown={exitModalStart} onmouseleave={exitModalCancel} onmouseup={exitModalEnd} tabindex="-1" out:scale={{ duration: 200, start: 0, easing: backIn }} in:scale={{ duration: 200, start: 1.5, easing: backOut }}>
         {#key $route.modal.current}
           <div class="inner" onmouseenter={exitModalCancel} onmousedown={(e) => e.stopPropagation()} onmouseleave={(e) => e.stopPropagation()} onmouseup={(e) => e.stopPropagation()} out:fly={{ duration: 200, y: 100 }} in:fly={{ delay: 60, duration: 200, y: -100 }}>
-            {#if $route.modal.current == 'settings'}
-              <Settings exit={exitButtonClick} />
-            {:else if $route.modal.current == 'login'}
-              <LoginModal exit={exitButtonClick} back={backButtonClick} />
-            {:else if $route.modal.current == 'modpack'}
-              <ModpackModal exit={exitButtonClick} back={backButtonClick} />
-            {:else if $route.modal.current == 'rules'}
-              <RulesModal exit={exitButtonClick} back={backButtonClick} />
-            {:else if $route.modal.current == 'feedback'}
-              <FeedbackModal exit={backButtonClick} back={backButtonClick} statusFeed={statusFeed} />
-            {:else}
-              <UnknownModal exit={exitButtonClick} back={backButtonClick} />
-            {/if}
+              <Modal exit={exitButtonClick} back={backButtonClick} {statusFeed} />
           </div>
         {/key}
       </div>

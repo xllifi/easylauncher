@@ -1,31 +1,25 @@
 <script lang="ts">
   import { ArrowLeft, Mail, X } from 'lucide-svelte'
-  import type { MouseEventHandler } from 'svelte/elements'
   import { _ } from 'svelte-i18n'
   import { route } from '../stores/route.svelte.js'
   import * as Sentry from '@sentry/svelte'
-  import StatusFeed from '../components/StatusFeed.svelte'
+  import type { ModalProps } from './types.js'
 
-  interface Props {
-    exit: MouseEventHandler<any>
-    back: MouseEventHandler<any>
-    statusFeed: StatusFeed
-  }
-  let { exit = $bindable(), back = $bindable(), statusFeed }: Props = $props()
+  let { exit = $bindable(), back = $bindable(), statusFeed }: ModalProps = $props()
 
   let input: string = $state('')
 
   function send() {
     if (input != '') {
       Sentry.captureMessage(input)
-      statusFeed.createNotification('feedback-sent')
+      statusFeed!.createNotification('feedback-sent')
       exit(new MouseEvent('fake'))
     }
   }
 </script>
 
 <div class="title">
-  <button class="back" class:hidden={$route.modal.previous == 'none' && back != null} onclick={back}><ArrowLeft /></button>
+  <button class="back" class:hidden={$route.modal.previous == null && back != null} onclick={back}><ArrowLeft /></button>
   <h2>{$_('modal.feedback.title')}</h2>
   <button class="close" onclick={exit}><X /></button>
 </div>

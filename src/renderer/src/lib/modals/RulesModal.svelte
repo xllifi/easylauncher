@@ -1,15 +1,11 @@
 <script lang="ts">
   import { ArrowLeft, X } from 'lucide-svelte'
-  import type { MouseEventHandler } from 'svelte/elements'
   import { _ } from 'svelte-i18n'
   import { route } from '../stores/route.svelte.js'
   import { params } from '../stores/params.svelte.js'
+  import type { ModalProps } from './types.js'
 
-  interface Props {
-    exit: MouseEventHandler<any>
-    back: MouseEventHandler<any>
-  }
-  let { exit = $bindable(), back = $bindable() }: Props = $props()
+  let { exit = $bindable(), back = $bindable() }: ModalProps = $props()
   const rules = [
     {
       title: 'modal.rules.entries.respect.title',
@@ -41,12 +37,12 @@
 
   function confirm() {
     $params.rulesConfirmed = true
-    $route.modal.current = 'none'
+    $route.modal.current = null
   }
 </script>
 
 <div class="title">
-  <button class="back" class:hidden={$route.modal.previous == 'none' && back != null} onclick={back}><ArrowLeft /></button>
+  <button class="back" class:hidden={$route.modal.previous == null && back != null} onclick={back}><ArrowLeft /></button>
   <h2>{$_('modal.rules.title')}</h2>
   <button class="close" onclick={exit}><X /></button>
 </div>

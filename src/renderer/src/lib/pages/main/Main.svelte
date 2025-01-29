@@ -11,6 +11,9 @@
   import { _ } from 'svelte-i18n'
   import { appstate } from '../../stores/appstate.svelte.js'
   import { tooltip } from '../../actions/tooltip.svelte.js'
+  import SettingsModal from '../../modals/settings/SettingsModal.svelte'
+  import ModpackModal from '../../modals/ModpackModal.svelte'
+  import RulesModal from '../../modals/RulesModal.svelte'
   let skinCv: HTMLCanvasElement, skinVw: skinview3d.SkinViewer
   let skin: string = $state(noskin)
   let cape: string
@@ -83,8 +86,8 @@
   function launchGame(): void {
     if ($appstate.current == 'launch') return
 
-    if (!$params.rulesConfirmed) {
-      $route.modal.current = 'rules'
+    if (!$params.rulesConfirmed || true) {
+      $route.modal.current = RulesModal
       const unsub = params.subscribe(({rulesConfirmed}) => {
         if (rulesConfirmed) {
           unsub()
@@ -121,8 +124,8 @@
     <div class="buttons">
       <button use:tooltip={$_('page.main.tooltips.buttons.gamedir')} onclick={() => ipc.send('opengamedir')}><FolderOpen /></button>
       <button use:tooltip={$_('page.main.tooltips.buttons.logs')} onclick={() => ipc.send('viewlogs')}><ScrollText /></button>
-      <button use:tooltip={$_('page.main.tooltips.buttons.modpack')} onclick={() => ($route.modal.current = 'modpack')}><Package /></button>
-      <button use:tooltip={$_('page.main.tooltips.buttons.settings')} onclick={() => ($route.modal.current = 'settings')}><Cog /></button>
+      <button use:tooltip={$_('page.main.tooltips.buttons.modpack')} onclick={() => ($route.modal.current = ModpackModal)}><Package /></button>
+      <button use:tooltip={$_('page.main.tooltips.buttons.settings')} onclick={() => ($route.modal.current = SettingsModal)}><Cog /></button>
     </div>
   </div>
 </div>

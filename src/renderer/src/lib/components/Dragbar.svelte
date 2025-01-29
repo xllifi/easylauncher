@@ -7,6 +7,7 @@
   import { appstate } from '../stores/appstate.svelte.js'
   import { tooltip } from '../actions/tooltip.svelte.js'
   import { onMount } from 'svelte'
+  import FeedbackModal from '../modals/FeedbackModal.svelte'
 
   let loadingUpdate = $state(false)
 
@@ -17,9 +18,9 @@
     ipc.send('minimize')
   }
   function report(): void {
-    if ($route.modal.current == 'feedback') return
+    if ($route.modal.current == FeedbackModal) return
     $route.modal.previous = $route.modal.current
-    $route.modal.current = 'feedback'
+    $route.modal.current = FeedbackModal
   }
   function update(): void {
     loadingUpdate = true

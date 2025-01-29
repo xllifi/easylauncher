@@ -3,14 +3,11 @@
   import SettingsPageGeneral from './pages/SettingsPageGeneral.svelte'
   import SettingsPageLaunch from './pages/SettingsPageLaunch.svelte'
   import { tilt } from '../../scripts/tilt_transition.js'
-  import type { MouseEventHandler } from 'svelte/elements'
   import { fade } from 'svelte/transition'
   import { _ } from 'svelte-i18n'
+  import type { ModalProps } from '../types.js'
 
-  interface Props {
-    exit: MouseEventHandler<any>
-  }
-  let { exit = $bindable() }: Props = $props()
+  let { exit = $bindable() }: ModalProps = $props()
 
   const pages = $state([
     {

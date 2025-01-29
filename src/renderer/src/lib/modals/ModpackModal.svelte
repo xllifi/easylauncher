@@ -2,14 +2,10 @@
   import { ArrowLeft, PackageCheck, PackagePlus, PackageX, X } from 'lucide-svelte'
   import { params } from '../stores/params.svelte.js'
   import { route } from '../stores/route.svelte.js'
-  import type { MouseEventHandler } from 'svelte/elements'
   import { _ } from 'svelte-i18n'
+  import type { ModalProps } from './types.js'
 
-  interface Props {
-    exit: MouseEventHandler<any>
-    back?: MouseEventHandler<any>
-  }
-  let { exit = $bindable(), back = $bindable() }: Props = $props()
+  let { exit = $bindable(), back = $bindable() }: ModalProps = $props()
 
   function chooseModpack(variant: 'min' | 'ess' | 'ful', e: MouseEvent & any) {
     $params.modpackType = variant
@@ -18,7 +14,7 @@
 </script>
 
 <div class="title">
-  <button class="back" class:hidden={$route.modal.previous == 'none' && back != null} onclick={back}><ArrowLeft /></button>
+  <button class="back" class:hidden={$route.modal.previous == null && back != null} onclick={back}><ArrowLeft /></button>
   <h2>{$_('modal.modpack.title')}</h2>
   <button class="close" onclick={exit}><X /></button>
 </div>
