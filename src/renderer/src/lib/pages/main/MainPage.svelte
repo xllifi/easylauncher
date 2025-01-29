@@ -86,7 +86,7 @@
   function launchGame(): void {
     if ($appstate.current == 'launch') return
 
-    if (!$params.rulesConfirmed || true) {
+    if (!$params.rulesConfirmed) {
       $route.modal.current = RulesModal
       const unsub = params.subscribe(({rulesConfirmed}) => {
         if (rulesConfirmed) {
