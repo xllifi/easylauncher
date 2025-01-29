@@ -9,6 +9,7 @@
   import StatusFeed from './lib/components/StatusFeed.svelte'
   import { ipc } from './lib/scripts/general.js'
   import { appstate } from './lib/stores/appstate.svelte.js'
+  import type { SvelteComponent } from 'svelte'
 
   window.addEventListener('DOMContentLoaded', () => {
     $route.loaded = true
@@ -16,7 +17,7 @@
 
   // this is insanity
   // svelte-ignore non_reactive_update
-  let statusFeed: StatusFeed
+  let statusFeed: SvelteComponent
 
   let readyForExit: boolean = $state(false)
 

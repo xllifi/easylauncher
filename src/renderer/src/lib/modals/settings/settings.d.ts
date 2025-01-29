@@ -1,5 +1,6 @@
+import type { Component } from "svelte"
+
 export type SettingsPage = {
-  id: string,
-  title: string,
-  options: SettingsPageOption[]
+  component: Component,
+  title: string
 }

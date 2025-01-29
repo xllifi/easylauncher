@@ -8,8 +8,8 @@
   import { route } from '../../stores/route.svelte.js'
   import { params } from '../../stores/params.svelte.js'
   import MainPage from '../main/MainPage.svelte'
-  let step: number = 0
-  let movingFront: boolean = true
+  let step: number = $state(0)
+  let movingFront: boolean = $state(true)
 
   function next() {
     movingFront = true

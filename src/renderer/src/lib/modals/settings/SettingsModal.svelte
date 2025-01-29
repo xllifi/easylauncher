@@ -6,10 +6,11 @@
   import { fade } from 'svelte/transition'
   import { _ } from 'svelte-i18n'
   import type { ModalProps } from '../types.js'
+  import type { SettingsPage } from './settings.js'
 
   let { exit = $bindable() }: ModalProps = $props()
 
-  const pages = $state([
+  const pages: SettingsPage[] = $state([
     {
       component: SettingsPageGeneral,
       title: 'modal.settings.pages.general.tab'

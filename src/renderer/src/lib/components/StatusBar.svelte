@@ -7,27 +7,30 @@
   import { onMount } from 'svelte'
   import { appstate } from '../stores/appstate.svelte.js'
 
-  let text, left_text, progress, hideTimeout
-  let isHidden = true
-  let fillcolor = 'fa0'
+  let text: string | null = $state(null)
+  let left_text: string | null = $state(null)
+  let progress: number = $state(0)
+  let hideTimeout: NodeJS.Timeout | null = $state(null)
+  let isHidden: boolean = $state(true)
+  let fillcolor: string = $state('fa0')
 
-  let texts = $_('statusbar.texts')
-  let displayText = texts[Math.floor(Math.random() * texts.length)]
+  const texts: string = $_('statusbar.texts')
+  let displayText = $state(texts[Math.floor(Math.random() * texts.length)])
   setInterval(() => {
     displayText = texts[Math.floor(Math.random() * texts.length)]
   }, 2500)
 
   function parseContents(opts: StatusBarContents): void {
-    text = opts.text ? opts.text : undefined
-    left_text = opts.left_text ? opts.left_text : undefined
+    text = opts.text ? opts.text : null
+    left_text = opts.left_text ? opts.left_text : null
     fillcolor = opts.fillcolor ? opts.fillcolor : 'fa0'
     progress = opts.progress ? opts.progress : 0
   }
   function unsetContents(): void {
     hide()
     setTimeout(() => {
-      text = undefined
-      left_text = undefined
+      text = null
+      left_text = null
       fillcolor = 'fa0'
       progress = 0
     }, 500)
@@ -52,12 +55,12 @@
     progress = percent
     fillcolor = 'fa0'
 
-    clearTimeout(hideTimeout)
+    if (hideTimeout) clearTimeout(hideTimeout)
   })
   ipc.on('start', () => {
     show()
     text = $_('statusbar.minecraft_started')
-    left_text = undefined
+    left_text = null
     progress = 100
     fillcolor = '5d5'
 
@@ -66,7 +69,7 @@
   ipc.on('close', () => {
     show()
     text = $_('statusbar.minecraft_closed')
-    left_text = undefined
+    left_text = null
     progress = 100
     fillcolor = 'd55'
 
@@ -75,7 +78,7 @@
   ipc.on('launch-cancelled', () => hide())
 
   function hidetimeout() {
-    clearTimeout(hideTimeout)
+    if (hideTimeout) clearTimeout(hideTimeout)
     hideTimeout = setTimeout(() => {
       hide()
       setTimeout(() => unsetContents(), 500)
@@ -85,7 +88,7 @@
     isHidden = true
   }
   function show() {
-    clearTimeout(hideTimeout)
+    if (hideTimeout) clearTimeout(hideTimeout)
     isHidden = false
   }
 

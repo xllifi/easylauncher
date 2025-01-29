@@ -8,7 +8,7 @@
   import { _ } from 'svelte-i18n'
   import { onMount } from 'svelte'
 
-  let list: StatusFeedEntry[] = []
+  let list: StatusFeedEntry[] = $state([])
 
   ipc.on('feed-push', (_event, { id, additional }) => createNotification(id, additional))
   ipc.on('feed-push-literal', (_event, { title, description }) => {
@@ -74,7 +74,7 @@
         <p>{description}</p>
         <button
           class="close"
-          on:click={() => {
+          onclick={() => {
             removeEntry(id)
           }}><X /></button
         >
