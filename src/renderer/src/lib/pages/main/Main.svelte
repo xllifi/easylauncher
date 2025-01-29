@@ -84,7 +84,7 @@
     if ($appstate.current == 'launch') return
 
     if (!$params.rulesConfirmed) {
-      $route.overlay.current = 'rules'
+      $route.modal.current = 'rules'
       const unsub = params.subscribe(({rulesConfirmed}) => {
         if (rulesConfirmed) {
           unsub()
@@ -121,8 +121,8 @@
     <div class="buttons">
       <button use:tooltip={$_('page.main.tooltips.buttons.gamedir')} onclick={() => ipc.send('opengamedir')}><FolderOpen /></button>
       <button use:tooltip={$_('page.main.tooltips.buttons.logs')} onclick={() => ipc.send('viewlogs')}><ScrollText /></button>
-      <button use:tooltip={$_('page.main.tooltips.buttons.modpack')} onclick={() => ($route.overlay.current = 'modpack')}><Package /></button>
-      <button use:tooltip={$_('page.main.tooltips.buttons.settings')} onclick={() => ($route.overlay.current = 'settings')}><Cog /></button>
+      <button use:tooltip={$_('page.main.tooltips.buttons.modpack')} onclick={() => ($route.modal.current = 'modpack')}><Package /></button>
+      <button use:tooltip={$_('page.main.tooltips.buttons.settings')} onclick={() => ($route.modal.current = 'settings')}><Cog /></button>
     </div>
   </div>
 </div>

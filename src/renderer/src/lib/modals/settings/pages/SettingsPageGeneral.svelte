@@ -1,18 +1,18 @@
 <script lang="ts">
   import { _, locale } from "svelte-i18n"
-  import { route, type RouteOverlay } from "../../../stores/route.svelte.js"
+  import { route, type RouteModal } from "../../../stores/route.svelte.js"
   import OptionButton from "../components/OptionButton.svelte"
   import OptionDropdown from "../components/OptionDropdown.svelte"
   import { params } from "../../../stores/params.svelte.js"
 
-  function goTo(page: RouteOverlay) {
-    $route.overlay.previous = 'settings'
-    $route.overlay.current = page
+  function goTo(page: RouteModal) {
+    $route.modal.previous = 'settings'
+    $route.modal.current = page
   }
 
   function handleLocaleChange(newLocal: string) {
-    $route.overlay.previous = 'none'
-    $route.overlay.current = 'none'
+    $route.modal.previous = 'none'
+    $route.modal.current = 'none'
     $route.loaded = false
     locale.set(newLocal)
     $params.lang = newLocal

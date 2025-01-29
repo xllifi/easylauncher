@@ -17,9 +17,9 @@
     ipc.send('minimize')
   }
   function report(): void {
-    if ($route.overlay.current == 'feedback') return
-    $route.overlay.previous = $route.overlay.current
-    $route.overlay.current = 'feedback'
+    if ($route.modal.current == 'feedback') return
+    $route.modal.previous = $route.modal.current
+    $route.modal.current = 'feedback'
   }
   function update(): void {
     loadingUpdate = true

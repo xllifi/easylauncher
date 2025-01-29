@@ -4,7 +4,7 @@ import { params } from './params.svelte.js'
 export const route: Writable<Route> = writable({
   loaded: false,
   page: get(params).onboardingComplete ? 'main' : 'onboarding',
-  overlay: {
+  modal: {
     current: 'none',
     previous: 'none'
   }
@@ -13,10 +13,10 @@ export const route: Writable<Route> = writable({
 export type Route = {
   loaded: boolean,
   page: 'main' | 'onboarding'
-  overlay: {
-    current: RouteOverlay,
-    previous: RouteOverlay
+  modal: {
+    current: RouteModal,
+    previous: RouteModal
   }
 }
 
-export type RouteOverlay = 'none' | 'settings' | 'login' | 'modpack' | 'rules' | 'feedback' | 'unknown'
+export type RouteModal = 'none' | 'settings' | 'login' | 'modpack' | 'rules' | 'feedback' | 'unknown'

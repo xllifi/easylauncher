@@ -58,7 +58,7 @@
 
 <div class="layout">
   <div class="title">
-    <button class="back" class:hidden={$route.overlay.previous == 'none'} onclick={back}><ArrowLeft /></button>
+    <button class="back" class:hidden={$route.modal.previous == 'none'} onclick={back}><ArrowLeft /></button>
     <h2>{$_('modal.login.title')}</h2>
     <button class="close" onclick={exit}><X /></button>
   </div>

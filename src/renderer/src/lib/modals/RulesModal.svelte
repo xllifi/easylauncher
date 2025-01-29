@@ -41,12 +41,12 @@
 
   function confirm() {
     $params.rulesConfirmed = true
-    $route.overlay.current = 'none'
+    $route.modal.current = 'none'
   }
 </script>
 
 <div class="title">
-  <button class="back" class:hidden={$route.overlay.previous == 'none' && back != null} onclick={back}><ArrowLeft /></button>
+  <button class="back" class:hidden={$route.modal.previous == 'none' && back != null} onclick={back}><ArrowLeft /></button>
   <h2>{$_('modal.rules.title')}</h2>
   <button class="close" onclick={exit}><X /></button>
 </div>
