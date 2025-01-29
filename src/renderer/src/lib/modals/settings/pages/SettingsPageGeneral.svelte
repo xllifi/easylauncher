@@ -23,10 +23,6 @@
       $route.loaded = true
     }, 1000)
   }
-
-  function addShortcut() {
-    alert(`Not implemented!`)
-  }
 </script>
 
 <main>
@@ -42,5 +38,4 @@
       action: () => {handleLocaleChange('en')}
     }
   ]} />
-  <OptionButton name={$_('modal.settings.pages.general.options.shortcut.name')} description={$_('modal.settings.pages.general.options.shortcut.description')} actionLabel={$_('modal.settings.pages.general.options.shortcut.label')} onclick={addShortcut} />
 </main>
