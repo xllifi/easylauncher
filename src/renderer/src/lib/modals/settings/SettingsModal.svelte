@@ -2,7 +2,6 @@
   import { X } from 'lucide-svelte'
   import SettingsPageGeneral from './pages/SettingsPageGeneral.svelte'
   import SettingsPageLaunch from './pages/SettingsPageLaunch.svelte'
-  import SettingsPage404 from './pages/SettingsPage404.svelte'
   import { tilt } from '../../scripts/tilt_transition.js'
   import type { MouseEventHandler } from 'svelte/elements'
   import { fade } from 'svelte/transition'
@@ -15,32 +14,22 @@
 
   const pages = $state([
     {
-      component: 'SettingsPageGeneral',
+      component: SettingsPageGeneral,
       title: 'modal.settings.pages.general.tab'
     },
     {
-      component: 'SettingsPageLaunch',
+      component: SettingsPageLaunch,
       title: 'modal.settings.pages.launch.tab'
     }
   ])
 
-  function changePage(e) {
-    currentPageComponentName = e.target.id
-    pageTitle = pages.filter((x) => x.component === currentPageComponentName)[0].title
-    switch (e.target.id) {
-      case 'SettingsPageGeneral':
-        return (Page = SettingsPageGeneral)
-      case 'SettingsPageLaunch':
-        return (Page = SettingsPageLaunch)
-      default:
-        pageTitle = 'modal.settings.pages.404.tab'
-        return (Page = SettingsPage404)
-    }
+  function changePage(page) {
+    Page = page.component
+    pageTitle = page.title
   }
 
-  let Page = $state(SettingsPageGeneral)
-  let currentPageComponentName = $state('SettingsPageGeneral')
-  let pageTitle = $state(pages.filter((x) => x.component === currentPageComponentName)[0].title)
+  let Page = $state(pages[0].component)
+  let pageTitle = $state(pages[0].title)
 </script>
 
 <div class="layout">
@@ -54,7 +43,7 @@
   </div>
   <div class="left">
     {#each pages as page}
-      <button tabindex="0" class="tab" id={page.component} onclick={changePage} class:selected={currentPageComponentName === page.component}>{$_(page.title)}</button>
+      <button tabindex="0" class="tab" onclick={() => {changePage(page)}} class:selected={Page === page.component}>{$_(page.title)}</button>
     {/each}
   </div>
   {#key Page}

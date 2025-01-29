@@ -53,11 +53,6 @@
               "description": "If enabled, you'll be able to close the launcher without closing Minecraft."
             }
           }
-        },
-        "404": {
-          "tab": "No page",
-          "h2": "Page not found! ☹️",
-          "p": "Choose a page from the left side."
         }
       }
     },
