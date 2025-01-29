@@ -95,15 +95,15 @@
       "entries": {
         "respect": {
           "title": "Уважайте всех",
-          "content": "Текст будет меняться, это временная \"затычка\". We do not tolerate bullying or harassment, in any way, shape or form. All members of our community should be treated with dignity and respect."
+          "content": "В нашем сообществе нет места травле или оскорблениям. Крайне важно относиться ко всем участникам с достоинством, соблюдая принципы дружелюбного взаимодействия в игре."
         },
         "integrity": {
           "title": "Играйте честно",
-          "content": "Fair gameplay is core to the experience. Progression is earned through good, clean gameplay. Cheating, griefing or other threats to fair play will not be tolerated."
+          "content": "Чистый геймплей — основа Minecraft. Прогресс должен достигаться исключительно честным путём. Мы не потерпим использование читов, гриферство и другие виды нечестной игры."
         },
         "vigilant": {
-          "title": "Сохраняйте бдительность",
-          "content": "Working tagether we can keep the game fair and fun for all. To promote an enjoyable gameplay experience, report any incidents or inappropriate behaviors you encounter to moderation staff."
+          "title": "Будьте бдительны",
+          "content": "Совместными усилиями мы сохраним игру честной! Если вы столкнулись с нарушением правил или токсичным поведением, немедленно сообщите об этом модераторам."
         }
       },
       "continue": "Продолжить"
