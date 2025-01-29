@@ -2,7 +2,7 @@
   import { route } from '../../stores/route.svelte.js'
   import { params } from '../../stores/params.svelte.js'
   import { ipc } from '../../scripts/general.js'
-  import { onMount } from 'svelte'
+  import { onMount, type SvelteComponent } from 'svelte'
   import * as skinview3d from 'skinview3d'
   import { getSkinUrls, setupSkin } from './Main.svelte.js'
   import noskin from '../../../assets/unknownplayer.png'
@@ -14,6 +14,13 @@
   import SettingsModal from '../../modals/settings/SettingsModal.svelte'
   import ModpackModal from '../../modals/ModpackModal.svelte'
   import RulesModal from '../../modals/RulesModal.svelte'
+
+  interface Props {
+    statusBar: SvelteComponent<any>
+    statusFeed: SvelteComponent<any>
+  }
+  let { statusBar, statusFeed }: Props = $props()
+
   let skinCv: HTMLCanvasElement, skinVw: skinview3d.SkinViewer
   let skin: string = $state(noskin)
   let cape: string
@@ -88,7 +95,7 @@
 
     if (!$params.rulesConfirmed) {
       $route.modal.current = RulesModal
-      const unsub = params.subscribe(({rulesConfirmed}) => {
+      const unsub = params.subscribe(({ rulesConfirmed }) => {
         if (rulesConfirmed) {
           unsub()
           launchGame()
@@ -97,11 +104,27 @@
       return
     }
 
+    statusBar.setStatus({})
     ipc.send('launch', { params: $params })
     $appstate.current = 'launch'
   }
 
+  let stopTimeout: NodeJS.Timeout = $state() as NodeJS.Timeout
+  let confirmStop: boolean = $state(false)
+
   function stopGame(): void {
+    if (!confirmStop) {
+      statusFeed.createNotification('confirm-stop')
+      confirmStop = true
+      stopTimeout = setTimeout(() => {
+        confirmStop = false
+      }, 30000)
+      return
+    }
+
+    clearTimeout(stopTimeout)
+    confirmStop = false
+
     ipc.send('stopgame', { params: $params })
   }
 
@@ -243,7 +266,6 @@
           filter: none;
 
           transition: opacity 100ms;
-
 
           &:is(:hover, :focus-visible) {
             opacity: 1;

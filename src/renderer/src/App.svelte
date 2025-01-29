@@ -15,9 +15,8 @@
     $route.loaded = true
   })
 
-  // this is insanity
-  // svelte-ignore non_reactive_update
-  let statusFeed: SvelteComponent
+  let statusFeed: SvelteComponent = $state() as SvelteComponent
+  let statusBar: SvelteComponent = $state() as SvelteComponent
 
   let readyForExit: boolean = $state(false)
 
@@ -103,7 +102,7 @@
     <!-- Page -->
     {#key $route.page}
       <div class="inner" transition:fade>
-        <Page />
+        <Page {statusBar} {statusFeed}/>
       </div>
     {/key}
     <!-- Modal -->
@@ -119,7 +118,7 @@
       </div>
     {/if}
     <!-- Unconditional elements -->
-    <StatusBar />
+    <StatusBar bind:this={statusBar}/>
     <StatusFeed bind:this={statusFeed}/>
   </div>
 {/if}

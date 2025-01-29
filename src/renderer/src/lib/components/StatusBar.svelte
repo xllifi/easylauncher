@@ -55,7 +55,7 @@
     progress = percent
     fillcolor = 'fa0'
 
-    if (hideTimeout) clearTimeout(hideTimeout)
+    resetHideTimeout()
   })
   ipc.on('start', () => {
     show()
@@ -77,18 +77,21 @@
   })
   ipc.on('launch-cancelled', () => hide())
 
-  function hidetimeout() {
+  function resetHideTimeout() {
     if (hideTimeout) clearTimeout(hideTimeout)
+  }
+  function hidetimeout() {
+    resetHideTimeout()
     hideTimeout = setTimeout(() => {
       hide()
-      setTimeout(() => unsetContents(), 500)
+      setTimeout(() => unsetContents(), 3000)
     }, 2500)
   }
   function hide() {
     isHidden = true
   }
   function show() {
-    if (hideTimeout) clearTimeout(hideTimeout)
+    resetHideTimeout()
     isHidden = false
   }
 
