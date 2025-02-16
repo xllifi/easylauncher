@@ -1,4 +1,4 @@
-<script lang="ts">
+<script lang="ts" module>
   import { fly } from 'svelte/transition'
   import { sineIn, sineOut } from 'svelte/easing'
   import type { StatusFeedEntry } from '../types/statusfeed.d.ts'
@@ -6,7 +6,6 @@
   import { flip } from 'svelte/animate'
   import { ipc } from '../scripts/general.js'
   import { _ } from 'svelte-i18n'
-  import { onMount } from 'svelte'
 
   let list: StatusFeedEntry[] = $state([])
 
@@ -18,17 +17,16 @@
     }
     pushEntry(opts)
   })
-  export function createNotification(id: string, additional?: string): void {
-    let description = $_(`statusfeed.messages.${id}.description`)
-    if (additional) {
-      for (const add of additional) {
-        const i = additional.indexOf(add)+1
-        description = description.replace(`$${i}`, add)
-      }
-    }
+  export function createNotification(id: string, additional?: {[key: string]: string}): void {
+    let description = `statusfeed.messages.${id}.description`
     let opts: StatusFeedEntry = {
-      title: $_(`statusfeed.messages.${id}.title`),
+      title: `statusfeed.messages.${id}.title`,
       description
+    }
+    if (additional) {
+      opts.add = {
+        values: additional
+      }
     }
     pushEntry(opts)
   }
@@ -51,27 +49,23 @@
       list = list
     }
   }
-
-  onMount(() => {
-    if (!window.navigator.onLine) pushEntry({ title: $_('statusfeed.messages.startedoffline.title'), description: $_('statusfeed.messages.startedoffline.description') })
-  })
 </script>
 
 <svelte:window
   onoffline={() => {
-    pushEntry({ title: $_('statusfeed.messages.gotoffline.title'), description: $_('statusfeed.messages.gotoffline.description') })
+    createNotification('gotoffline')
   }}
   ononline={() => {
-    pushEntry({ title: $_('statusfeed.messages.gotonline.title'), description: $_('statusfeed.messages.gotonline.description') })
+    createNotification('gotonline')
   }}
 />
 
 <div class="status-feed">
   <ul class="scrollable">
-    {#each list as { title, description, id } (id)}
+    {#each list as { title, description, add, id } (id)}
       <li in:fly={{ delay: 100, duration: 200, x: 100, y: 0, easing: sineOut }} out:fly={{ delay: 0, duration: 200, x: 100, y: 0, easing: sineIn }} animate:flip={{ duration: 200 }}>
-        <h3>{title}</h3>
-        <p>{description}</p>
+        <h3>{$_(title, add)}</h3>
+        <p>{$_(description, add)}</p>
         <button
           class="close"
           onclick={() => {

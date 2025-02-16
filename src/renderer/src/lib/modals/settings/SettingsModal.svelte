@@ -35,9 +35,7 @@
     {#key pageTitle}
       <h2 class="text">{$_('modal.settings.title')} <span class="arrow">/</span> <span in:tilt={{ duration: 200 }}>{$_(pageTitle)}</span></h2>
     {/key}
-    <button class="close" onclick={exit}>
-      <X />
-    </button>
+    <button class="close" onclick={exit}><X /></button>
   </div>
   <div class="left">
     {#each pages as page}

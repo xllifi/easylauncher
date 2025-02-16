@@ -1,8 +1,9 @@
 <script lang="ts">
-  import { ipc } from '../../../scripts/general.js'
   import { CircleUserRound, KeySquare } from 'lucide-svelte'
-  import { params } from '../../../stores/params.svelte.js'
   import { _ } from 'svelte-i18n'
+  import { execLogin } from '../../../scripts/login.js'
+  import { createNotification } from '../../../components/StatusFeed.svelte'
+  import { params, type accountInfo } from '../../../stores/params.svelte.js'
   import { onMount } from 'svelte'
 
   interface Props {
@@ -46,30 +47,26 @@
 
   function login(): void {
     isLoggingIn = true
-    ipc.send('loginrequest', { username, password })
+    execLogin(username, password)
+    .then((val: accountInfo) => {
+      $params.launchCredentials = val
+      createNotification('login-success', {username: val.user.username})
+      next()
+    })
+    .catch((err: Error) => {
+      switch (err.message) {
+        case 'timeout':
+          createNotification('login-error-timeout')
+        default:
+          createNotification('login-error-unknown')
+      }
+      username = password = ''
+      isUsernameValid = isPasswordValid = isLoggingIn = false
+    })
   }
 
-  ipc.on('loginresponse', (_event, { launchCredentials }) => {
-    console.log(`Got loginresponse`)
-    isLoggingIn = false
-    if (!launchCredentials.uuid) {
-      username = ''
-      password = ''
-      isUsernameValid = false
-      isPasswordValid = false
-      return
-    }
-    $params.launchCredentials = launchCredentials
-    next()
-    ipc.removeAllListeners('loginresponse')
-  })
-
-  onMount(() => {
-    usernameInput.focus()
-  })
+  onMount(() => {usernameInput.focus()})
 </script>
-
-<!-- TODO: IMPROVE UI -->
 
 <h1>{$_('modal.login.title')}</h1>
 <p class="description">Если у тебя нет данных для входа, то их можно найти в [ДОБАВИТЬ ИСТОЧНИК]</p>
@@ -79,6 +76,7 @@
       <CircleUserRound />
       <p>{$_('modal.login.form.username')}</p>
     </div>
+    <!-- svelte-ignore a11y_autofocus -->
     <input type="text" bind:this={usernameInput} bind:value={username} disabled={isLoggingIn} oninput={oninputUsername} onfocusout={onunfocusUsername} onkeypress={onkeypressUsername} />
   </div>
   <div class="textinput" class:incorrect={!isPasswordValid && showPasswordInvalid}>
@@ -130,7 +128,7 @@
         }
       }
 
-      &:has(>input:disabled) {
+      &:has(> input:disabled) {
         filter: brightness(50%);
       }
 

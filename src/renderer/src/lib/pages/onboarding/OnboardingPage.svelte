@@ -59,11 +59,6 @@
     justify-content: center;
     align-items: center;
 
-    :global(h1) {
-      font-family: Unbounded;
-      font-size: 1.6rem;
-      margin-bottom: -0.4rem;
-    }
     :global(p.description) {
       text-align: center;
       opacity: 0.7;

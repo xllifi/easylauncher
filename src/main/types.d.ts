@@ -1,11 +1,11 @@
-import { launchCredentials } from 'xlicore'
+import { accountInfo } from '../renderer/src/lib/stores/params.svelte.ts'
 
 export type LauncherParams = {
   lang?: string
   modpackType: 'min' | 'ess' | 'ful'
   onboardingComplete: boolean
   rulesConfirmed: boolean
-  launchCredentials: launchCredentials
+  launchCredentials: accountInfo
   launchOpts: {
     memory: {
       min: number

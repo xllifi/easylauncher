@@ -78,40 +78,6 @@
       font-family: Unbounded;
       transform: translateY(2px);
     }
-    button:is(.close, .back) {
-      top: 0.2rem;
-
-      width: 2rem;
-      height: 2rem;
-
-      padding: 0.2rem;
-      border-radius: 0.2rem;
-      background-color: #0000;
-      color: white;
-      outline: solid 2px transparent;
-
-      cursor: pointer;
-
-      transition:
-        background-color 80ms,
-        outline-color 100ms,
-        filter 100ms;
-
-      &:is(:hover, :focus-visible) {
-        background-color: #0004;
-        outline: solid 2px var(--theme-accent-active);
-        filter: drop-shadow(0 0 3px var(--theme-accent-active-darker));
-      }
-      &.close {
-        right: 0.2rem;
-      }
-      &.back {
-        left: 0.2rem;
-      }
-      &.hidden {
-        visibility: hidden;
-      }
-    }
   }
   div.wrapper {
     display: grid;

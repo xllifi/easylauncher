@@ -6,10 +6,10 @@
   import { getLocaleFromNavigator, init, isLoading, register } from 'svelte-i18n'
   import { params } from './lib/stores/params.svelte.js'
   import StatusBar from './lib/components/StatusBar.svelte'
-  import StatusFeed from './lib/components/StatusFeed.svelte'
+  import StatusFeed, { createNotification } from './lib/components/StatusFeed.svelte'
   import { ipc } from './lib/scripts/general.js'
   import { appstate } from './lib/stores/appstate.svelte.js'
-  import type { SvelteComponent } from 'svelte'
+  import { onMount, type SvelteComponent } from 'svelte'
 
   window.addEventListener('DOMContentLoaded', () => {
     $route.loaded = true
@@ -83,11 +83,11 @@
   })
 
   let Modal = $state($route.modal.current)
+  let Page = $state($route.page)
   route.subscribe((route) => {
     Modal = route.modal.current
+    Page = route.page
   })
-
-  let Page = $state($route.page)
 </script>
 
 <svelte:window onkeyup={exitByPressingEsc} />

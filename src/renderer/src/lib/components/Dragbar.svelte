@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { X, Minus, Bug, Download, Loader } from 'lucide-svelte'
+  import { X, Minus, Bug, Download, Loader, WifiOff } from 'lucide-svelte'
   import { ipc } from '../scripts/general.js'
   import { _, isLoading } from 'svelte-i18n'
   import { route } from '../stores/route.svelte.js'
@@ -40,7 +40,14 @@
     $appstate.updateFound = true
     console.log($appstate.updateFound)
   })
+
+  let online = $state(navigator.onLine)
 </script>
+
+<svelte:window
+  onoffline={() => {online = false}}
+  ononline={() => {online = true}}
+/>
 
 <div class="dragbar">
   {#if !$isLoading && $route.loaded}
@@ -56,6 +63,9 @@
             <Download />
           {/if}
         </button>
+      {/if}
+      {#if !online}
+        <button class="noconn" use:tooltip={$_('dragbar.tooltips.buttons.noconn')}><WifiOff /></button>
       {/if}
       <button class="report" use:tooltip={$_('dragbar.tooltips.buttons.bugs')} onclick={report}><Bug /></button>
       <button class="minimize" use:tooltip={$_('dragbar.tooltips.buttons.minimize')} onclick={minimize}><Minus /></button>
@@ -138,6 +148,9 @@
               transform: rotate(360deg);
             }
           }
+        }
+        &.noconn {
+          color: #f88;
         }
 
         &.report:is(:hover, :focus-visible) {

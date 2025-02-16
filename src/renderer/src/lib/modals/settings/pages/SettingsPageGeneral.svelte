@@ -6,11 +6,17 @@
   import { params } from '../../../stores/params.svelte.js'
   import SettingsModal from '../SettingsModal.svelte'
   import ModpackModal from '../../ModpackModal.svelte'
-  import LoginModal from '../../LoginModal.svelte'
+  import type { Component } from 'svelte'
+  import AccountPage from '../../../pages/account/AccountPage.svelte'
 
-  function goTo(page: RouteModal) {
+  function goToModal(where: RouteModal) {
     $route.modal.previous = SettingsModal
-    $route.modal.current = page
+    $route.modal.current = where
+  }
+  function goToPage(where: Component<any>) {
+    $route.page = where
+    $route.modal.previous = null
+    $route.modal.current = null
   }
 
   function handleLocaleChange(newLocal: string) {
@@ -26,16 +32,40 @@
 </script>
 
 <main>
-  <OptionButton name={$_('modal.settings.pages.general.options.login.name')} description={$_('modal.settings.pages.general.options.login.description')} actionLabel={$_('modal.settings.pages.general.options.login.label')} onclick={() => {goTo(LoginModal)}} />
-  <OptionButton name={$_('modal.settings.pages.general.options.modpack.name')} description={$_('modal.settings.pages.general.options.modpack.description')} actionLabel={$_('modal.settings.pages.general.options.modpack.label')} onclick={() => {goTo(ModpackModal)}} />
-  <OptionDropdown name={$_('modal.settings.pages.general.options.language.name')} description={$_('modal.settings.pages.general.options.language.description')} actionLabel={$_('modal.settings.pages.general.options.language.label')} onclick={() => {}} options={[
-    {
-      name: `${$_('meta.langnames.ru')} (Русский)`,
-      action: () => {handleLocaleChange('ru')}
-    },
-    {
-      name: `${$_('meta.langnames.en')} (English)`,
-      action: () => {handleLocaleChange('en')}
-    }
-  ]} />
+  <OptionButton
+    name={$_('modal.settings.pages.general.options.account.name')}
+    description={$_('modal.settings.pages.general.options.account.description')}
+    actionLabel={$_('modal.settings.pages.general.options.account.label')}
+    onclick={() => {
+      goToPage(AccountPage)
+    }}
+  />
+  <OptionButton
+    name={$_('modal.settings.pages.general.options.modpack.name')}
+    description={$_('modal.settings.pages.general.options.modpack.description')}
+    actionLabel={$_('modal.settings.pages.general.options.modpack.label')}
+    onclick={() => {
+      goToModal(ModpackModal)
+    }}
+  />
+  <OptionDropdown
+    name={$_('modal.settings.pages.general.options.language.name')}
+    description={$_('modal.settings.pages.general.options.language.description')}
+    actionLabel={$_('modal.settings.pages.general.options.language.label')}
+    onclick={() => {}}
+    options={[
+      {
+        name: `${$_('meta.langnames.ru')} (Русский)`,
+        action: () => {
+          handleLocaleChange('ru')
+        }
+      },
+      {
+        name: `${$_('meta.langnames.en')} (English)`,
+        action: () => {
+          handleLocaleChange('en')
+        }
+      }
+    ]}
+  />
 </main>

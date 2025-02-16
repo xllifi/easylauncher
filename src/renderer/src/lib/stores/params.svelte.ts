@@ -1,9 +1,10 @@
 import { persisted, type Persisted } from 'svelte-persisted-store'
 import type { launchCredentials } from 'xlicore'
 import type { LauncherParams } from '../../../../main/types.js'
+import type { DraslApiLoginResponse } from '../scripts/login.js'
 
 export const params: Persisted<LauncherParams> = persisted('preferences', {
-  launchCredentials: {} as launchCredentials,
+  launchCredentials: {} as accountInfo,
   modpackType: 'ful',
   onboardingComplete: false,
   rulesConfirmed: false,
@@ -19,3 +20,5 @@ export const params: Persisted<LauncherParams> = persisted('preferences', {
     detached: true
   }
 })
+
+export type accountInfo = launchCredentials & DraslApiLoginResponse

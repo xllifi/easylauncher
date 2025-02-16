@@ -4,6 +4,7 @@ import type { Component } from 'svelte'
 import type { ModalProps } from '../modals/types.js'
 import MainPage from '../pages/main/MainPage.svelte'
 import OnboardingPage from '../pages/onboarding/OnboardingPage.svelte'
+import AccountPage from '../pages/account/AccountPage.svelte'
 
 export const route: Writable<Route> = writable({
   loaded: false,
