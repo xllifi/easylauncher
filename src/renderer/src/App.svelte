@@ -1,13 +1,13 @@
 <script lang="ts">
-  import Dragbar from './lib/components/Dragbar.svelte'
+  import Dragbar from './components/Dragbar.svelte'
   import { route } from './lib/stores/route.svelte'
   import { fade, fly, scale } from 'svelte/transition'
   import { backIn, backOut } from 'svelte/easing'
   import { getLocaleFromNavigator, init, isLoading, register } from 'svelte-i18n'
   import { params } from './lib/stores/params.svelte.js'
-  import StatusBar from './lib/components/StatusBar.svelte'
-  import StatusFeed from './lib/components/StatusFeed.svelte'
-  import { ipc } from './lib/scripts/general.js'
+  import StatusBar from './components/StatusBar.svelte'
+  import StatusFeed from './components/StatusFeed.svelte'
+  import { ipc } from './main.js'
   import { appstate } from './lib/stores/appstate.svelte.js'
   import type { SvelteComponent } from 'svelte'
 
@@ -52,8 +52,8 @@
     }
   }
 
-  register('ru', () => import('./lib/i18n/ru.json'))
-  register('en', () => import('./lib/i18n/en.json'))
+  register('ru', () => import('./i18n/ru.json'))
+  register('en', () => import('./i18n/en.json'))
 
   if (!$params.lang) $params.lang = getLocaleFromNavigator()!
 

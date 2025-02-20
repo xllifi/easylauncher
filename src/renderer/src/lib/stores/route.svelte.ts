@@ -1,9 +1,9 @@
 import { get, writable, type Writable } from 'svelte/store'
 import { params } from './params.svelte.js'
 import type { Component } from 'svelte'
-import type { ModalProps } from '../modals/types.js'
-import MainPage from '../pages/main/MainPage.svelte'
-import OnboardingPage from '../pages/onboarding/OnboardingPage.svelte'
+import type { ModalProps } from '../../routes/modals/types.js'
+import MainPage from '../../routes/pages/main/MainPage.svelte'
+import OnboardingPage from '../../routes/pages/onboarding/OnboardingPage.svelte'
 
 export const route: Writable<Route> = writable({
   loaded: false,
