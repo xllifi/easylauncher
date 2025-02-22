@@ -11,6 +11,7 @@
   import SettingsModal from '../../modals/settings/SettingsModal.svelte'
   import ModpackModal from '../../modals/ModpackModal.svelte'
   import RulesModal from '../../modals/RulesModal.svelte'
+  import type SkinType from '../../../components/Skin.svelte'
   import Skin from '../../../components/Skin.svelte'
   import { getSkinUrls, setupSmoothReset } from '../../../components/skin.js'
   import type { SkinViewer } from 'skinview3d'
@@ -61,7 +62,7 @@
   }
 
   // Skin
-  let skinVw: Skin
+  let skinVw: SkinType
   function canvasSize() {
     let height = window.innerHeight
     let width = height / 1.25
@@ -256,9 +257,5 @@
     bottom: 1rem;
 
     transition: opacity 500ms;
-
-    &.hidden {
-      opacity: 0;
-    }
   }
 </style>

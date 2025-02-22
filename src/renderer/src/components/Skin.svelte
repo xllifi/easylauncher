@@ -5,7 +5,7 @@
   import { onMount } from 'svelte'
 
   type Props = {
-    canvasSize: () => {width: number, height: number}
+    canvasSize: () => { width: number; height: number }
     skinSetup?: (skinVw: skinview3d.SkinViewer) => void
   }
   let { canvasSize = $bindable(), skinSetup = $bindable() }: Props = $props()
@@ -73,3 +73,9 @@ You'll have to use `this.setSkin` for the skin to show up.
 -->
 
 <canvas class="skin" class:noskin={skin == noskin} class:hidden={!skinLoaded} bind:this={skinCv}></canvas>
+
+<style>
+  .hidden {
+    opacity: 0;
+  }
+</style>
