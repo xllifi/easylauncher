@@ -1,13 +1,13 @@
 import ky from 'ky'
 import { get } from 'svelte/store'
-import { params } from '../../../lib/stores/params.svelte.js'
+import { params } from '../lib/stores/params.svelte.js'
 import type { SkinViewer } from 'skinview3d'
 import * as THREE from 'three'
 
-export async function getSkinUrls() {
+export async function getSkinUrls(): Promise<SkinURLs> {
   const uuid = get(params).launchCredentials.uuid
   console.log(`Getting skin for UUID ${uuid}`)
-  if (!uuid) return {} as getSkinReturn
+  if (!uuid) return {} as SkinURLs
 
   const skin: sessionResp = await ky.get(`${import.meta.env.VITE_AUTH_HOST}/session/minecraft/profile/${uuid}`, { timeout: 10000 }).json()
   const skinvalues: texturesValue = JSON.parse(atob(skin.properties.filter((x) => x.name == 'textures')[0].value))
@@ -32,11 +32,30 @@ export async function setupSkin(skinVw: SkinViewer) {
   ctrl.minPolarAngle = 1.65
   ctrl.maxPolarAngle = 1.65
 
-  const renderer = skinVw.renderer
+  setupSmoothReset(skinVw)
+
+  // Dramatic lights
+  skinVw.globalLight.visible = false
+  const rectLight = new THREE.RectAreaLight(0x404040, 20, 20, 40)
+  rectLight.position.set(-9, 0, -27)
+  rectLight.lookAt(0, 0, -27)
+  cam.add(rectLight)
+
+  const light = new THREE.PointLight(0xffffff, 60)
+  light.position.set(12, 8, -18)
+  cam.add(light)
+}
+
+export function setupSmoothReset(skinVw: SkinViewer) {
+  const ctrl = skinVw.controls
   let lastInteractTimestamp = 0
   let smoothReset: boolean = false
+
   ctrl.addEventListener('start', onStart)
   ctrl.addEventListener('end', onEnd)
+
+  const renderer = skinVw.renderer
+  renderer.setAnimationLoop(animate)
 
   function onStart() {
     ctrl.minAzimuthAngle = -Infinity
@@ -59,24 +78,12 @@ export async function setupSkin(skinVw: SkinViewer) {
     // if the reset values are reached, exit smooth reset
     if (alpha == 0) onStart()
   }
-  renderer.setAnimationLoop(animate)
-
-  // Dramatic lights
-  skinVw.globalLight.visible = false
-  const rectLight = new THREE.RectAreaLight(0x404040, 20, 20, 40)
-  rectLight.position.set(-9, 0, -27)
-  rectLight.lookAt(0, 0, -27)
-  cam.add(rectLight)
-
-  const light = new THREE.PointLight(0xffffff, 60)
-  light.position.set(12, 8, -18)
-  cam.add(light)
 }
 
 // Types
 
-export type getSkinReturn = {
-  skin: string | null
+export type SkinURLs = {
+  skin: string | null,
   cape: string | null
 }
 

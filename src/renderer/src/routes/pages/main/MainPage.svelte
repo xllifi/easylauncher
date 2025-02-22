@@ -3,9 +3,6 @@
   import { params } from '../../../lib/stores/params.svelte.js'
   import { ipc } from '../../../main.js'
   import { onMount, type SvelteComponent } from 'svelte'
-  import * as skinview3d from 'skinview3d'
-  import { getSkinUrls, setupSkin } from './Main.svelte.js'
-  import noskin from '../../../assets/unknownplayer.png'
   import BgLogs from './BgLogs.svelte'
   import { Cog, FolderOpen, Package, ScrollText } from 'lucide-svelte'
   import { _ } from 'svelte-i18n'
@@ -14,81 +11,16 @@
   import SettingsModal from '../../modals/settings/SettingsModal.svelte'
   import ModpackModal from '../../modals/ModpackModal.svelte'
   import RulesModal from '../../modals/RulesModal.svelte'
+  import Skin from '../../../components/Skin.svelte'
+  import { getSkinUrls, setupSmoothReset } from '../../../components/skin.js'
+  import type { SkinViewer } from 'skinview3d'
+  import * as THREE from 'three'
 
   interface Props {
     statusBar: SvelteComponent<any>
     statusFeed: SvelteComponent<any>
   }
   let { statusBar, statusFeed }: Props = $props()
-
-  let skinCv: HTMLCanvasElement, skinVw: skinview3d.SkinViewer
-  let skin: string = $state(noskin)
-  let cape: string
-  let skinLoaded: boolean = $state(false)
-
-  function resizeCv(cv: HTMLCanvasElement, sw: skinview3d.SkinViewer) {
-    if (!cv || !sw) return
-    let height = window.innerHeight
-    let width = height / 1.25
-
-    if (width / window.innerWidth > 1 / 2) {
-      width = (window.innerWidth * 1) / 2
-      height = width * 1.25
-    }
-    cv.width = width
-    cv.height = height
-    sw.width = width
-    sw.height = height
-  }
-  async function setSkin() {
-    let skinval = await getSkinUrls()
-    if (skinval.skin) skin = skinval.skin
-    if (skinval.cape) cape = skinval.cape
-
-    skinVw = new skinview3d.SkinViewer({
-      canvas: skinCv,
-      skin,
-      cape,
-      animation: new skinview3d.IdleAnimation(),
-      pixelRatio: window.devicePixelRatio * 2
-    })
-
-    setupSkin(skinVw)
-
-    // Set correct size
-    resizeCv(skinCv, skinVw)
-    window.addEventListener('resize', () => {
-      resizeCv(skinCv, skinVw)
-    })
-
-    skinLoaded = true
-  }
-  async function changeSkin(retriesLeft?: number) {
-    skinLoaded = false
-    let skinval = await getSkinUrls()
-    if (skinval.skin) {
-      skin = skinval.skin
-    } else {
-      skin = noskin
-    }
-    await skinVw.loadSkin(skin)
-
-    if (skinval.cape) {
-      cape = skinval.cape
-      await skinVw.loadCape(cape)
-    } else {
-      skinVw.resetCape()
-    }
-
-    if ((!window.navigator.onLine || skin == noskin) && retriesLeft && retriesLeft > 0) {
-      setTimeout(() => {
-        changeSkin(retriesLeft ? retriesLeft - 1 : 2)
-      }, 250)
-      return
-    }
-
-    skinLoaded = true
-  }
 
   function launchGame(): void {
     if ($appstate.current == 'launch') return
@@ -128,16 +60,58 @@
     ipc.send('stopgame', { params: $params })
   }
 
-  ipc.on('loginresponse', () => changeSkin())
-  onMount(() => {
-    setSkin()
+  // Skin
+  let skinVw: Skin
+  function canvasSize() {
+    let height = window.innerHeight
+    let width = height / 1.25
+
+    if (width / window.innerWidth > 1 / 2) {
+      width = (window.innerWidth * 1) / 2
+      height = width * 1.25
+    }
+
+    return { width, height }
+  }
+  function skinSetup(skinVw: SkinViewer) {
+    const player = skinVw.playerObject
+    player.rotateY(0.45)
+
+    const cam = skinVw.camera
+    cam.position.z = 28
+    const ctrl = skinVw.controls
+    ctrl.target.set(0, 7, 0)
+    ctrl.enableDamping = true
+    ctrl.enablePan = false
+    ctrl.enableZoom = false
+    ctrl.minPolarAngle = 1.65
+    ctrl.maxPolarAngle = 1.65
+
+    setupSmoothReset(skinVw)
+
+    // Dramatic lights
+    skinVw.globalLight.visible = false
+    const rectLight = new THREE.RectAreaLight(0x404040, 20, 20, 40)
+    rectLight.position.set(-9, 0, -27)
+    rectLight.lookAt(0, 0, -27)
+    cam.add(rectLight)
+
+    const light = new THREE.PointLight(0xffffff, 60)
+    light.position.set(12, 8, -18)
+    cam.add(light)
+  }
+
+  ipc.on('loginresponse', async () => skinVw.setSkin(await getSkinUrls()))
+  onMount(async () => {
+    skinVw.setSkin(await getSkinUrls())
   })
 </script>
 
-<svelte:window ononline={() => changeSkin} />
+<svelte:window ononline={async () => skinVw.setSkin(await getSkinUrls())} />
 
-<!-- svelte-ignore element_invalid_self_closing_tag -->
-<canvas class="skin" class:noskin={skin == noskin} class:hidden={!skinLoaded} bind:this={skinCv} />
+<div class="skinwrapper">
+  <Skin bind:this={skinVw} {canvasSize} {skinSetup} />
+</div>
 <BgLogs />
 <div class="main">
   <div class="bottom">
@@ -275,7 +249,7 @@
     }
   }
 
-  .skin {
+  :global(.skinwrapper .skin) {
     opacity: 1;
     position: absolute;
     left: -2.5rem;
