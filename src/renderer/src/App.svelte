@@ -83,11 +83,11 @@
   })
 
   let Modal = $state($route.modal.current)
+  let Page = $state($route.page)
   route.subscribe((route) => {
     Modal = route.modal.current
+    Page = route.page
   })
-
-  let Page = $state($route.page)
 </script>
 
 <svelte:window onkeyup={exitByPressingEsc} />
