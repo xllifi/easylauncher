@@ -3,7 +3,7 @@
   import { _ } from 'svelte-i18n'
   import { route } from '../../lib/stores/route.svelte.js'
   import { params } from '../../lib/stores/params.svelte.js'
-  import type { ModalProps } from './types.js'
+  import type { ModalProps } from '../../lib/types/modals.d.ts'
 
   let { exit = $bindable(), back = $bindable() }: ModalProps = $props()
   const rules = [

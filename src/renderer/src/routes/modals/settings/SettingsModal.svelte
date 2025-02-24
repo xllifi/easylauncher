@@ -4,7 +4,7 @@
   import SettingsPageLaunch from './pages/SettingsPageLaunch.svelte'
   import { fade } from 'svelte/transition'
   import { _ } from 'svelte-i18n'
-  import type { ModalProps } from '../types.js'
+  import type { ModalProps } from '../../../lib/types/modals.d.ts'
   import type { SettingsPage } from './settings.js'
   import { tilt } from '../../../lib/scripts/tilt_transition.js'
 
