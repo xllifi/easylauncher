@@ -150,8 +150,8 @@ ipcMain.on('opengamedir', () => {
   shell.openPath(gameDir)
 })
 
-ipcMain.on('launch', async (_event, { params }) => {
-  const process = await startGame(params).catch((err) => {
+ipcMain.on('launch', async (_event, shared) => {
+  const process = await startGame(shared).catch((err) => {
     renderer.send('launch-cancelled')
 
     if (err instanceof TimeoutError) {

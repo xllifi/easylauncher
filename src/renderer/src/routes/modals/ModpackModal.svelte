@@ -8,7 +8,7 @@
   let { exit = $bindable(), back = $bindable() }: ModalProps = $props()
 
   function chooseModpack(variant: 'min' | 'ess' | 'ful', e: MouseEvent & any) {
-    $params.modpackType = variant
+    $params.shared.modpackType = variant
     exit(e)
   }
 </script>
@@ -23,7 +23,7 @@
   <button
     class="modpack ful"
     data-selected={$_('modal.modpack.selected')}
-    class:selected={$params.modpackType === 'ful'}
+    class:selected={$params.shared.modpackType === 'ful'}
     onclick={(e) => {
       chooseModpack('ful', e)
     }}
@@ -37,7 +37,7 @@
   <button
     class="modpack ess"
     data-selected={$_('modal.modpack.selected')}
-    class:selected={$params.modpackType === 'ess'}
+    class:selected={$params.shared.modpackType === 'ess'}
     onclick={(e) => {
       chooseModpack('ess', e)
     }}
@@ -51,7 +51,7 @@
   <button
     class="modpack min"
     data-selected={$_('modal.modpack.selected')}
-    class:selected={$params.modpackType === 'min'}
+    class:selected={$params.shared.modpackType === 'min'}
     onclick={(e) => {
       chooseModpack('min', e)
     }}

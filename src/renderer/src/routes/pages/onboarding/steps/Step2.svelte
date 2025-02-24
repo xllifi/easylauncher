@@ -59,7 +59,7 @@
       isPasswordValid = false
       return
     }
-    $params.launchCredentials = launchCredentials
+    $params.shared.launchCredentials = launchCredentials
     next()
     ipc.removeAllListeners('loginresponse')
   })

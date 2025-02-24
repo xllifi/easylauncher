@@ -18,7 +18,7 @@
     $route.modal.current = null
     $route.loaded = false
     locale.set(newLocal)
-    $params.lang = newLocal
+    $params.shared.lang = newLocal
     setTimeout(() => {
       $route.loaded = true
     }, 1000)

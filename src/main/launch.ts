@@ -1,9 +1,9 @@
 import { Launch, LaunchOpts } from 'xlicore'
-import { LauncherParams } from './types.js'
+import { SharedParams } from './types.js'
 import { gamePath, renderer } from './index.js'
 import { ChildProcessWithoutNullStreams } from 'child_process'
 
-export async function startGame(params: LauncherParams): Promise<ChildProcessWithoutNullStreams> {
+export async function startGame(shared: SharedParams): Promise<ChildProcessWithoutNullStreams> {
   let lastUpdateTimestamp: number = 0
   function sendProgress(type: string, percent: number) {
     if (lastUpdateTimestamp > Date.now()) return
@@ -13,7 +13,7 @@ export async function startGame(params: LauncherParams): Promise<ChildProcessWit
   }
 
   let modpack: null | { url: string; verify?: { hash: string; algorithm: 'sha1' | 'sha256' } } = null
-  switch (params.modpackType) {
+  switch (shared.modpackType) {
     case 'ess':
       modpack = null
       break
@@ -29,20 +29,20 @@ export async function startGame(params: LauncherParams): Promise<ChildProcessWit
       break
   }
   const launchOpts: LaunchOpts = {
-    auth: params.launchCredentials,
+    auth: shared.launchCredentials,
     useAuthlib: true,
     rootDir: gamePath,
     version: '1.21.1',
     gameOpts: {
       memory: {
-        min: params.launchOpts.memory.min,
-        max: params.launchOpts.memory.max
+        min: shared.launchOpts.memory.min,
+        max: shared.launchOpts.memory.max
       },
       screen: {
-        width: params.launchOpts.screen.width,
-        height: params.launchOpts.screen.height
+        width: shared.launchOpts.screen.width,
+        height: shared.launchOpts.screen.height
       },
-      detached: params.launchOpts.detached
+      detached: shared.launchOpts.detached
     },
     callbacks: {
       dlOnProgress(progress, _chunk, file, _lastProgress) {

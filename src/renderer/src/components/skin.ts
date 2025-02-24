@@ -5,7 +5,7 @@ import type { SkinViewer } from 'skinview3d'
 import * as THREE from 'three'
 
 export async function getSkinUrls(): Promise<SkinURLs> {
-  const uuid = get(params).launchCredentials.uuid
+  const uuid = get(params).shared.launchCredentials.uuid
   console.log(`Getting skin for UUID ${uuid}`)
   if (!uuid) return {} as SkinURLs
 

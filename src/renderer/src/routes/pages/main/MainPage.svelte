@@ -37,7 +37,7 @@
     }
 
     statusBar.setStatus({})
-    ipc.send('launch', { params: $params })
+    ipc.send('launch', $params.shared)
     $appstate.current = 'launch'
   }
 
@@ -115,7 +115,7 @@
 <BgLogs />
 <div class="main">
   <div class="bottom">
-    <p class="username">{$params.launchCredentials.name}</p>
+    <p class="username">{$params.shared.launchCredentials.name}</p>
     <button class="start" class:disabled={$appstate.current == 'launch' || $appstate.minecraftPids.length > 0} onclick={launchGame}>{$_('page.main.play')}</button>
     <button class="stop" class:disabled={$appstate.current == 'launch' || $appstate.minecraftPids.length <= 0} onclick={stopGame}>{$_('page.main.stop')}</button>
     <div class="buttons">

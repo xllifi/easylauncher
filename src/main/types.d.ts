@@ -1,20 +1,18 @@
 import { launchCredentials } from 'xlicore'
 
-export type LauncherParams = {
-  lang?: string
-  modpackType: 'min' | 'ess' | 'ful'
-  onboardingComplete: boolean
-  rulesConfirmed: boolean
+export type SharedParams = {
+  lang: string
   launchCredentials: launchCredentials
+  modpackType: 'min' | 'ess' | 'ful'
   launchOpts: {
     memory: {
-      min: number
+      min: number,
       max: number
-    }
+    },
     screen: {
-      width: number
+      width: number,
       height: number
-    }
+    },
     detached: boolean
   }
 }

@@ -55,7 +55,7 @@
   register('ru', () => import('./i18n/ru.json'))
   register('en', () => import('./i18n/en.json'))
 
-  if (!$params.lang) $params.lang = getLocaleFromNavigator()!
+  if (!$params.shared.lang) $params.shared.lang = getLocaleFromNavigator()!
 
   ipc.on('start', () => {
     if ($appstate.current === 'launch') {
@@ -75,11 +75,11 @@
     $appstate.minecraftPids = $appstate.minecraftPids.filter(x => x != pid)
   })
 
-  ipc.on('loginresponse', (_event, { launchCredentials }) => $params.launchCredentials = launchCredentials)
+  ipc.on('loginresponse', (_event, { launchCredentials }) => $params.shared.launchCredentials = launchCredentials)
 
   init({
     fallbackLocale: 'en',
-    initialLocale: $params.lang
+    initialLocale: $params.shared.lang
   })
 
   let Modal = $state($route.modal.current)

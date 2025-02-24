@@ -18,7 +18,7 @@
   }
 
   function chooseModpack(variant: ('min' | 'ess' | 'ful')) {
-    $params.modpackType = variant
+    $params.shared.modpackType = variant
     next()
   }
 
