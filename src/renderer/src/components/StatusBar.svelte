@@ -1,6 +1,6 @@
 <script lang="ts">
   import { fly } from 'svelte/transition'
-  import type { StatusBarContents } from './statusbar.js'
+  import type { StatusBarContents } from '../lib/types/components.d.ts'
   import { backIn, backOut } from 'svelte/easing'
   import { ipc } from '../main.js'
   import { _ } from 'svelte-i18n'
