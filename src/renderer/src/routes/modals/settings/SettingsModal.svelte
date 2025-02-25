@@ -5,7 +5,7 @@
   import { fade } from 'svelte/transition'
   import { _ } from 'svelte-i18n'
   import type { ModalProps } from '../../../lib/types/modals.d.ts'
-  import type { SettingsPage } from './settings.js'
+  import type { SettingsPage } from '../../../lib/types/settings.d.ts'
   import { tilt } from '../../../lib/scripts/tilt_transition.js'
 
   let { exit = $bindable() }: ModalProps = $props()
