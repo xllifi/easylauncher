@@ -157,7 +157,7 @@ ipcMain.on('launch', async (_event, shared) => {
     if (err instanceof TimeoutError) {
       renderer.send('feed-push', {
         id: 'launch-error-timeout',
-        additional: [err]
+        additional: { 'err': err }
       })
       return
     }
@@ -167,7 +167,7 @@ ipcMain.on('launch', async (_event, shared) => {
     }
     renderer.send('feed-push', {
       id: 'launch-error-unknown',
-      additional: [err]
+      additional: { 'err': err }
     })
     return
   })
@@ -184,17 +184,17 @@ ipcMain.on('installupdate', () => {
 
     if (err.cause == 'noupdate') {
       Sentry.captureEvent(err)
-      renderer.send('feed-push', {id: 'update-error-noupdate'})
+      renderer.send('feed-push', { id: 'update-error-noupdate' })
       return
     }
     if (err.cause == 'nofile') {
       Sentry.captureEvent(err)
-      renderer.send('feed-push', {id: 'update-error-nofile'})
+      renderer.send('feed-push', { id: 'update-error-nofile' })
       return
     }
     renderer.send('feed-push', {
       id: 'update-error-unknown',
-      additional: [err]
+      additional: { 'err': err }
     })
   })
 })
@@ -212,7 +212,7 @@ ipcMain.on('loginrequest', async (_event, { username, password }) => {
     if (err.response && err.response.status == 401) {
       return renderer.send('feed-push', { id: 'login-error-401' })
     }
-    renderer.send('feed-push', { id: 'login-error-unknown', additional: [err] })
+    renderer.send('feed-push', { id: 'login-error-unknown', additional: { 'err': err } })
   })
   if (!resp) {
     return
@@ -226,6 +226,6 @@ ipcMain.on('loginrequest', async (_event, { username, password }) => {
     userType: 'mojang',
     drasl: { server: drasl.authserver }
   }
-  renderer.send('feed-push', { id: 'login-success', additional: [launchCredentials.name] })
+  // TODO: report login success
   renderer.send('loginresponse', { launchCredentials })
 })

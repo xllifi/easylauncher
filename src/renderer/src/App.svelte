@@ -6,7 +6,7 @@
   import { getLocaleFromNavigator, init, isLoading, register } from 'svelte-i18n'
   import { params } from './lib/stores/params.svelte.js'
   import StatusBar from './components/StatusBar.svelte'
-  import StatusFeed from './components/StatusFeed.svelte'
+  import StatusFeed, { createNotification } from './components/StatusFeed.svelte'
   import { ipc } from './main.js'
   import { appstate } from './lib/stores/appstate.svelte.js'
   import type { SvelteComponent } from 'svelte'
@@ -76,6 +76,11 @@
   })
 
   ipc.on('loginresponse', (_event, { launchCredentials }) => $params.shared.launchCredentials = launchCredentials)
+
+  ipc.on('feed-push', (_e, { id, additional }: {id: string, additional: {[key: string]: string}}) => {
+    console.log(additional)
+    createNotification(id, additional)
+  })
 
   init({
     fallbackLocale: 'en',
