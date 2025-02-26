@@ -55,7 +55,7 @@
   register('ru', () => import('./i18n/ru.json'))
   register('en', () => import('./i18n/en.json'))
 
-  if (!$params.shared.lang) $params.shared.lang = getLocaleFromNavigator()!
+  if (!$params.shared || !$params.shared.lang) $params.shared.lang = getLocaleFromNavigator()!
 
   ipc.on('start', () => {
     if ($appstate.current === 'launch') {
@@ -72,10 +72,10 @@
     $appstate.minecraftPids = [...$appstate.minecraftPids, pid]
   })
   ipc.on('rmmcpid', (_event, { pid }) => {
-    $appstate.minecraftPids = $appstate.minecraftPids.filter(x => x != pid)
+    $appstate.minecraftPids = $appstate.minecraftPids.filter((x) => x != pid)
   })
 
-  ipc.on('feed-push', (_e, { id, additional }: {id: string, additional: {[key: string]: string}}) => {
+  ipc.on('feed-push', (_e, { id, additional }: { id: string; additional: { [key: string]: string } }) => {
     console.log(additional)
     createNotification(id, additional)
   })
@@ -105,24 +105,40 @@
     <!-- Page -->
     {#key $route.page}
       <div class="inner" transition:fade>
-        <Page {statusBar} {statusFeed}/>
+        <Page {statusBar} {statusFeed} />
       </div>
     {/key}
     <!-- Modal -->
     {#if Modal}
       <!-- svelte-ignore a11y_no_static_element_interactions -->
       <!-- svelte-ignore a11y_click_events_have_key_events -->
-      <div class="modal" onmousedown={exitModalStart} onmouseleave={exitModalCancel} onmouseup={exitModalEnd} tabindex="-1" out:scale={{ duration: 200, start: 0, easing: backIn }} in:scale={{ duration: 200, start: 1.5, easing: backOut }}>
+      <div
+        class="modal"
+        onmousedown={exitModalStart}
+        onmouseleave={exitModalCancel}
+        onmouseup={exitModalEnd}
+        tabindex="-1"
+        out:scale={{ duration: 200, start: 0, easing: backIn }}
+        in:scale={{ duration: 200, start: 1.5, easing: backOut }}
+      >
         {#key $route.modal.current}
-          <div class="inner" onmouseenter={exitModalCancel} onmousedown={(e) => e.stopPropagation()} onmouseleave={(e) => e.stopPropagation()} onmouseup={(e) => e.stopPropagation()} out:fly={{ duration: 200, y: 100 }} in:fly={{ delay: 60, duration: 200, y: -100 }}>
-              <Modal exit={exitButtonClick} back={backButtonClick} {statusFeed} />
+          <div
+            class="inner"
+            onmouseenter={exitModalCancel}
+            onmousedown={(e) => e.stopPropagation()}
+            onmouseleave={(e) => e.stopPropagation()}
+            onmouseup={(e) => e.stopPropagation()}
+            out:fly={{ duration: 200, y: 100 }}
+            in:fly={{ delay: 60, duration: 200, y: -100 }}
+          >
+            <Modal exit={exitButtonClick} back={backButtonClick} {statusFeed} />
           </div>
         {/key}
       </div>
     {/if}
     <!-- Unconditional elements -->
-    <StatusBar bind:this={statusBar}/>
-    <StatusFeed bind:this={statusFeed}/>
+    <StatusBar bind:this={statusBar} />
+    <StatusFeed bind:this={statusFeed} />
   </div>
 {/if}
 
