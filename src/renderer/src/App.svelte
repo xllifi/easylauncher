@@ -75,8 +75,6 @@
     $appstate.minecraftPids = $appstate.minecraftPids.filter(x => x != pid)
   })
 
-  ipc.on('loginresponse', (_event, { launchCredentials }) => $params.shared.launchCredentials = launchCredentials)
-
   ipc.on('feed-push', (_e, { id, additional }: {id: string, additional: {[key: string]: string}}) => {
     console.log(additional)
     createNotification(id, additional)
