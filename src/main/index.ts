@@ -3,7 +3,7 @@ import path, { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 import { startGame } from './launch.js'
-import { DraslAuth, launchCredentials, genDirs, MrpackParseError } from 'xlicore'
+import { DraslAuth, launchCredentials, genDirs, MrpackParseError, DraslRefreshRequest } from 'xlicore'
 import * as Sentry from '@sentry/electron/main'
 import { existsSync } from 'fs'
 import { Updater } from './updater.js'
@@ -21,6 +21,10 @@ Sentry.setExtra('source', 'BACKEND')
 
 export const gamePath = path.resolve(app.getPath('home'), '.easylauncher')
 export let loadingWindow: BrowserWindow, mainWindow: BrowserWindow, renderer: WebContents
+const drasl = new DraslAuth({
+  server: import.meta.env.VITE_AUTH_HOST,
+  saveDir: path.resolve(gamePath, 'instance')
+})
 
 function createWindow(): void {
   loadingWindow = new BrowserWindow({
@@ -156,8 +160,8 @@ ipcMain.on('launch', async (_event, shared) => {
 
     if (err instanceof TimeoutError) {
       renderer.send('feed-push', {
-        id: 'launch-error-timeout',
-        additional: { 'err': err }
+        id: 'generic-error-timeout',
+        additional: { err: err }
       })
       return
     }
@@ -167,7 +171,7 @@ ipcMain.on('launch', async (_event, shared) => {
     }
     renderer.send('feed-push', {
       id: 'launch-error-unknown',
-      additional: { 'err': err }
+      additional: { err: err }
     })
     return
   })
@@ -194,25 +198,41 @@ ipcMain.on('installupdate', () => {
     }
     renderer.send('feed-push', {
       id: 'update-error-unknown',
-      additional: { 'err': err }
+      additional: { err: err }
     })
   })
 })
 
-ipcMain.on('loginrequest', async (_event, { username, password }) => {
-  const drasl = new DraslAuth({
-    username,
-    password,
-    server: import.meta.env.VITE_AUTH_HOST,
-    saveDir: path.resolve(gamePath, 'instance')
-  })
-
-  const resp = await drasl.first().catch((err) => {
-    renderer.send('loginresponse', { launchCredentials: {} })
+ipcMain.on('login-request', async (_event, creds: { username: string; password: string }) => {
+  const resp = await drasl.first(creds).catch((err) => {
+    renderer.send('login-response', { isError: true })
     if (err.response && err.response.status == 401) {
       return renderer.send('feed-push', { id: 'login-error-401' })
     }
-    renderer.send('feed-push', { id: 'login-error-unknown', additional: { 'err': err } })
+    renderer.send('feed-push', { id: 'login-error-unknown', additional: { err: err } })
+  })
+  if (!resp) {
+    return
+  }
+
+  const launchCredentials: launchCredentials = {
+    accessToken: resp.accessToken,
+    clientId: resp.clientToken,
+    name: resp.availableProfiles[0].name,
+    uuid: resp.availableProfiles[0].id,
+    userType: 'mojang',
+    drasl: { server: drasl.authserver }
+  }
+  renderer.send('login-response', { launchCredentials, isError: false })
+})
+
+ipcMain.on('refresh-request', async (_event, body: DraslRefreshRequest) => {
+  const resp = await drasl.refresh(body).catch((err) => {
+    renderer.send('refresh-response', { isError: true })
+    if (err.response && err.response.status == 401) {
+      return renderer.send('feed-push', { id: 'login-error-401' })
+    }
+    renderer.send('feed-push', { id: 'login-error-unknown', additional: { err: err } })
   })
   if (!resp) {
     return
@@ -226,6 +246,5 @@ ipcMain.on('loginrequest', async (_event, { username, password }) => {
     userType: 'mojang',
     drasl: { server: drasl.authserver }
   }
-  // TODO: report login success
-  renderer.send('loginresponse', { launchCredentials })
+  renderer.send('refresh-response', { launchCredentials, isError: false })
 })

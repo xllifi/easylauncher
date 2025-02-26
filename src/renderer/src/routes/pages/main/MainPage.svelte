@@ -15,6 +15,7 @@
   import { getSkinUrls, setupSmoothReset } from '../../../components/skin.js'
   import type { SkinViewer } from 'skinview3d'
   import * as THREE from 'three'
+  import { createNotification } from '../../../components/StatusFeed.svelte'
 
   interface Props {
     statusBar: SvelteComponent<any>
@@ -24,6 +25,11 @@
 
   function launchGame(): void {
     if ($appstate.current == 'launch') return
+
+    if (!$params.successfullLogin) {
+      createNotification('launch-error-noprofile')
+      return
+    }
 
     if (!$params.rulesConfirmed) {
       $route.modal.current = RulesModal

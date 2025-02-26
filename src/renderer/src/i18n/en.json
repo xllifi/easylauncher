@@ -102,6 +102,23 @@
         }
       },
       "continue": "Continue"
+    },
+    "feedback": {
+      "title": "Feedback",
+      "description": "You can send a message to developers here",
+      "form": {
+        "content": "Message",
+        "placeholder": "What happened?",
+        "send": "Send the message"
+      }
+    },
+    "selectprofile": {
+      "title": "Profile selection",
+      "skin-image-alt-description": "Skin picture"
+    },
+    "unknown": {
+      "title": "Unknown modal",
+      "description": "Seems like something went wrong.\nWe already know about the problem and trying to fix it."
     }
   },
   "page": {
@@ -122,6 +139,10 @@
         "title": "Hi there!",
         "description": "Let's set everything up...",
         "button": "Next"
+      },
+      "step2-broke": {
+        "title": "Oops, something broke!",
+        "description": "Please, restart the launcher."
       }
     }
   },
@@ -171,9 +192,9 @@
   },
   "statusfeed": {
     "messages": {
-      "debug": {
-        "title": "Pre-alpha release",
-        "description": "If you experience any issues with the launcher or have any suggestions for improvements, please let the developer know by clicking the button in the window header."
+      "generic-error-timeout": {
+        "title": "Timed out",
+        "description": "Detailed description: {err}"
       },
       "startedoffline": {
         "title": "No connection!",
@@ -201,23 +222,31 @@
       },
       "login-error-unknown": {
         "title": "Failed to log in!",
-        "description": "Full reason: $1"
+        "description": "Full reason: {err}"
       },
       "login-success": {
         "title": "You've logged in!",
-        "description": "Your username - $1"
+        "description": "Your username - {name}"
       },
-      "launch-error-timeout": {
-        "title": "Timed out",
-        "description": "Detailed description: $1"
+      "selectprofile-selected": {
+        "title": "Profile selected!",
+        "description": "Playername: {name}\nUUID: {uuid}"
+      },
+      "launch-error-modslocked": {
+        "title": "Launch error!",
+        "description": "Failed to launch Minecraft because you changed modpack type while another game process is active. Close Minecraft and try again."
+      },
+      "launch-error-noprofile": {
+        "title": "Launch error!",
+        "description": "Failed to launch Minecraft because you didn't select a profile when logging in last time. Please, re-login in launcher settings."
       },
       "launch-error-unknown": {
         "title": "Launch error!",
-        "description": "Detailed description: $1"
+        "description": "Detailed description: {err}"
       },
       "game-error-unknown": {
         "title": "Game error!",
-        "description": "Detailed description: $1"
+        "description": "Detailed description: {err}"
       },
       "feedback-sent": {
         "title": "Feedback sent",
@@ -233,7 +262,7 @@
       },
       "update-error-unknown": {
         "title": "Update error!",
-        "description": "Detailed description: $1"
+        "description": "Detailed description: {err}"
       },
       "confirm-stop": {
         "title": "Stop Minecraft?",

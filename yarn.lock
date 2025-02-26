@@ -5297,10 +5297,10 @@ wrappy@1:
   resolved "https://registry.yarnpkg.com/wrappy/-/wrappy-1.0.2.tgz#b5243d8f3ec1aa35f1364605bc0d1036e30ab69f"
   integrity sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==
 
-xlicore@^0.0.8:
-  version "0.0.8"
-  resolved "https://registry.yarnpkg.com/xlicore/-/xlicore-0.0.8.tgz#d71506f22c8dc099cc6def2bbf89fd701b129fd6"
-  integrity sha512-GF6lG+IxY6Cs1BAB7fm8+4r73saRW+26qPiDOOEEp9weJXpiSm0NznIH3gUWI3vU1hvDJgifTtoofLNwOLIpmw==
+xlicore@^0.0.9:
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/xlicore/-/xlicore-0.0.9.tgz#80021a2a85b5f0c24259f5ae490f4101cf927c61"
+  integrity sha512-33Ci1O624BYKv8DxcgoF1Maudu0tAOAYSCu3S37kWGFPVrpSkUB0hkaFmB9TRluKlbkxBKMnjzsojzVAW5oCOw==
   dependencies:
     dotenv "^16.4.7"
     extract-zip "^2.0.1"

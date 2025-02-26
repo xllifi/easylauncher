@@ -112,6 +112,10 @@
         "send": "Отправить сообщение"
       }
     },
+    "selectprofile": {
+      "title": "Выбор профиля",
+      "skin-image-alt-description": "Картинка скина"
+    },
     "unknown": {
       "title": "Неизвестное окно",
       "description": "Похоже, что-то пошло не так.\nМы уже знаем о проблеме и работаем над решением."
@@ -135,6 +139,10 @@
         "title": "Привет!",
         "description": "Давай всё настроим...",
         "button": "Далее"
+      },
+      "step2-broke": {
+        "title": "Ой, что-то сломалось!",
+        "description": "Пожалуйста, перезапустите лаунчер."
       }
     }
   },
@@ -184,9 +192,9 @@
   },
   "statusfeed": {
     "messages": {
-      "debug": {
-        "title": "Тестовая версия",
-        "description": "Если вы столкнулись с проблемой в работе лаунчера или у вас есть предложения по улучшению, сообщите разработчику по кнопке в заголовке окна."
+      "generic-error-timeout": {
+        "title": "Превышено время ожидания",
+        "description": "Подробное описание: {err}"
       },
       "startedoffline": {
         "title": "Нет интернета!",
@@ -214,27 +222,31 @@
       },
       "login-error-unknown": {
         "title": "Не удалось войти!",
-        "description": "Полная причина: $1"
+        "description": "Полная причина: {err}"
       },
       "login-success": {
         "title": "Вы вошли!",
-        "description": "Ваш никнейм - $1"
+        "description": "Ваш никнейм - {name}"
       },
-      "launch-error-timeout": {
-        "title": "Превышено время ожидания",
-        "description": "Подробное описание: $1"
+      "selectprofile-selected": {
+        "title": "Профиль выбран!",
+        "description": "Никнейм: {name}\nUUID: {uuid}"
       },
       "launch-error-modslocked": {
         "title": "Ошибка запуска!",
         "description": "Не удалось запустить Minecraft, так как вы сменили тип сборки, пока запущен другой процесс игры. Закройте Minecraft и попробуйте снова."
       },
+      "launch-error-noprofile": {
+        "title": "Ошибка запуска!",
+        "description": "Не удалось запустить Minecraft, так как в последний раз при входе вы не выбрали профиль. Пожалуйста, заново войдите в аккаунт в настройках лаунчера."
+      },
       "launch-error-unknown": {
         "title": "Ошибка запуска!",
-        "description": "Подробное описание: $1"
+        "description": "Подробное описание: {err}"
       },
       "game-error-unknown": {
         "title": "Ошибка игры!",
-        "description": "Подробное описание: $1"
+        "description": "Подробное описание: {err}"
       },
       "feedback-sent": {
         "title": "Сообщение отправлено",
@@ -250,7 +262,7 @@
       },
       "update-error-unknown": {
         "title": "Ошибка обновления!",
-        "description": "Подробное описание: $1"
+        "description": "Подробное описание: {err}"
       },
       "confirm-stop": {
         "title": "Закрыть Minecraft?",

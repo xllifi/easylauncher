@@ -2,9 +2,8 @@
   import { ArrowLeft, X } from 'lucide-svelte'
   import { route } from '../../lib/stores/route.svelte.js'
   import { _ } from 'svelte-i18n'
-  import Login from "../shared/Login.svelte"
-  import type { ModalProps } from '../../lib/types/modals.d.ts'
-  import SelectProfileModal from './SelectProfileModal.svelte'
+  import type { ModalProps } from '../../lib/types/modals.js'
+  import SelectProfile from '../shared/SelectProfile.svelte'
 
   let { exit = $bindable(), back = $bindable() }: ModalProps = $props()
 </script>
@@ -12,14 +11,11 @@
 <div class="layout">
   <div class="title">
     <button class="back" class:hidden={$route.modal.previous == null} onclick={back}><ArrowLeft /></button>
-    <h2>{$_('modal.login.title')}</h2>
+    <h2>{$_('modal.selectprofile.title')}</h2>
     <button class="close" onclick={exit}><X /></button>
   </div>
   <div class="form">
-    <Login finishCallback={() => {
-      $route.modal.previous = null
-      $route.modal.current = SelectProfileModal
-    }} />
+    <SelectProfile finishCallback={exit}/>
   </div>
 </div>
 
