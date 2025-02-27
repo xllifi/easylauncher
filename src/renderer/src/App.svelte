@@ -88,8 +88,8 @@
   let Modal = $state($route.modal.current)
   let Page = $state($route.page)
   route.subscribe((route) => {
-    Modal = route.modal.current
-    Page = route.page
+    if (Modal != route.modal.current) Modal = route.modal.current
+    if (Page != route.page) Page = route.page
   })
 </script>
 
@@ -103,7 +103,7 @@
 {:else}
   <div class="body" transition:fade={{ duration: 200 }}>
     <!-- Page -->
-    {#key $route.page}
+    {#key Page}
       <div class="inner" transition:fade>
         <Page {statusBar} {statusFeed} />
       </div>
