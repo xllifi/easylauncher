@@ -43,7 +43,9 @@
       return
     }
 
-    skinLoaded = true
+    setTimeout(() => {
+      skinLoaded = true
+    }, 250);
   }
 
   onMount(() => {
@@ -62,8 +64,6 @@
     })
 
     if (skinSetup) skinSetup(skinVw)
-
-    skinLoaded = true
   })
 </script>
 
@@ -75,7 +75,11 @@ You'll have to use `this.setSkin` for the skin to show up.
 <canvas class="skin" class:noskin={skin == noskin} class:hidden={!skinLoaded} bind:this={skinCv}></canvas>
 
 <style>
-  .hidden {
-    opacity: 0;
+  canvas.skin{
+    transition: opacity 1s;
+
+    &.hidden {
+      opacity: 0;
+    }
   }
 </style>
