@@ -116,9 +116,7 @@
   })
 </script>
 
-<!-- TODO: IMPROVE UI -->
-
-<p class="description">Если у тебя нет данных для входа, то их можно найти в [ДОБАВИТЬ ИСТОЧНИК]</p>
+<p class="description">{$_('modal.login.description')}</p>
 <div class="form">
   <div class="textinput" class:incorrect={!isUsernameValid && showUsernameInvalid}>
     <div class="label">
