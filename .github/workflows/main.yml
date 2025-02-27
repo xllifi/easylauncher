@@ -59,23 +59,7 @@ jobs:
         if: ${{ startsWith(github.ref, 'refs/tags') }}
         with:
           make_latest: true
-          body: '## Первая установка
-
-            1. Скачайте все файлы из релиза
-
-            2. Запустите `quickinstall.bat` от имени администратора
-
-            3. Подтвердите установку
-
-
-            ## Обновление
-
-
-            1. Скачайте файл с расширением `.appx` из релиза
-
-            2. Откройте скачанный файл
-
-            3. Подтвердите обновление'
+          body_path: github_assets/RELEASE.md
           files: |
             dist/easylauncher*.appx
             build/include/*
