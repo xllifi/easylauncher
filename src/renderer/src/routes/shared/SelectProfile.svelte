@@ -39,8 +39,14 @@
 
 <div class="container">
   {#each get(params).draslApiUser!.user.players as player}
-    <button class="player" onclick={() => {selectProfile(player)}}>
-      <span class="skin" style="--skin: url('{player.skinUrl || noskin}');"></span>
+    <button
+      class="player"
+      onclick={() => {
+        selectProfile(player)
+      }}
+    >
+      <span class="skin layer1" style="--skin: url('{player.skinUrl || noskin}');"></span>
+      <span class="skin layer2" style="--skin: url('{player.skinUrl || noskin}');"></span>
       <p>{player.name}</p>
       <p>{player.uuid}</p>
     </button>
@@ -56,7 +62,7 @@
 
     button.player {
       display: grid;
-      grid-template-columns: calc(8px * 4) auto;
+      grid-template-columns: calc(8px * 4) 1fr;
       grid-template-rows: 1fr 1fr;
       gap: 0 0.6rem;
 
@@ -68,31 +74,26 @@
         grid-column: 1;
         grid-row: 1 / span 2;
 
-        width: calc(8px * 4);
+        width: calc(8px * var(--scale));
         aspect-ratio: 1/1;
 
         background-image: var(--skin);
-        background-position-x: calc(-8px * 4);
-        background-position-y: calc(-8px * 4);
-        background-size: calc(64px * 4);
+        background-position-x: calc(var(--posx) * var(--scale));
+        background-position-y: calc(-8px * var(--scale));
+        background-size: calc(64px * var(--scale));
         background-repeat: no-repeat;
         image-rendering: pixelated;
+      }
 
-        &::after {
-          content: '';
-          position: absolute;
+      span.skin.layer1 {
+        --scale: 4;
+        --posx: -8px;
+      }
 
-          width: calc(8px * 4.25);
-          aspect-ratio: 1/1;
-          transform: translate(-1px, -1px);
-
-          background-image: var(--skin);
-          background-position-x: calc(40px * -4.25);
-          background-position-y: calc(8px * -4.25);
-          background-size: calc(64px * 4.25);
-          background-repeat: no-repeat;
-          image-rendering: pixelated;
-        }
+      span.skin.layer2 {
+        --scale: 4.25;
+        --posx: -40px;
+        transform: translate(-1px, -1px);
       }
     }
   }

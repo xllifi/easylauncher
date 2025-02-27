@@ -188,7 +188,7 @@
   }
   .body {
     width: 100%;
-    height: calc(100% - 1.5rem);
+    height: calc(100% - 2rem);
     position: relative;
 
     > .inner {

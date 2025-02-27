@@ -31,8 +31,15 @@
   div.wrapper {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: safe center;
     align-items: center;
-    position: absolute;
+    overflow-y: scroll;
+    padding: 1rem 0;
+
+    height: 100%;
+
+    h1 {
+      text-align: center;
+    }
   }
 </style>

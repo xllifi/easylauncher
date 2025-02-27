@@ -145,3 +145,21 @@ button {
     user-select: none;
   }
 }
+
+::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}
+::-webkit-scrollbar-thumb {
+  border: solid 2px #0000;
+  background-clip: content-box;
+  background-color: #0006;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-corner {
+  background-color: transparent;
+}
+::-webkit-scrollbar-button {
+  width: 4px;
+  height: 4px;
+}
