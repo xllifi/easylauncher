@@ -4,12 +4,13 @@
   import { fade, fly, scale } from 'svelte/transition'
   import { backIn, backOut } from 'svelte/easing'
   import { getLocaleFromNavigator, init, isLoading, register } from 'svelte-i18n'
-  import { params } from './lib/stores/params.svelte.js'
+  import { defaultParams, params } from './lib/stores/params.svelte.js'
   import StatusBar from './components/StatusBar.svelte'
   import StatusFeed, { createNotification } from './components/StatusFeed.svelte'
   import { ipc } from './main.js'
   import { appstate } from './lib/stores/appstate.svelte.js'
   import type { SvelteComponent } from 'svelte'
+  import OnboardingPage from './routes/pages/onboarding/OnboardingPage.svelte'
 
   window.addEventListener('DOMContentLoaded', () => {
     $route.loaded = true
@@ -55,7 +56,12 @@
   register('ru', () => import('./i18n/ru.json'))
   register('en', () => import('./i18n/en.json'))
 
-  if (!$params.shared || !$params.shared.lang) $params.shared.lang = getLocaleFromNavigator()!
+  if (!$params.shared) {
+    $params.onboardingComplete = false
+    $route.page = OnboardingPage
+    $params.shared = defaultParams.shared
+  }
+  if (!$params.shared.lang) $params.shared.lang = getLocaleFromNavigator()!
 
   ipc.on('start', () => {
     if ($appstate.current === 'launch') {

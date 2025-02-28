@@ -2,14 +2,15 @@ import { persisted, type Persisted } from 'svelte-persisted-store'
 import type { launchCredentials } from 'xlicore'
 import type { SharedParams } from '../../../../main/types.js'
 import type { DraslApiUser } from '../types/login.js'
+import { getLocaleFromNavigator } from 'svelte-i18n'
 
-export const params: Persisted<FrontParams> = persisted('preferences', {
+export const defaultParams: FrontParams = {
   onboardingComplete: false,
   rulesConfirmed: false,
   successfullLogin: false,
   draslApiUser: null,
   shared: {
-    lang: 'ru',
+    lang: getLocaleFromNavigator()!,
     launchCredentials: {} as launchCredentials,
     modpackType: 'ful',
     launchOpts: {
@@ -24,7 +25,8 @@ export const params: Persisted<FrontParams> = persisted('preferences', {
       detached: true
     }
   }
-})
+}
+export const params: Persisted<FrontParams> = persisted('preferences', defaultParams)
 
 export type FrontParams = {
   onboardingComplete: boolean
