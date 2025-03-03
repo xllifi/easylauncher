@@ -48,7 +48,7 @@
       <span class="skin layer1" style="--skin: url('{player.skinUrl || noskin}');"></span>
       <span class="skin layer2" style="--skin: url('{player.skinUrl || noskin}');"></span>
       <p>{player.name}</p>
-      <p>{player.uuid}</p>
+      <p class="uuid">{player.uuid}</p>
     </button>
   {/each}
 </div>
@@ -94,6 +94,11 @@
         --scale: 4.25;
         --posx: -40px;
         transform: translate(-1px, -1px);
+      }
+
+      p.uuid {
+        font-size: 0.85em;
+        opacity: 0.6;
       }
     }
   }
