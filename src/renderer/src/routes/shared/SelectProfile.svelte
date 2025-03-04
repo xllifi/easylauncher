@@ -93,7 +93,7 @@
       span.skin.layer2 {
         --scale: 4.25;
         --posx: -40px;
-        transform: translate(-1px, -1px);
+        transform: translateX(-1px);
       }
 
       p.uuid {
