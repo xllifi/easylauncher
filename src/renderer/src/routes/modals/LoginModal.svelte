@@ -5,8 +5,22 @@
   import Login from "../shared/Login.svelte"
   import type { ModalProps } from '../../lib/types/modals.d.ts'
   import SelectProfileModal from './SelectProfileModal.svelte'
+  import { params } from '../../lib/stores/params.svelte.js'
 
   let { exit = $bindable(), back = $bindable() }: ModalProps = $props()
+
+  function maybeOpenProfileSelection() {
+    if (!$params.draslApiUser) {
+      return
+    }
+    if ($params.draslApiUser?.user.players.length > 1) {
+      $route.modal.previous = null
+      $route.modal.current = SelectProfileModal
+    } else {
+      $params.successfullLogin = true
+      exit(new MouseEvent('fake'))
+    }
+  }
 </script>
 
 <div class="layout">
@@ -16,10 +30,7 @@
     <button class="close" onclick={exit}><X /></button>
   </div>
   <div class="form">
-    <Login finishCallback={() => {
-      $route.modal.previous = null
-      $route.modal.current = SelectProfileModal
-    }} />
+    <Login finishCallback={maybeOpenProfileSelection} />
   </div>
 </div>
 
