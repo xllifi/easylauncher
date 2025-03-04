@@ -14,7 +14,6 @@
   let { finishCallback = $bindable() }: Props = $props()
 
   async function selectProfile(player: DraslPlayer) {
-    console.log(player)
     const body: DraslRefreshRequest = {
       accessToken: $params.shared.launchCredentials.accessToken!,
       clientToken: $params.shared.launchCredentials.clientId!,
@@ -23,7 +22,6 @@
         name: player.name
       }
     }
-    console.log(body)
     ipc.send('refresh-request', body)
 
     ipc.once('refresh-response', (_e, { launchCredentials, isError }: { launchCredentials: launchCredentials; isError: boolean }) => {
