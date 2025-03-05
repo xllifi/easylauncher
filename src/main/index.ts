@@ -151,6 +151,18 @@ ipcMain.on('launch', async (_event, shared) => {
       renderer.send('feed-push', { id: 'launch-error-modslocked' })
       return
     }
+    if (err instanceof Error) {
+      switch (err.cause) {
+        case 'lm_missing_whole': {
+          renderer.send('feed-push', { id: 'launch-error-launchermeta-missing-whole' })
+          return
+        }
+        case 'lm_missing_version': {
+          renderer.send('feed-push', { id: 'launch-error-launchermeta-missing-version' })
+          return
+        }
+      }
+    }
     renderer.send('feed-push', {
       id: 'launch-error-unknown',
       additional: { err: err }

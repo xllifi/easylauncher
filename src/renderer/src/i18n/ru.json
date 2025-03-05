@@ -241,6 +241,14 @@
         "title": "Ошибка запуска!",
         "description": "Не удалось запустить Minecraft, так как в последний раз при входе вы не выбрали профиль. Пожалуйста, заново войдите в аккаунт в настройках лаунчера."
       },
+      "launch-error-launchermeta-missing-whole": {
+        "title": "Ошибка запуска!",
+        "description": "Отсутствуют метаданные лаунчера. Обратитесь к разработчику."
+      },
+      "launch-error-launchermeta-missing-version": {
+        "title": "Ошибка запуска!",
+        "description": "В метаданных лаунчера отсутствует версия Minecraft или Fabric Loader. Обратитесь к разработчику."
+      },
       "launch-error-unknown": {
         "title": "Ошибка запуска!",
         "description": "Подробное описание: {err}"

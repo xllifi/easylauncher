@@ -6,13 +6,31 @@ export type SharedParams = {
   modpackType: 'min' | 'ess' | 'ful'
   launchOpts: {
     memory: {
-      min: number,
+      min: number
       max: number
-    },
+    }
     screen: {
-      width: number,
+      width: number
       height: number
-    },
+    }
     detached: boolean
+  }
+}
+
+export type LauncherMeta = {
+  mc_version: string
+  fabric_version: string
+  modpack: null | {
+    ess?: LauncherMetaModpack
+    min?: LauncherMetaModpack
+    ful?: LauncherMetaModpack
+  }
+}
+
+type LauncherMetaModpack = {
+  url: string
+  verify?: {
+    hash: string
+    algorithm: 'sha1' | 'sha256'
   }
 }

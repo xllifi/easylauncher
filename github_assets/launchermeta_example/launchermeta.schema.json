@@ -1,0 +1,111 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$id": "https://example.com/employee.schema.json",
+  "title": "easylauncher's metadata",
+  "description": "This file is used by launcher to define Minecraft version and modpacks.",
+  "type": "object",
+  "properties": {
+    "mc_version": {
+      "title": "Minecraft's version",
+      "type": "string"
+    },
+    "fabric_version": {
+      "title": "Fabric Loader's version",
+      "type": "string"
+    },
+    "modpack": {
+      "title": "Modpacks definition",
+      "description": "Can be null if you don't need a modpack",
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "ess": {
+          "title": "\"Essential\" `.mrpack` modpack definition",
+          "description": "Can be undefined if you don't need this modpack type",
+          "type": "object",
+          "properties": {
+            "url": {
+              "title": "Modpack URL",
+              "description": "A URL to download `.mrpack` of this",
+              "type": "string"
+            },
+            "verify": {
+              "title": "Modpack verify definition",
+              "description": "Recommended to have. Can be left out though",
+              "type": "object",
+              "properties": {
+                "hash": {
+                  "title": "`.mrpack` file hash",
+                  "type": "string"
+                },
+                "algorithm": {
+                  "title": "`.mrpack` file hash encryption algorithm",
+                  "enum": ["sha1", "sha256"]
+                }
+              }
+            }
+          },
+          "required": ["url"]
+        },
+        "min": {
+          "title": "\"Minimal\" `.mrpack` modpack definition",
+          "description": "Can be undefined if you don't need this modpack type",
+          "type": "object",
+          "properties": {
+            "url": {
+              "title": "Modpack URL",
+              "description": "A URL to download `.mrpack` of this",
+              "type": "string"
+            },
+            "verify": {
+              "title": "Modpack verify definition",
+              "description": "Recommended to have. Can be left out though",
+              "type": "object",
+              "properties": {
+                "hash": {
+                  "title": "`.mrpack` file hash",
+                  "type": "string"
+                },
+                "algorithm": {
+                  "title": "`.mrpack` file hash encryption algorithm",
+                  "enum": ["sha1", "sha256"]
+                }
+              }
+            }
+          },
+          "required": ["url"]
+        },
+        "ful": {
+          "title": "\"Full\" `.mrpack` modpack definition",
+          "description": "Can be undefined if you don't need this modpack type",
+          "type": "object",
+          "properties": {
+            "url": {
+              "title": "Modpack URL",
+              "description": "A URL to download `.mrpack` of this",
+              "type": "string"
+            },
+            "verify": {
+              "title": "Modpack verify definition",
+              "description": "Recommended to have. Can be left out though",
+              "type": "object",
+              "properties": {
+                "hash": {
+                  "title": "`.mrpack` file hash",
+                  "type": "string"
+                },
+                "algorithm": {
+                  "title": "`.mrpack` file hash encryption algorithm",
+                  "enum": ["sha1", "sha256"]
+                }
+              }
+            }
+          },
+          "required": ["url"]
+        }
+      }
+    }
+  }
+}

@@ -1,7 +1,8 @@
 import { Launch, LaunchOpts } from 'xlicore'
-import { SharedParams } from './types.js'
+import { LauncherMeta, LauncherMetaModpack, SharedParams } from './types.js'
 import { gamePath, renderer } from './index.js'
 import { ChildProcessWithoutNullStreams } from 'child_process'
+import ky from 'ky'
 
 export async function startGame(shared: SharedParams): Promise<ChildProcessWithoutNullStreams> {
   let lastUpdateTimestamp: number = 0
@@ -12,27 +13,22 @@ export async function startGame(shared: SharedParams): Promise<ChildProcessWitho
     lastUpdateTimestamp = Date.now() + 250
   }
 
-  let modpack: null | { url: string; verify?: { hash: string; algorithm: 'sha1' | 'sha256' } } = null
-  switch (shared.modpackType) {
-    case 'ess':
-      modpack = null
-      break
-    case 'min':
-      modpack = {
-        url: 'https://files.xllifi.ru/modpacks/min.mrpack'
-      }
-      break
-    case 'ful':
-      modpack = {
-        url: 'https://files.xllifi.ru/modpacks/ful.mrpack'
-      }
-      break
+  const launchermeta: LauncherMeta = await ky.get(import.meta.env.VITE_LAUNCHERMETA).then(res => res.json())
+  if (!launchermeta) {
+    throw new Error('Launchetmeta missing', {cause: 'lm_missing_whole'})
   }
+  if (!launchermeta.mc_version || !launchermeta.fabric_version) {
+    throw new Error('Launchermeta missing MC or Fabric loader version', {cause: 'lm_missing_version'})
+  }
+
   const launchOpts: LaunchOpts = {
     auth: shared.launchCredentials,
     useAuthlib: true,
     rootDir: gamePath,
-    version: '1.21.1',
+    version: launchermeta.mc_version,
+    fabric: {
+      version: launchermeta.fabric_version
+    },
     gameOpts: {
       memory: {
         min: shared.launchOpts.memory.min,
@@ -72,6 +68,20 @@ export async function startGame(shared: SharedParams): Promise<ChildProcessWitho
       gameOnLogs(data) {
         renderer.send('logs', { data })
       }
+    }
+  }
+  let modpack: undefined | LauncherMetaModpack
+  if (launchermeta.modpack) {
+    switch (shared.modpackType) {
+      case 'ess':
+        modpack = launchermeta.modpack.ess
+        break
+      case 'min':
+        modpack = launchermeta.modpack.min
+        break
+      case 'ful':
+        modpack = launchermeta.modpack.ful
+        break
     }
   }
   if (modpack) launchOpts.mrpack = modpack

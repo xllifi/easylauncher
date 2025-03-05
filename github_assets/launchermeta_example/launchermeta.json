@@ -1,0 +1,21 @@
+{
+  "$schema": "https://files.xllifi.ru/launchermeta.schema.json",
+  "mc_version": "1.21.4",
+  "fabric_version": "0.16.10",
+  "modpack": {
+    "min": {
+      "url": "https://files.xllifi.ru/modpacks1214/easylauncher%201.21.4%20intermission%20min.mrpack",
+      "verify": {
+        "hash": "338ce6e95e573eaa580f0d08c42c8b5f0a8c7d232fe0d49a19c102eaeebf7f19",
+        "algorithm": "sha256"
+      }
+    },
+    "ful": {
+      "url": "https://files.xllifi.ru/modpacks1214/easylauncher%201.21.4%20intermission%20ful.mrpack",
+      "verify": {
+        "hash": "fbd1ebcbe81b23c8d191f24aaca8a833ed1d478ab90253c2a12aa05082c1a666",
+        "algorithm": "sha256"
+      }
+    }
+  }
+}

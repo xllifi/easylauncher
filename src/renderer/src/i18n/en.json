@@ -241,6 +241,14 @@
         "title": "Launch error!",
         "description": "Failed to launch Minecraft because you didn't select a profile when logging in last time. Please, re-login in launcher settings."
       },
+      "launch-error-launchermeta-missing-whole": {
+        "title": "Launch error!",
+        "description": "Launcher metadata missing. Contact the developer."
+      },
+      "launch-error-launchermeta-missing-version": {
+        "title": "Launch error!",
+        "description": "Launcher metadata missing Minecraft or Fabric Loader version(s). Contact the developer."
+      },
       "launch-error-unknown": {
         "title": "Launch error!",
         "description": "Detailed description: {err}"
