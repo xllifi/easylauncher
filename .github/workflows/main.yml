@@ -24,6 +24,7 @@ jobs:
           VITE_SENTRY_HOST: ${{ vars.VITE_SENTRY_HOST }}
           VITE_SENTRY_URL: ${{ vars.VITE_SENTRY_URL }}
           VITE_AUTH_HOST: ${{ vars.VITE_AUTH_HOST }}
+          VITE_LAUNCHERMETA: ${{ vars.VITE_LAUNCHERMETA }}
           VITE_AUTOUPDATE_GITHUB_REPO: ${{ vars.VITE_AUTOUPDATE_GITHUB_REPO }}
         with:
           # GitHub token, automatically provided to the action
