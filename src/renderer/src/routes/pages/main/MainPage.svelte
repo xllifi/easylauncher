@@ -106,6 +106,7 @@
     cam.add(light)
   }
 
+  ipc.on('login-response', async () => skinVw.setSkin(await getSkinUrls()))
   ipc.on('refresh-response', async () => skinVw.setSkin(await getSkinUrls()))
   onMount(async () => {
     skinVw.setSkin(await getSkinUrls())
