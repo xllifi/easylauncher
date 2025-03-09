@@ -19,9 +19,8 @@
 
   interface Props {
     statusBar: SvelteComponent<any>
-    statusFeed: SvelteComponent<any>
   }
-  let { statusBar, statusFeed }: Props = $props()
+  let { statusBar }: Props = $props()
 
   function launchGame(): void {
     if ($appstate.current == 'launch') return
@@ -52,7 +51,7 @@
 
   function stopGame(): void {
     if (!confirmStop) {
-      statusFeed.createNotification('confirm-stop')
+      createNotification('confirm-stop')
       confirmStop = true
       stopTimeout = setTimeout(() => {
         confirmStop = false

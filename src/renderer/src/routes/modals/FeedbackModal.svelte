@@ -4,15 +4,16 @@
   import { route } from '../../lib/stores/route.svelte.js'
   import * as Sentry from '@sentry/svelte'
   import type { ModalProps } from '../../lib/types/modals.d.ts'
+  import { createNotification } from '../../components/StatusFeed.svelte'
 
-  let { exit = $bindable(), back = $bindable(), statusFeed }: ModalProps = $props()
+  let { exit = $bindable(), back = $bindable() }: ModalProps = $props()
 
   let input: string = $state('')
 
   function send() {
     if (input != '') {
       Sentry.captureMessage(input)
-      statusFeed!.createNotification('feedback-sent')
+      createNotification('feedback-sent')
       exit(new MouseEvent('fake'))
     }
   }

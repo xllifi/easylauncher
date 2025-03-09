@@ -137,7 +137,7 @@
             out:fly={{ duration: 200, y: 100 }}
             in:fly={{ delay: 60, duration: 200, y: -100 }}
           >
-            <Modal exit={exitButtonClick} back={backButtonClick} {statusFeed} />
+            <Modal exit={exitButtonClick} back={backButtonClick} />
           </div>
         {/key}
       </div>
