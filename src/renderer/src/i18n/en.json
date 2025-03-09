@@ -87,7 +87,7 @@
     },
     "rules": {
       "title": "Rules",
-      "description": "Agree to server rules to play",
+      "description": "To play on the server, you must accept the rules. Full rule list can be found in our Telegram channel.",
       "entries": {
         "respect": {
           "title": "Treat everyone with respect",
