@@ -58,7 +58,7 @@
     },
     "login": {
       "title": "Account login",
-      "description": "If you don't have login credentials, get them from [ADD SOURCE]",
+      "description": "Registration instructions available at",
       "form": {
         "username": "Username",
         "password": "Password",

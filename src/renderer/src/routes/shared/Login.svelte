@@ -116,7 +116,7 @@
   })
 </script>
 
-<p class="description">{$_('modal.login.description')}</p>
+<p class="description">{$_('modal.login.description')} <a href="https://easy-main.ru/" target="_blank" rel="noreferrer">easy-main.ru</a></p>
 <div class="form">
   <div class="textinput" class:incorrect={!isUsernameValid && showUsernameInvalid}>
     <div class="label">
@@ -142,6 +142,12 @@
     opacity: 0.7;
     font-size: 0.8rem;
     margin: 0.4rem 0;
+
+    a {
+      color: var(--theme-accent-active);
+      font-weight: 600;
+      filter: contrast(1.5) brightness(2);
+    }
   }
   .form {
     display: flex;
