@@ -3,17 +3,24 @@
   "mc_version": "1.21.4",
   "fabric_version": "0.16.10",
   "modpack": {
+    "ess": {
+      "url": "https://files.xllifi.ru/modpacks1214/easylauncher%201.21.4%20intermission%20ess.mrpack",
+      "verify": {
+        "hash": "ed0c3db0132c1bef322f5ea37a8f16acd8b50a4ce4073cfad5fc223e66374199",
+        "algorithm": "sha256"
+      }
+    },
     "min": {
       "url": "https://files.xllifi.ru/modpacks1214/easylauncher%201.21.4%20intermission%20min.mrpack",
       "verify": {
-        "hash": "338ce6e95e573eaa580f0d08c42c8b5f0a8c7d232fe0d49a19c102eaeebf7f19",
+        "hash": "f31bbcd295aec0bd44364d4cb0b3608e9df281f51a8c34b57595f19c2243936f",
         "algorithm": "sha256"
       }
     },
     "ful": {
       "url": "https://files.xllifi.ru/modpacks1214/easylauncher%201.21.4%20intermission%20ful.mrpack",
       "verify": {
-        "hash": "fbd1ebcbe81b23c8d191f24aaca8a833ed1d478ab90253c2a12aa05082c1a666",
+        "hash": "777ba60f5e01085d99941770199ba9303cf31927cf9b045f0692c2c8b268f014",
         "algorithm": "sha256"
       }
     }
