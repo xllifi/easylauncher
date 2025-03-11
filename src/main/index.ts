@@ -137,7 +137,11 @@ ipcMain.on('opengamedir', () => {
 })
 
 ipcMain.on('launch', async (_event, shared) => {
-  const process = await startGame(shared).catch((err) => {
+  try {
+    const process = await startGame(shared)
+
+    if (process) processes.push(process)
+  } catch (err) {
     renderer.send('launch-cancelled')
 
     if (err instanceof TimeoutError) {
@@ -151,7 +155,7 @@ ipcMain.on('launch', async (_event, shared) => {
       renderer.send('feed-push', { id: 'launch-error-modslocked' })
       return
     }
-    if (err instanceof Error) {
+    if (err instanceof Error && err.cause) {
       switch (err.cause) {
         case 'lm_missing_whole': {
           renderer.send('feed-push', { id: 'launch-error-launchermeta-missing-whole' })
@@ -161,16 +165,18 @@ ipcMain.on('launch', async (_event, shared) => {
           renderer.send('feed-push', { id: 'launch-error-launchermeta-missing-version' })
           return
         }
+        default: {
+          break
+        }
       }
     }
+    Sentry.captureException(err)
     renderer.send('feed-push', {
       id: 'launch-error-unknown',
       additional: { err: err }
     })
     return
-  })
-
-  if (process) processes.push(process)
+  }
 })
 ipcMain.on('stopgame', () => {
   processes.forEach((x) => x.kill())
