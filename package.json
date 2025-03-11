@@ -31,7 +31,7 @@
     "svelte-i18n": "^4.0.1",
     "svelte-persisted-store": "^0.12.0",
     "svooltip": "^0.8.3",
-    "xlicore": "^0.0.10"
+    "xlicore": "^0.0.11"
   },
   "devDependencies": {
     "@electron-toolkit/eslint-config-prettier": "^2.0.0",

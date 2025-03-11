@@ -189,7 +189,8 @@
       "loader": "загрузчика модов"
     },
     "minecraft_started": "Minecraft запускается...",
-    "minecraft_closed": "Minecraft закрыт!"
+    "minecraft_closed": "Minecraft закрыт!",
+    "minecraft_closed_exitcode": "Код выхода: {exitcode}"
   },
   "statusfeed": {
     "messages": {

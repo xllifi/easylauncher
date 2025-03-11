@@ -53,9 +53,9 @@ export async function startGame(shared: SharedParams): Promise<ChildProcessWitho
         renderer.send('start')
         renderer.send('addmcpid', { pid })
       },
-      gameOnExit(pid) {
-        console.log(`MC closed`)
-        renderer.send('close')
+      gameOnExit(pid, exitcode) {
+        console.log(`MC closed with code ${exitcode}`)
+        renderer.send('close', exitcode)
         renderer.send('rmmcpid', { pid })
       },
       gameOnError(err) {

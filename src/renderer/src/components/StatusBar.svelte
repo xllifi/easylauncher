@@ -66,9 +66,12 @@
 
     hidetimeout()
   })
-  ipc.on('close', () => {
+  ipc.on('close', (_e, exitcode) => {
     show()
     text = $_('statusbar.minecraft_closed')
+    if (exitcode/* is not 0*/) {
+      text += " " + $_('statusbar.minecraft_closed_exitcode', { values: { exitcode: exitcode || '0' } })
+    }
     left_text = null
     progress = 100
     fillcolor = 'd55'

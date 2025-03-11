@@ -189,7 +189,8 @@
       "loader": "mod loader"
     },
     "minecraft_started": "Minecraft is starting...",
-    "minecraft_closed": "Minecraft got closed!"
+    "minecraft_closed": "Minecraft got closed!",
+    "minecraft_closed_exitcode": "Exit code: {exitcode}"
   },
   "statusfeed": {
     "messages": {
