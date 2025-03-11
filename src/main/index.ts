@@ -9,6 +9,7 @@ import { existsSync } from 'fs'
 import { Updater } from './updater.js'
 import { ChildProcess } from 'child_process'
 import { TimeoutError } from 'ky'
+import * as fsp from 'fs/promises'
 
 const updater = new Updater()
 const isDev = !app.isPackaged
@@ -247,4 +248,20 @@ ipcMain.on('refresh-request', async (_event, body: DraslRefreshRequest) => {
     drasl: { server: drasl.authserver }
   }
   renderer.send('refresh-response', { launchCredentials, isError: false })
+})
+
+ipcMain.on('reset-mc-paths', async (_e, resets: Array<'assets' | 'instance' | 'java' | 'libraries' | 'version' | 'everything'>) => {
+  try {
+    if (resets.includes('everything')) {
+      await fsp.rm(gamePath, { recursive: true })
+      renderer.send('feed-push', { id: 'reset-everything' })
+      return
+    }
+    resets.forEach(x => {
+      fsp.rm(path.resolve(gamePath, x), { recursive: true })
+      renderer.send('feed-push', { id: `reset-${x}` })
+    })
+  } catch (err) {
+    renderer.send('feed-push', { id: 'reset-error-unknown', additional: { err: err } })
+  }
 })

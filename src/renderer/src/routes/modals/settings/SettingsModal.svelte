@@ -7,6 +7,7 @@
   import type { ModalProps } from '../../../lib/types/modals.d.ts'
   import type { SettingsPage } from '../../../lib/types/settings.d.ts'
   import { tilt } from '../../../lib/scripts/tilt_transition.js'
+  import SettingsPageReset from './pages/SettingsPageReset.svelte'
 
   let { exit = $bindable() }: ModalProps = $props()
 
@@ -18,6 +19,10 @@
     {
       component: SettingsPageLaunch,
       title: 'modal.settings.pages.launch.tab'
+    },
+    {
+      component: SettingsPageReset,
+      title: 'modal.settings.pages.reset.tab'
     }
   ])
 

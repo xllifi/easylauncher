@@ -12,7 +12,7 @@
   import type { SvelteComponent } from 'svelte'
   import OnboardingPage from './routes/pages/onboarding/OnboardingPage.svelte'
 
-  window.addEventListener('DOMContentLoaded', () => {
+  window.addEventListener('load', () => {
     $route.loaded = true
   })
 
@@ -20,6 +20,8 @@
   let statusBar: SvelteComponent = $state() as SvelteComponent
 
   let readyForExit: boolean = $state(false)
+
+  let loaded: boolean = $state(true)
 
   function exitButtonClick() {
     $route.modal.previous = null
@@ -94,6 +96,7 @@
   let Modal = $state($route.modal.current)
   let Page = $state($route.page)
   route.subscribe((route) => {
+    loaded = route.loaded
     if (Modal != route.modal.current) Modal = route.modal.current
     if (Page != route.page) Page = route.page
   })
@@ -102,7 +105,7 @@
 <svelte:window onkeyup={exitByPressingEsc} />
 
 <Dragbar />
-{#if $isLoading || !$route.loaded}
+{#if $isLoading || !loaded}
   <div class="wrapper" out:fade>
     <span class="loading"></span>
   </div>

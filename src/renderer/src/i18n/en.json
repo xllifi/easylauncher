@@ -53,6 +53,46 @@
               "description": "If enabled, you'll be able to close the launcher without closing Minecraft."
             }
           }
+        },
+        "reset": {
+          "tab": "Reset",
+          "options": {
+            "launcher": {
+              "name": "Reset launcher data",
+              "description": "Pressing this button will reset all launcher settings and start onboarding.",
+              "label": "Reset"
+            },
+            "assets": {
+              "name": "Delete all assets",
+              "description": "Pressing this button will delete all game assets. They'll be redownloaded at next launch.\n\nUse if some vanilla game textures are missing.",
+              "label": "Delete"
+            },
+            "instance": {
+              "name": "Delete modpack and game settings",
+              "description": "Pressing this button will delete modpack and your settings. Modpack will be redownloaded at next launch.\n\nUse if Minecraft doesn't start or you can't connect to the server.",
+              "label": "Delete"
+            },
+            "java": {
+              "name": "Delete Java",
+              "description": "Pressing this button will delete Java runtime. It'll be redownloaded at next launch.\n\nUse if game doesn't start with some cryptic exit code.",
+              "label": "Delete"
+            },
+            "libraries": {
+              "name": "Delete libraries",
+              "description": "Pressing this button will delete all game libraries. It'll be redownloaded at next launch.\n\nUse if game doesn't start with some cryptic exit code.",
+              "label": "Delete"
+            },
+            "version": {
+              "name": "Delete version packages",
+              "description": "Pressing this button will delete all game version packages. It'll be redownloaded at next launch.\n\nUse if game doesn't start with some cryptic exit code.",
+              "label": "Delete"
+            },
+            "everything": {
+              "name": "Delete ALL game files",
+              "description": "Pressing this button will delete ALL game files. They'll be redownloaded at next launch.\n\nUse only if nothing above helped.",
+              "label": "Delete"
+            }
+          }
         }
       }
     },
@@ -277,6 +317,34 @@
       "confirm-stop": {
         "title": "Stop Minecraft?",
         "description": "Force stopping Minecraft might cause the game to stop working correctly. Use this only if the game freezes.\n\nTo confirm, press the button again within 30 seconds."
+      },
+      "reset-everything": {
+        "title": "All game files deleted",
+        "description": "Files successfully deleted."
+      },
+      "reset-assets": {
+        "title": "Game assets deleted",
+        "description": "Files successfully deleted."
+      },
+      "reset-instance": {
+        "title": "Modpack and game settings deleted",
+        "description": "Files successfully deleted."
+      },
+      "reset-java": {
+        "title": "Java runtime deleted",
+        "description": "Files successfully deleted."
+      },
+      "reset-libraries": {
+        "title": "Libraries deleted",
+        "description": "Files successfully deleted."
+      },
+      "reset-version": {
+        "title": "Version packages deleted",
+        "description": "Files successfully deleted."
+      },
+      "reset-error-unknown": {
+        "title": "Error!",
+        "description": "An error occured while deleting files. Detailed description: {err}"
       }
     }
   }

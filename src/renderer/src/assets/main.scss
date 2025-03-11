@@ -8,6 +8,9 @@
   --svooltip-weight: 400;
   --svooltip-arrow-size: 0;
   outline: solid 1px #fff2;
+  text-wrap: balance;
+  word-wrap: break-word;
+  white-space: pre-line;
 }
 
 body {
