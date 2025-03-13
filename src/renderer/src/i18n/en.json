@@ -194,6 +194,7 @@
       "buttons": {
         "update": "Install update",
         "updating": "Update downloading",
+        "failedupdate": "Failed to fetch updates\nPress to hide",
         "bugs": "Report a bug",
         "minimize": "Minimize window",
         "close": "Close window"

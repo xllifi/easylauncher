@@ -5,6 +5,7 @@ import { ReadableStream } from 'stream/web'
 import path from 'path'
 import { app, ipcMain, shell } from 'electron'
 import { renderer } from './index.js'
+import { captureException } from '@sentry/electron'
 
 export class Updater {
   updateFound: boolean = false
@@ -12,17 +13,26 @@ export class Updater {
   appxPath: null | string = null
 
   async checkForUpdates(): Promise<void> {
-    console.log(`gettings update from https://api.github.com/repos/${import.meta.env.VITE_AUTOUPDATE_GITHUB_REPO}/releases/latest`)
-    const latestRelease: githubReleasesResponse = await ky.get(`https://api.github.com/repos/${import.meta.env.VITE_AUTOUPDATE_GITHUB_REPO}/releases/latest`).then((res) => res.json())
+    try {
+      console.log(`gettings update from https://api.github.com/repos/${import.meta.env.VITE_AUTOUPDATE_GITHUB_REPO}/releases/latest`)
+      const latestRelease: githubReleasesResponse = await ky.get(`https://api.github.com/repos/${import.meta.env.VITE_AUTOUPDATE_GITHUB_REPO}/releases/latest`).then((res) => res.json())
 
-    if (parseInt(latestRelease.tag_name.replaceAll('.', '')) > parseInt(import.meta.env.APP_VERSION.replaceAll('.', ''))) {
-      this.updateFound = true
-      this.appxAsset = latestRelease.assets.filter((x) => x.name.match(/\.appx$/))[0]
+      if (parseInt(latestRelease.tag_name.replaceAll('.', '')) > parseInt(import.meta.env.APP_VERSION.replaceAll('.', ''))) {
+        this.updateFound = true
+        this.appxAsset = latestRelease.assets.filter((x) => x.name.match(/\.appx$/))[0]
 
-      ipcMain.on('getupdatestatus', () => {
-        console.log(`received get update, sending response`)
-        renderer.send('updatefound')
-      })
+        ipcMain.on('getupdatestatus', () => {
+          renderer.send('updatefound')
+        })
+      }
+    } catch (e) {
+      if (e instanceof TypeError && e.message == 'fetch failed') {
+        ipcMain.on('getupdatestatus', () => {
+          renderer.send('updatefailed')
+        })
+      }
+      console.error(e)
+      captureException(e)
     }
   }
 

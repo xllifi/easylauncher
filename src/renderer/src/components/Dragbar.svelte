@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { X, Minus, Bug, Download, Loader } from 'lucide-svelte'
+  import { X, Minus, Bug, Download, Loader, TriangleAlert } from 'lucide-svelte'
   import { ipc } from '../main.js'
   import { _, isLoading } from 'svelte-i18n'
   import { route } from '../lib/stores/route.svelte.js'
@@ -10,6 +10,7 @@
   import FeedbackModal from '../routes/modals/FeedbackModal.svelte'
 
   let loadingUpdate = $state(false)
+  let hideWarn = $state(false)
 
   function quit(): void {
     ipc.send('quit')
@@ -36,9 +37,12 @@
     ipc.send('getupdatestatus')
   })
   ipc.on('updatefound', () => {
-    console.log(`got response, settings variable`)
-    $appstate.updateFound = true
-    console.log($appstate.updateFound)
+    console.log(`got response - found, setting variable`)
+    $appstate.updateStatus = 'found'
+  })
+  ipc.on('updatefailed', () => {
+    console.log(`got response - failed, setting variable`)
+    $appstate.updateStatus = 'failed'
   })
 </script>
 
@@ -48,14 +52,20 @@
       <p>{$_('dragbar.title')} • {$_('dragbar.edition')} {import.meta.env.APP_VERSION}</p>
     </div>
     <div class="buttons" transition:fade={{ duration: 200 }}>
-      {#if $appstate.updateFound}
-        <button class="update" class:loading={loadingUpdate} use:tooltip={loadingUpdate ? $_('dragbar.tooltips.buttons.updating') : $_('dragbar.tooltips.buttons.update')} onclick={update}>
-          {#if loadingUpdate}
-            <Loader />
-          {:else}
-            <Download />
-          {/if}
-        </button>
+      {#if $appstate.updateStatus}
+        {#if $appstate.updateStatus == 'found'}
+          <button class="update" class:loading={loadingUpdate} use:tooltip={loadingUpdate ? $_('dragbar.tooltips.buttons.updating') : $_('dragbar.tooltips.buttons.update')} onclick={update}>
+            {#if loadingUpdate}
+              <Loader />
+            {:else}
+              <Download />
+            {/if}
+          </button>
+        {:else if $appstate.updateStatus == 'failed'}
+          <button class="updatefailed" class:hidden={hideWarn} use:tooltip={$_('dragbar.tooltips.buttons.failedupdate')} onclick={() => hideWarn = true}>
+            <TriangleAlert />
+          </button>
+        {/if}
       {/if}
       <button class="report" use:tooltip={$_('dragbar.tooltips.buttons.bugs')} onclick={report}><Bug /></button>
       <button class="minimize" use:tooltip={$_('dragbar.tooltips.buttons.minimize')} onclick={minimize}><Minus /></button>
@@ -137,6 +147,14 @@
             100% {
               transform: rotate(360deg);
             }
+          }
+        }
+
+        &.updatefailed {
+          color: #f88;
+
+          &.hidden {
+            visibility: hidden;
           }
         }
 
