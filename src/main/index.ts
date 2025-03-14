@@ -144,13 +144,44 @@ ipcMain.on('launch', async (_event, shared) => {
     if (process) processes.push(process)
   } catch (err) {
     renderer.send('launch-cancelled')
+    if (err instanceof AggregateError) {
+      Sentry.captureException(err)
+      renderer.send('feed-push', {
+        id: 'launch-error-unknown',
+        additional: {
+          err: JSON.stringify(
+            {
+              cause: err.cause,
+              message: err.message,
+              name: err.name,
+              errors: err.errors.map(x => ({
+                cause: x.cause,
+                message: x.message,
+                name: x.name,
+              }))
+            },
+            null,
+            2
+          )
+        }
+      })
+      return
+    }
     if (err instanceof Error) {
       if (err instanceof TimeoutError) {
         renderer.send('feed-push', {
           id: 'generic-error-timeout',
           additional: {
             err: {
-              err: `{ err.name: "${err.name}",\nerr.message: "${err.message}",\nerr.cause: "${err.cause}" }`
+              err: JSON.stringify(
+                {
+                  cause: err.cause,
+                  message: err.message,
+                  name: err.name
+                },
+                null,
+                2
+              )
             }
           }
         })
@@ -178,7 +209,15 @@ ipcMain.on('launch', async (_event, shared) => {
       renderer.send('feed-push', {
         id: 'launch-error-unknown',
         additional: {
-          err: `{ err.name: "${err.name}",\nerr.message: "${err.message}",\nerr.cause: "${err.cause}" }`
+          err: JSON.stringify(
+            {
+              cause: err.cause,
+              message: err.message,
+              name: err.name
+            },
+            null,
+            2
+          )
         }
       })
     }
@@ -206,7 +245,15 @@ ipcMain.on('installupdate', () => {
       id: 'update-error-unknown',
       additional: {
         err: {
-          err: `{ err.name: "${err.name}",\nerr.message: "${err.message}",\nerr.cause: "${err.cause}" }`
+          err: JSON.stringify(
+            {
+              cause: err.cause,
+              message: err.message,
+              name: err.name
+            },
+            null,
+            2
+          )
         }
       }
     })
@@ -224,7 +271,15 @@ ipcMain.on('login-request', async (_event, creds: { username: string; password: 
       id: 'login-error-unknown',
       additional: {
         err: {
-          err: `{ err.name: "${err.name}",\nerr.message: "${err.message}",\nerr.cause: "${err.cause}" }`
+          err: JSON.stringify(
+            {
+              cause: err.cause,
+              message: err.message,
+              name: err.name
+            },
+            null,
+            2
+          )
         }
       }
     })
@@ -255,7 +310,15 @@ ipcMain.on('refresh-request', async (_event, body: DraslRefreshRequest) => {
       id: 'login-error-unknown',
       additional: {
         err: {
-          err: `{ err.name: "${err.name}",\nerr.message: "${err.message}",\nerr.cause: "${err.cause}" }`
+          err: JSON.stringify(
+            {
+              cause: err.cause,
+              message: err.message,
+              name: err.name
+            },
+            null,
+            2
+          )
         }
       }
     })
@@ -293,7 +356,15 @@ ipcMain.on('reset-mc-paths', async (_e, resets: Array<'assets' | 'instance' | 'j
         id: 'reset-error-unknown',
         additional: {
           err: {
-            err: `{ err.name: "${err.name}",\nerr.message: "${err.message}",\nerr.cause: "${err.cause}" }`
+            err: JSON.stringify(
+              {
+                cause: err.cause,
+                message: err.message,
+                name: err.name
+              },
+              null,
+              2
+            )
           }
         }
       })
