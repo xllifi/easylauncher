@@ -144,19 +144,23 @@ ipcMain.on('launch', async (_event, shared) => {
     if (process) processes.push(process)
   } catch (err) {
     renderer.send('launch-cancelled')
+    if (err instanceof Error) {
+      if (err instanceof TimeoutError) {
+        renderer.send('feed-push', {
+          id: 'generic-error-timeout',
+          additional: {
+            err: {
+              err: `{ err.name: "${err.name}",\nerr.message: "${err.message}",\nerr.cause: "${err.cause}" }`
+            }
+          }
+        })
+        return
+      }
+      if (err instanceof MrpackParseError && err.reason === 'files_locked') {
+        renderer.send('feed-push', { id: 'launch-error-modslocked' })
+        return
+      }
 
-    if (err instanceof TimeoutError) {
-      renderer.send('feed-push', {
-        id: 'generic-error-timeout',
-        additional: { err: err }
-      })
-      return
-    }
-    if (err instanceof MrpackParseError && err.reason === 'files_locked') {
-      renderer.send('feed-push', { id: 'launch-error-modslocked' })
-      return
-    }
-    if (err instanceof Error && err.cause) {
       switch (err.cause) {
         case 'lm_missing_whole': {
           renderer.send('feed-push', { id: 'launch-error-launchermeta-missing-whole' })
@@ -170,12 +174,14 @@ ipcMain.on('launch', async (_event, shared) => {
           break
         }
       }
+      Sentry.captureException(err)
+      renderer.send('feed-push', {
+        id: 'launch-error-unknown',
+        additional: {
+          err: `{ err.name: "${err.name}",\nerr.message: "${err.message}",\nerr.cause: "${err.cause}" }`
+        }
+      })
     }
-    Sentry.captureException(err)
-    renderer.send('feed-push', {
-      id: 'launch-error-unknown',
-      additional: { err: err }
-    })
     return
   }
 })
@@ -185,32 +191,43 @@ ipcMain.on('stopgame', () => {
 
 ipcMain.on('installupdate', () => {
   updater.installUpdate().catch((err: Error) => {
+    Sentry.captureException(err)
     renderer.send('cancelupdate')
 
     if (err.cause == 'noupdate') {
-      Sentry.captureEvent(err)
       renderer.send('feed-push', { id: 'update-error-noupdate' })
       return
     }
     if (err.cause == 'nofile') {
-      Sentry.captureEvent(err)
       renderer.send('feed-push', { id: 'update-error-nofile' })
       return
     }
     renderer.send('feed-push', {
       id: 'update-error-unknown',
-      additional: { err: err }
+      additional: {
+        err: {
+          err: `{ err.name: "${err.name}",\nerr.message: "${err.message}",\nerr.cause: "${err.cause}" }`
+        }
+      }
     })
   })
 })
 
 ipcMain.on('login-request', async (_event, creds: { username: string; password: string }) => {
   const resp = await drasl.first(creds).catch((err) => {
+    Sentry.captureException(err)
     renderer.send('login-response', { isError: true })
     if (err.response && err.response.status == 401) {
       return renderer.send('feed-push', { id: 'login-error-401' })
     }
-    renderer.send('feed-push', { id: 'login-error-unknown', additional: { err: err } })
+    renderer.send('feed-push', {
+      id: 'login-error-unknown',
+      additional: {
+        err: {
+          err: `{ err.name: "${err.name}",\nerr.message: "${err.message}",\nerr.cause: "${err.cause}" }`
+        }
+      }
+    })
   })
   if (!resp) {
     return
@@ -229,11 +246,19 @@ ipcMain.on('login-request', async (_event, creds: { username: string; password: 
 
 ipcMain.on('refresh-request', async (_event, body: DraslRefreshRequest) => {
   const resp = await drasl.refresh(body).catch((err) => {
+    Sentry.captureException(err)
     renderer.send('refresh-response', { isError: true })
     if (err.response && err.response.status == 401) {
       return renderer.send('feed-push', { id: 'login-error-401' })
     }
-    renderer.send('feed-push', { id: 'login-error-unknown', additional: { err: err } })
+    renderer.send('feed-push', {
+      id: 'login-error-unknown',
+      additional: {
+        err: {
+          err: `{ err.name: "${err.name}",\nerr.message: "${err.message}",\nerr.cause: "${err.cause}" }`
+        }
+      }
+    })
   })
   if (!resp) {
     return
@@ -257,11 +282,21 @@ ipcMain.on('reset-mc-paths', async (_e, resets: Array<'assets' | 'instance' | 'j
       renderer.send('feed-push', { id: 'reset-everything' })
       return
     }
-    resets.forEach(x => {
+    resets.forEach((x) => {
       fsp.rm(path.resolve(gamePath, x), { recursive: true })
       renderer.send('feed-push', { id: `reset-${x}` })
     })
   } catch (err) {
-    renderer.send('feed-push', { id: 'reset-error-unknown', additional: { err: err } })
+    Sentry.captureException(err)
+    if (err instanceof Error) {
+      renderer.send('feed-push', {
+        id: 'reset-error-unknown',
+        additional: {
+          err: {
+            err: `{ err.name: "${err.name}",\nerr.message: "${err.message}",\nerr.cause: "${err.cause}" }`
+          }
+        }
+      })
+    }
   }
 })

@@ -61,7 +61,7 @@ export async function startGame(shared: SharedParams): Promise<ChildProcessWitho
       gameOnError(err) {
         renderer.send('feed-push', {
           id: 'game-error-unknown',
-          additional: [err]
+          additional: { err }
         })
         console.error(`Error: ${err}`)
       },
