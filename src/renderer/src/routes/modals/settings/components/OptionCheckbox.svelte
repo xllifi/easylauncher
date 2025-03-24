@@ -9,7 +9,7 @@
   let { checked = $bindable(), name, description }: Props = $props()
 </script>
 
-<label class="checkbox-input" use:tooltip={description}>
+<label class="checkbox-input" use:tooltip={[description]}>
   <p>{name}</p>
   <input type="checkbox" bind:checked />
 </label>

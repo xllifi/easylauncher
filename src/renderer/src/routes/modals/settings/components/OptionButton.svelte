@@ -11,7 +11,7 @@
   let { onclick, name, description, actionLabel }: Props = $props()
 </script>
 
-<label class="button" use:tooltip={description}>
+<label class="button" use:tooltip={[description]}>
   <p>{name}</p>
   <button {onclick} aria-label={name}>{actionLabel}</button>
 </label>

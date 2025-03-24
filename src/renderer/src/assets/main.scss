@@ -6,11 +6,22 @@
 	--svooltip-padding: 0 0.3rem;
 	--svooltip-text-size: 12px;
   --svooltip-weight: 400;
-  --svooltip-arrow-size: 0;
+  --svooltip-arrow-size: 0.5rem;
   outline: solid 1px #fff2;
   text-wrap: balance;
   word-wrap: break-word;
   white-space: pre-line;
+
+  &[data-placement='bottom'] .svooltip-arrow {
+    border-left: solid 1px #fff2;
+    border-top: solid 1px #fff2;
+    transform: translate(-0.35px, -0.35px);
+  }
+  &[data-placement='top'] .svooltip-arrow {
+    border-right: solid 1px #fff2;
+    border-bottom: solid 1px #fff2;
+    transform: translate(0.35px, 0.35px);
+  }
 }
 
 body {

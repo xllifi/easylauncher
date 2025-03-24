@@ -54,7 +54,7 @@
     <div class="buttons" transition:fade={{ duration: 200 }}>
       {#if $appstate.updateStatus}
         {#if $appstate.updateStatus == 'found'}
-          <button class="update" class:loading={loadingUpdate} use:tooltip={loadingUpdate ? $_('dragbar.tooltips.buttons.updating') : $_('dragbar.tooltips.buttons.update')} onclick={update}>
+          <button class="update" class:loading={loadingUpdate} use:tooltip={[loadingUpdate ? $_('dragbar.tooltips.buttons.updating') : $_('dragbar.tooltips.buttons.update'), $appstate.updateStatus == 'found']} onclick={update}>
             {#if loadingUpdate}
               <Loader />
             {:else}
@@ -62,14 +62,14 @@
             {/if}
           </button>
         {:else if $appstate.updateStatus == 'failed'}
-          <button class="updatefailed" class:hidden={hideWarn} use:tooltip={$_('dragbar.tooltips.buttons.failedupdate')} onclick={() => hideWarn = true}>
+          <button class="updatefailed" class:hidden={hideWarn} use:tooltip={[$_('dragbar.tooltips.buttons.failedupdate')]} onclick={() => hideWarn = true}>
             <TriangleAlert />
           </button>
         {/if}
       {/if}
-      <button class="report" use:tooltip={$_('dragbar.tooltips.buttons.bugs')} onclick={report}><Bug /></button>
-      <button class="minimize" use:tooltip={$_('dragbar.tooltips.buttons.minimize')} onclick={minimize}><Minus /></button>
-      <button class="close" use:tooltip={$_('dragbar.tooltips.buttons.close')} onclick={quit}><X /></button>
+      <button class="report" use:tooltip={[$_('dragbar.tooltips.buttons.bugs')]} onclick={report}><Bug /></button>
+      <button class="minimize" use:tooltip={[$_('dragbar.tooltips.buttons.minimize')]} onclick={minimize}><Minus /></button>
+      <button class="close" use:tooltip={[$_('dragbar.tooltips.buttons.close')]} onclick={quit}><X /></button>
     </div>
   {/if}
 </div>

@@ -13,7 +13,7 @@
   }: Props = $props()
 </script>
 
-<label class="text-input" use:tooltip={description}>
+<label class="text-input" use:tooltip={[description]}>
   <p>{name}</p>
   <input type="text" bind:value={input}>
 </label>

@@ -38,7 +38,7 @@
   }
 </script>
 
-<label class="text-input" use:tooltip={description}>
+<label class="text-input" use:tooltip={[description]}>
   <p>{name}</p>
   <input type="text" bind:value={input} onfocusout={verifyInput} />
   <input {oninput} type="range" bind:value={input} {min} {max} {step} onwheel={handleScroll} />
