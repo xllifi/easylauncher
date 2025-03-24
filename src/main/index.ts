@@ -169,6 +169,7 @@ ipcMain.on('launch', async (_event, shared) => {
     }
     if (err instanceof Error) {
       if (err instanceof TimeoutError) {
+        Sentry.captureException(err)
         renderer.send('feed-push', {
           id: 'generic-error-timeout',
           additional: {
@@ -194,10 +195,12 @@ ipcMain.on('launch', async (_event, shared) => {
 
       switch (err.cause) {
         case 'lm_missing_whole': {
+          Sentry.captureException(err)
           renderer.send('feed-push', { id: 'launch-error-launchermeta-missing-whole' })
           return
         }
         case 'lm_missing_version': {
+          Sentry.captureException(err)
           renderer.send('feed-push', { id: 'launch-error-launchermeta-missing-version' })
           return
         }
