@@ -37,30 +37,23 @@ jobs:
       - name: Create Appx Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: prep-appx
+          name: APPX installer
           path: dist/easylauncher*.appx
           if-no-files-found: error
 
       - name: Create MSI Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: prep-msi
+          name: MSI installer (recommended)
           path: dist/easylauncher*.msi
           if-no-files-found: error
 
-      - name: Create Cert Artifact
+      - name: Create Extras Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: prep-cert
+          name: Extras (certificate, install script)
           path: build/include/*
           if-no-files-found: error
-
-      - name: Merge Artifacts
-        uses: actions/upload-artifact/merge@v4
-        with:
-          name: artifact
-          pattern: prep-*
-          delete-merged: true
 
       - name: Publish a release
         uses: softprops/action-gh-release@v2
