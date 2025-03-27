@@ -17,7 +17,7 @@ export class Updater {
       console.log(`gettings update from https://api.github.com/repos/${import.meta.env.VITE_AUTOUPDATE_GITHUB_REPO}/releases/latest`)
       const latestRelease: githubReleasesResponse = await ky.get(`https://api.github.com/repos/${import.meta.env.VITE_AUTOUPDATE_GITHUB_REPO}/releases/latest`).then((res) => res.json())
 
-      if (parseInt(latestRelease.tag_name.replaceAll('.', '')) > parseInt(import.meta.env.APP_VERSION.replaceAll('.', ''))) {
+      if (process.windowsStore || parseInt(latestRelease.tag_name.replaceAll('.', '')) > parseInt(import.meta.env.APP_VERSION.replaceAll('.', ''))) {
         this.updateFound = true
         this.installerAsset = latestRelease.assets.filter((x) => x.name.match(/\.msi$/))[0]
         if (!this.installerAsset) {
