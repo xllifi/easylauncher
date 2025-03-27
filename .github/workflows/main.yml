@@ -61,7 +61,7 @@ jobs:
         if: ${{ startsWith(github.ref, 'refs/tags') }}
         with:
           make_latest: true
-          body_path: github_assets/RELEASE.md
+          body_path: github_assets/changelog/${{ github.ref_name }}.md
           files: |
             dist/easylauncher*.appx
             dist/easylauncher*.msi
