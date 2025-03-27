@@ -35,16 +35,14 @@ jobs:
           windows_certs_password: ${{ secrets.windows_certs_password }}
 
       - name: Create Appx Artifact
-        uses: actions/upload-artifact@v4
+        uses: nanoufo/action-upload-artifacts-and-release-assets@v2
         with:
-          name: APPX installer
           path: dist/easylauncher*.appx
           if-no-files-found: error
 
       - name: Create MSI Artifact
-        uses: actions/upload-artifact@v4
+        uses: nanoufo/action-upload-artifacts-and-release-assets@v2
         with:
-          name: MSI installer (recommended)
           path: dist/easylauncher*.msi
           if-no-files-found: error
 
