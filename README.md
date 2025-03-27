@@ -18,7 +18,7 @@ An Electron+Svelte Minecraft launcher for modded servers
 
 Use in-app update feature. Otherwise,
 
-1. Download `.appx` file from the release
+1. Download `.msi` file from the release
 2. Run it and confirm update
 
 ## Contributing

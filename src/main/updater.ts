@@ -9,8 +9,8 @@ import { captureException } from '@sentry/electron'
 
 export class Updater {
   updateFound: boolean = false
-  appxAsset: null | githubReleaseAsset = null
-  appxPath: null | string = null
+  installerAsset: null | githubReleaseAsset = null
+  installerPath: null | string = null
 
   async checkForUpdates(): Promise<void> {
     try {
@@ -19,7 +19,12 @@ export class Updater {
 
       if (parseInt(latestRelease.tag_name.replaceAll('.', '')) > parseInt(import.meta.env.APP_VERSION.replaceAll('.', ''))) {
         this.updateFound = true
-        this.appxAsset = latestRelease.assets.filter((x) => x.name.match(/\.appx$/))[0]
+        this.installerAsset = latestRelease.assets.filter((x) => x.name.match(/\.msi$/))[0]
+        if (!this.installerAsset) {
+          console.log('MSI installer not found, getting appx!')
+          this.installerAsset = latestRelease.assets.filter((x) => x.name.match(/\.appx$/))[0]
+          captureException(new Error('MSI Installer not found!', {cause: latestRelease}))
+        }
 
         ipcMain.on('getupdatestatus', () => {
           renderer.send('updatefound')
@@ -38,15 +43,15 @@ export class Updater {
 
   async installUpdate() {
     if (!this.updateFound) throw new Error(`Update not found!`, { cause: 'noupdate' })
-    if (this.appxAsset == null) throw new Error(`Installer file not found in update! Please tell this to developer ASAP!`, { cause: 'nofile' })
+    if (this.installerAsset == null) throw new Error(`Installer file not found in update! Please tell this to developer ASAP!`, { cause: 'nofile' })
 
-    const dest = path.resolve(app.getPath('temp'), this.appxAsset.name)
+    const dest = path.resolve(app.getPath('temp'), this.installerAsset.name)
     console.log(`downloading new release to ${dest}`)
 
-    await this.download(dest, this.appxAsset.browser_download_url, this.appxAsset.size)
-    this.appxPath = dest
+    await this.download(dest, this.installerAsset.browser_download_url, this.installerAsset.size)
+    this.installerPath = dest
 
-    shell.openPath(this.appxPath!)
+    shell.openPath(this.installerPath!)
 
     app.quit()
   }

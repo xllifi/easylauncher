@@ -41,6 +41,13 @@ jobs:
           path: dist/easylauncher*.appx
           if-no-files-found: error
 
+      - name: Create MSI Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: prep-msi
+          path: dist/easylauncher*.msi
+          if-no-files-found: error
+
       - name: Create Cert Artifact
         uses: actions/upload-artifact@v4
         with:
@@ -63,4 +70,5 @@ jobs:
           body_path: github_assets/RELEASE.md
           files: |
             dist/easylauncher*.appx
+            dist/easylauncher*.msi
             build/include/*

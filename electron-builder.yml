@@ -12,16 +12,15 @@ files:
 asarUnpack:
   - resources/**
 win:
-  target: appx
+  target:
+    - appx
+    - msi
   executableName: EasyLauncher
   icon: build/icon.ico
 appx:
   displayName: EasyLauncher
-nsis:
-  artifactName: ${name}-${version}-setup.${ext}
-  shortcutName: ${productName}
-  uninstallDisplayName: ${productName}
-  createDesktopShortcut: true
+msi:
+  shortcutName: EasyLauncher
 mac:
   entitlementsInherit: build/entitlements.mac.plist
   extendInfo:

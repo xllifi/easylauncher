@@ -7,7 +7,7 @@ import { DraslAuth, launchCredentials, genDirs, MrpackParseError, DraslRefreshRe
 import * as Sentry from '@sentry/electron/main'
 import { existsSync } from 'fs'
 import { Updater } from './updater.js'
-import { ChildProcess } from 'child_process'
+import { ChildProcess, exec } from 'child_process'
 import { TimeoutError } from 'ky'
 import * as fsp from 'fs/promises'
 
@@ -374,3 +374,13 @@ ipcMain.on('reset-mc-paths', async (_e, resets: Array<'assets' | 'instance' | 'j
     }
   }
 })
+
+if (!process.windowsStore) {
+  exec(`powershell (Get-AppxPackage -Name EasyLauncher).PackageFullName`, (_error, stdout, _stderr) => {
+    if (!stdout) {
+      return
+    }
+    console.log(`Removing APPX package '${stdout.trim()}'...`)
+    exec(`powershell Remove-AppxPackage -Package '${stdout.trim()}'`)
+  })
+}
