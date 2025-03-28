@@ -173,17 +173,15 @@ ipcMain.on('launch', async (_event, shared) => {
         renderer.send('feed-push', {
           id: 'generic-error-timeout',
           additional: {
-            err: {
-              err: JSON.stringify(
-                {
-                  cause: err.cause,
-                  message: err.message,
-                  name: err.name
-                },
-                null,
-                2
-              )
-            }
+            err: JSON.stringify(
+              {
+                cause: err.cause,
+                message: err.message,
+                name: err.name
+              },
+              null,
+              2
+            )
           }
         })
         return
