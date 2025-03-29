@@ -1,26 +1,26 @@
 {
   "$schema": "https://files.xllifi.ru/launchermeta.schema.json",
-  "mc_version": "1.21.4",
+  "mc_version": "1.21.1",
   "fabric_version": "0.16.10",
   "modpack": {
     "ess": {
-      "url": "https://files.xllifi.ru/modpacks1214/easylauncher%201.21.4%20intermission%20ess.mrpack",
+      "url": "https://files.xllifi.ru/modpacks/el-ess-100.mrpack",
       "verify": {
-        "hash": "ed0c3db0132c1bef322f5ea37a8f16acd8b50a4ce4073cfad5fc223e66374199",
+        "hash": "5fb9763adeede1397df427ea4db35182680eb28cee81fa50e08b45c2a416342c",
         "algorithm": "sha256"
       }
     },
     "min": {
-      "url": "https://files.xllifi.ru/modpacks1214/easylauncher%201.21.4%20intermission%20min.mrpack",
+      "url": "https://files.xllifi.ru/modpacks/el-min-100.mrpack",
       "verify": {
-        "hash": "f31bbcd295aec0bd44364d4cb0b3608e9df281f51a8c34b57595f19c2243936f",
+        "hash": "476b36c214885e9a4e653e8cd66bac162f63b5b87aacce74068b4bb78bb1edb5",
         "algorithm": "sha256"
       }
     },
     "ful": {
-      "url": "https://files.xllifi.ru/modpacks1214/easylauncher%201.21.4%20intermission%20ful.mrpack",
+      "url": "https://files.xllifi.ru/modpacks/el-ful-100.mrpack",
       "verify": {
-        "hash": "777ba60f5e01085d99941770199ba9303cf31927cf9b045f0692c2c8b268f014",
+        "hash": "2e6708139293e27cbaa826264872505521015c619231c02b86913b47661d9434",
         "algorithm": "sha256"
       }
     }
