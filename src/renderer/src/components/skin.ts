@@ -2,7 +2,6 @@ import ky from 'ky'
 import { get } from 'svelte/store'
 import { params } from '../lib/stores/params.svelte.js'
 import type { SkinViewer } from 'skinview3d'
-import * as THREE from 'three'
 
 export async function getSkinUrls(): Promise<SkinURLs> {
   const uuid = get(params).shared.launchCredentials.uuid
