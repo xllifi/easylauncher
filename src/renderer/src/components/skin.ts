@@ -18,34 +18,6 @@ export async function getSkinUrls(): Promise<SkinURLs> {
   }
 }
 
-export async function setupSkin(skinVw: SkinViewer) {
-  const player = skinVw.playerObject
-  player.rotateY(0.45)
-
-  const cam = skinVw.camera
-  cam.position.z = 28
-  const ctrl = skinVw.controls
-  ctrl.target.set(0, 7, 0)
-  ctrl.enableDamping = true
-  ctrl.enablePan = false
-  ctrl.enableZoom = false
-  ctrl.minPolarAngle = 1.65
-  ctrl.maxPolarAngle = 1.65
-
-  setupSmoothReset(skinVw)
-
-  // Dramatic lights
-  skinVw.globalLight.visible = false
-  const rectLight = new THREE.RectAreaLight(0x404040, 20, 20, 40)
-  rectLight.position.set(-9, 0, -27)
-  rectLight.lookAt(0, 0, -27)
-  cam.add(rectLight)
-
-  const light = new THREE.PointLight(0xffffff, 60)
-  light.position.set(12, 8, -18)
-  cam.add(light)
-}
-
 export function setupSmoothReset(skinVw: SkinViewer) {
   const ctrl = skinVw.controls
   let lastInteractTimestamp = 0
