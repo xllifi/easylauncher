@@ -374,11 +374,15 @@ ipcMain.on('reset-mc-paths', async (_e, resets: Array<'assets' | 'instance' | 'j
 })
 
 if (!process.windowsStore) {
-  exec(`powershell (Get-AppxPackage -Name EasyLauncher).PackageFullName`, (_error, stdout, _stderr) => {
-    if (!stdout) {
-      return
-    }
-    console.log(`Removing APPX package '${stdout.trim()}'...`)
-    exec(`powershell Remove-AppxPackage -Package '${stdout.trim()}'`)
-  })
+  try {
+    exec(`powershell (Get-AppxPackage -Name EasyLauncher).PackageFullName`, (_error, stdout, _stderr) => {
+      if (!stdout) {
+        return
+      }
+      console.log(`Removing APPX package '${stdout.trim()}'...`)
+      exec(`powershell Remove-AppxPackage -Package '${stdout.trim()}'`)
+    })
+  } catch (e) {
+    Sentry.captureException(e)
+  }
 }
