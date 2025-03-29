@@ -95,7 +95,7 @@
     setupSmoothReset(skinVw)
 
     // Dramatic lights
-    skinVw.globalLight.visible = false
+    skinVw.globalLight.intensity = 0.6
     const rectLight = new THREE.RectAreaLight(0x404040, 20, 20, 40)
     rectLight.position.set(-9, 0, -27)
     rectLight.lookAt(0, 0, -27)
