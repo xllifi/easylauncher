@@ -15,4 +15,8 @@ export type StatusFeedEntry = {
     values: {[key: string]: string}
   }
   id?: number
+  verbose?: {
+    content: string,
+    expanded: boolean
+  }
 }

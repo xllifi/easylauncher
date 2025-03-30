@@ -1,14 +1,15 @@
 <script lang="ts" module>
-  import { fly } from 'svelte/transition'
+  import { fly, slide } from 'svelte/transition'
   import { sineIn, sineOut } from 'svelte/easing'
   import type { StatusFeedEntry } from '../lib/types/components.d.ts'
-  import { X } from 'lucide-svelte'
+  import { ClipboardCopy, X } from 'lucide-svelte'
   import { flip } from 'svelte/animate'
   import { _ } from 'svelte-i18n'
+  import { tooltip } from '../lib/actions/tooltip.svelte.js'
 
   let list: StatusFeedEntry[] = $state([])
 
-  export function createNotification(id: string, additional?: {[key: string]: string}): void {
+  export function createNotification(id: string, additional?: { [key: string]: string }, verboseString?: string): void {
     let description = `statusfeed.messages.${id}.description`
     let opts: StatusFeedEntry = {
       title: `statusfeed.messages.${id}.title`,
@@ -17,6 +18,12 @@
     if (additional) {
       opts.add = {
         values: additional
+      }
+    }
+    if (verboseString) {
+      opts.verbose = {
+        content: verboseString,
+        expanded: false
       }
     }
     pushEntry(opts)
@@ -54,16 +61,34 @@
 
 <div class="status-feed">
   <ul class="scrollable">
-    {#each list as { title, description, add, id } (id)}
+    {#each list as { title, description, add, verbose, id } (id)}
       <li in:fly={{ delay: 100, duration: 200, x: 100, y: 0, easing: sineOut }} out:fly={{ delay: 0, duration: 200, x: 100, y: 0, easing: sineIn }} animate:flip={{ duration: 200 }}>
         <h3>{$_(title, add)}</h3>
         <p>{$_(description, add)}</p>
-        <button
-          class="close"
-          onclick={() => {
-            removeEntry(id)
-          }}><X /></button
-        >
+        {#if verbose}
+          <div class="verbose">
+            <button onclick={() => (verbose.expanded = !verbose.expanded)}>{$_('statusfeed.verbose_button')}</button>
+            {#if verbose.expanded}
+              <p transition:slide={{ duration: 200 }}>
+                {verbose.content}
+              </p>
+            {/if}
+          </div>
+        {/if}
+        <div class="buttons">
+          <button
+            use:tooltip={[$_('statusfeed.copy_button_tooltip')]}
+            onclick={() => {
+              navigator.clipboard.writeText(`${$_(title, add)}\n${$_(description, add)}` + (verbose ? `\n\nПодробости:\n${verbose!.content}` : ''))
+            }}><ClipboardCopy /></button
+          >
+          <button
+          use:tooltip={[$_('statusfeed.close_button_tooltip')]}
+            onclick={() => {
+              removeEntry(id)
+            }}><X /></button
+          >
+        </div>
       </li>
     {/each}
   </ul>
@@ -125,8 +150,6 @@
           line-height: 1;
           margin: 0.15rem 0;
 
-          width: calc(100% - 1.25rem);
-
           transform: translateX(-2px);
         }
 
@@ -137,56 +160,66 @@
           word-wrap: break-word;
           white-space: pre-line;
           pointer-events: all;
-
-          &::before {
-            content: '';
-            float: right;
-            width: 2rem;
-            height: 1em;
-          }
         }
 
-        button.close {
+        div.buttons {
           position: absolute;
-          right: 0.6rem;
-          top: 0.6rem;
-          width: 1.5rem;
-          height: 1.5rem;
-
-          padding: 0;
-          border-radius: 0.2rem;
-          background-color: #0000;
-          color: white;
-          outline: solid 2px transparent;
-          border: none;
+          right: 0.4rem;
+          top: 0.4rem;
 
           display: flex;
           justify-content: center;
           align-items: center;
+          gap: 0.2rem;
 
-          cursor: pointer;
+          button {
+            width: 1.5rem;
+            height: 1.5rem;
 
-          transition:
-            background-color 80ms,
-            outline-color 100ms,
-            filter 100ms;
+            margin: 0;
+            padding: 0.125rem;
+            border-radius: 0.2rem;
+            background-color: #0000;
+            color: white;
+            outline: solid 2px transparent;
 
-          &:is(:hover, :focus-visible) {
-            background-color: #0004;
-            outline: solid 2px var(--theme-accent-active);
-            filter: drop-shadow(0 0 3px var(--theme-accent-active-darker));
+            cursor: pointer;
+
+            transition:
+              background-color 80ms,
+              outline-color 100ms,
+              filter 100ms;
 
             :global(.lucide) {
-              opacity: 1;
+              width: 24px;
+              color: #fff;
+              opacity: 0.2;
+
+              transition: transform 100ms;
+            }
+
+            &:is(:hover, :focus-visible) {
+              background-color: #0004;
+              outline: solid 2px var(--theme-accent-active);
+              filter: drop-shadow(0 0 3px var(--theme-accent-active-darker));
+
+              :global(.lucide) {
+                opacity: 1;
+              }
             }
           }
+        }
 
-          :global(.lucide) {
-            width: 24px;
-            color: #fff;
-            opacity: 0.5;
-
-            transition: transform 100ms;
+        div.verbose > {
+          button {
+            margin: 0.2rem 0;
+          }
+          p {
+            margin-top: 0.4rem;
+            background-color: #0006;
+            border-radius: 0.2rem;
+            padding: 0.4rem;
+            position: relative;
           }
         }
       }

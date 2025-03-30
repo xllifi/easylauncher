@@ -146,24 +146,26 @@ ipcMain.on('launch', async (_event, shared) => {
     renderer.send('launch-cancelled')
     if (err instanceof AggregateError) {
       Sentry.captureException(err)
+      let feedId = 'launch-error-unknown'
+      if (err.errors.filter((err) => err! instanceof TimeoutError).length <= 0) {
+        feedId = 'generic-error-timeout'
+      }
       renderer.send('feed-push', {
-        id: 'launch-error-unknown',
-        additional: {
-          err: JSON.stringify(
-            {
-              cause: err.cause,
-              message: err.message,
-              name: err.name,
-              errors: err.errors.map(x => ({
-                cause: x.cause,
-                message: x.message,
-                name: x.name,
-              }))
-            },
-            null,
-            2
-          )
-        }
+        id: feedId,
+        verbose: JSON.stringify(
+          {
+            cause: err.cause,
+            message: err.message,
+            name: err.name,
+            errors: err.errors.map((x) => ({
+              cause: x.cause,
+              message: x.message,
+              name: x.name
+            }))
+          },
+          null,
+          2
+        )
       })
       return
     }
@@ -172,17 +174,15 @@ ipcMain.on('launch', async (_event, shared) => {
         Sentry.captureException(err)
         renderer.send('feed-push', {
           id: 'generic-error-timeout',
-          additional: {
-            err: JSON.stringify(
-              {
-                cause: err.cause,
-                message: err.message,
-                name: err.name
-              },
-              null,
-              2
-            )
-          }
+          verbose: JSON.stringify(
+            {
+              cause: err.cause,
+              message: err.message,
+              name: err.name
+            },
+            null,
+            2
+          )
         })
         return
       }
@@ -209,17 +209,15 @@ ipcMain.on('launch', async (_event, shared) => {
       Sentry.captureException(err)
       renderer.send('feed-push', {
         id: 'launch-error-unknown',
-        additional: {
-          err: JSON.stringify(
-            {
-              cause: err.cause,
-              message: err.message,
-              name: err.name
-            },
-            null,
-            2
-          )
-        }
+        verbose: JSON.stringify(
+          {
+            cause: err.cause,
+            message: err.message,
+            name: err.name
+          },
+          null,
+          2
+        )
       })
     }
     return
@@ -244,19 +242,15 @@ ipcMain.on('installupdate', () => {
     }
     renderer.send('feed-push', {
       id: 'update-error-unknown',
-      additional: {
-        err: {
-          err: JSON.stringify(
-            {
-              cause: err.cause,
-              message: err.message,
-              name: err.name
-            },
-            null,
-            2
-          )
-        }
-      }
+      verbose: JSON.stringify(
+        {
+          cause: err.cause,
+          message: err.message,
+          name: err.name
+        },
+        null,
+        2
+      )
     })
   })
 })
@@ -270,19 +264,15 @@ ipcMain.on('login-request', async (_event, creds: { username: string; password: 
     }
     renderer.send('feed-push', {
       id: 'login-error-unknown',
-      additional: {
-        err: {
-          err: JSON.stringify(
-            {
-              cause: err.cause,
-              message: err.message,
-              name: err.name
-            },
-            null,
-            2
-          )
-        }
-      }
+      verbose: JSON.stringify(
+        {
+          cause: err.cause,
+          message: err.message,
+          name: err.name
+        },
+        null,
+        2
+      )
     })
   })
   if (!resp) {
@@ -309,19 +299,15 @@ ipcMain.on('refresh-request', async (_event, body: DraslRefreshRequest) => {
     }
     renderer.send('feed-push', {
       id: 'login-error-unknown',
-      additional: {
-        err: {
-          err: JSON.stringify(
-            {
-              cause: err.cause,
-              message: err.message,
-              name: err.name
-            },
-            null,
-            2
-          )
-        }
-      }
+      verbose: JSON.stringify(
+        {
+          cause: err.cause,
+          message: err.message,
+          name: err.name
+        },
+        null,
+        2
+      )
     })
   })
   if (!resp) {
@@ -355,19 +341,15 @@ ipcMain.on('reset-mc-paths', async (_e, resets: Array<'assets' | 'instance' | 'j
     if (err instanceof Error) {
       renderer.send('feed-push', {
         id: 'reset-error-unknown',
-        additional: {
-          err: {
-            err: JSON.stringify(
-              {
-                cause: err.cause,
-                message: err.message,
-                name: err.name
-              },
-              null,
-              2
-            )
-          }
-        }
+        verbose: JSON.stringify(
+          {
+            cause: err.cause,
+            message: err.message,
+            name: err.name
+          },
+          null,
+          2
+        )
       })
     }
   }

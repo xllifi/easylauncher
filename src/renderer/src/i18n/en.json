@@ -234,10 +234,13 @@
     "minecraft_closed_exitcode": "Exit code: {exitcode}"
   },
   "statusfeed": {
+    "verbose_button": "Details",
+    "copy_button_tooltip": "Copy text",
+    "close_button_tooltip": "Hide notification",
     "messages": {
       "generic-error-timeout": {
         "title": "Timed out",
-        "description": "Detailed description: {err}"
+        "description": "Check your internet connection and try again"
       },
       "startedoffline": {
         "title": "No connection!",
@@ -265,7 +268,7 @@
       },
       "login-error-unknown": {
         "title": "Failed to log in!",
-        "description": "Full reason: {err}"
+        "description": "An error occurred while logging in. We can't say how to fix it yet."
       },
       "login-success": {
         "title": "You've logged in!",
@@ -293,11 +296,11 @@
       },
       "launch-error-unknown": {
         "title": "Launch error!",
-        "description": "Detailed description: {err}"
+        "description": "An error occurred while launching. We can't say how to fix it yet."
       },
       "game-error-unknown": {
         "title": "Game error!",
-        "description": "Detailed description: {err}"
+        "description": "An error occurred in the game process. It's probably no big deal, but we had to let you know."
       },
       "feedback-sent": {
         "title": "Feedback sent",
@@ -313,7 +316,7 @@
       },
       "update-error-unknown": {
         "title": "Update error!",
-        "description": "Detailed description: {err}"
+        "description": "An error occurred while updating. We can't say how to fix it yet."
       },
       "confirm-stop": {
         "title": "Stop Minecraft?",
@@ -345,7 +348,7 @@
       },
       "reset-error-unknown": {
         "title": "Error!",
-        "description": "An error occured while deleting files. Detailed description: {err}"
+        "description": "An error occured while deleting files. We can't say how to fix it yet."
       }
     }
   }
