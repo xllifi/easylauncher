@@ -62,7 +62,10 @@
 <div class="status-feed">
   <ul class="scrollable">
     {#each list as { title, description, add, verbose, id } (id)}
-      <li in:fly={{ delay: 100, duration: 200, x: 100, y: 0, easing: sineOut }} out:fly={{ delay: 0, duration: 200, x: 100, y: 0, easing: sineIn }} animate:flip={{ duration: 200 }}>
+      <li oncopy={(e) => {
+        e.preventDefault()
+        navigator.clipboard.writeText(`${$_(title, add)}\n${$_(description, add)}` + (verbose ? `\n\n${$_('statusfeed.verbose_copy')}\n${verbose!.content}` : ''))
+      }} in:fly={{ delay: 100, duration: 200, x: 100, y: 0, easing: sineOut }} out:fly={{ delay: 0, duration: 200, x: 100, y: 0, easing: sineIn }} animate:flip={{ duration: 200 }}>
         <h3>{$_(title, add)}</h3>
         <p>{$_(description, add)}</p>
         {#if verbose}
@@ -77,16 +80,16 @@
         {/if}
         <div class="buttons">
           <button
-            use:tooltip={[$_('statusfeed.copy_button_tooltip')]}
-            onclick={() => {
-              navigator.clipboard.writeText(`${$_(title, add)}\n${$_(description, add)}` + (verbose ? `\n\nПодробости:\n${verbose!.content}` : ''))
-            }}><ClipboardCopy /></button
-          >
-          <button
           use:tooltip={[$_('statusfeed.close_button_tooltip')]}
             onclick={() => {
               removeEntry(id)
             }}><X /></button
+          >
+          <button
+            use:tooltip={[$_('statusfeed.copy_button_tooltip')]}
+            onclick={() => {
+              navigator.clipboard.writeText(`${$_(title, add)}\n${$_(description, add)}` + (verbose ? `\n\nПодробости:\n${verbose!.content}` : ''))
+            }}><ClipboardCopy /></button
           >
         </div>
       </li>
@@ -168,6 +171,7 @@
           top: 0.4rem;
 
           display: flex;
+          flex-direction: column;
           justify-content: center;
           align-items: center;
           gap: 0.2rem;
