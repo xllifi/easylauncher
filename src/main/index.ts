@@ -3,7 +3,7 @@ import path, { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 import { startGame } from './launch.js'
-import { DraslAuth, launchCredentials, genDirs, MrpackParseError, DraslRefreshRequest } from 'xlicore'
+import { DraslAuth, launchCredentials, genDirs, DraslRefreshRequest } from 'xlicore'
 import * as Sentry from '@sentry/electron/main'
 import { existsSync } from 'fs'
 import { Updater } from './updater.js'
@@ -142,85 +142,94 @@ ipcMain.on('launch', async (_event, shared) => {
     const process = await startGame(shared)
 
     if (process) processes.push(process)
-  } catch (err) {
+  } catch (err: any) {
     renderer.send('launch-cancelled')
-    if (err instanceof AggregateError) {
-      Sentry.captureException(err)
-      let feedId = 'launch-error-unknown'
-      if (err.errors.filter((err) => err! instanceof TimeoutError).length <= 0) {
-        feedId = 'generic-error-timeout'
-      }
-      renderer.send('feed-push', {
-        id: feedId,
-        verbose: JSON.stringify(
-          {
-            cause: err.cause,
-            message: err.message,
-            name: err.name,
-            errors: err.errors.map((x) => ({
-              cause: x.cause,
-              message: x.message,
-              name: x.name
-            }))
-          },
-          null,
-          2
-        )
-      })
-      return
-    }
-    if (err instanceof Error) {
-      if (err instanceof TimeoutError) {
-        Sentry.captureException(err)
-        renderer.send('feed-push', {
-          id: 'generic-error-timeout',
-          verbose: JSON.stringify(
-            {
-              cause: err.cause,
-              message: err.message,
-              name: err.name
-            },
-            null,
-            2
-          )
-        })
-        return
-      }
-      if (err instanceof MrpackParseError && err.reason === 'files_locked') {
-        renderer.send('feed-push', { id: 'launch-error-modslocked' })
-        return
-      }
 
-      switch (err.cause) {
-        case 'lm_missing_whole': {
+    if (err instanceof Object) {
+      switch (err.constructor.name) {
+        case 'AggregateError': {
           Sentry.captureException(err)
-          renderer.send('feed-push', { id: 'launch-error-launchermeta-missing-whole' })
+          let feedId = 'launch-error-unknown'
+          if (err.errors.filter((err) => !(err instanceof TimeoutError)).length <= 0) {
+            feedId = 'generic-error-timeout'
+          }
+          renderer.send('feed-push', {
+            id: feedId,
+            verbose: JSON.stringify(
+              {
+                cause: err.cause,
+                message: err.message,
+                name: err.name,
+                errors: err.errors.map((x) => ({
+                  cause: x.cause,
+                  message: x.message,
+                  name: x.name
+                }))
+              },
+              null,
+              2
+            )
+          })
           return
         }
-        case 'lm_missing_version': {
+        case 'TimeoutError': {
           Sentry.captureException(err)
-          renderer.send('feed-push', { id: 'launch-error-launchermeta-missing-version' })
+          renderer.send('feed-push', {
+            id: 'generic-error-timeout',
+            verbose: JSON.stringify(
+              {
+                cause: err.cause,
+                message: err.message,
+                name: err.name
+              },
+              null,
+              2
+            )
+          })
           return
+        }
+        case 'MrpackParseError': {
+          if (err.reason === 'files_locked') {
+            renderer.send('feed-push', { id: 'launch-error-modslocked' })
+            return
+          }
+        }
+        case 'Error': {
+          switch (err.cause) {
+            case 'lm_missing_whole': {
+              Sentry.captureException(err)
+              renderer.send('feed-push', { id: 'launch-error-launchermeta-missing-whole' })
+              return
+            }
+            case 'lm_missing_version': {
+              Sentry.captureException(err)
+              renderer.send('feed-push', { id: 'launch-error-launchermeta-missing-version' })
+              return
+            }
+            default: {
+              break
+            }
+          }
         }
         default: {
           break
         }
       }
-      Sentry.captureException(err)
-      renderer.send('feed-push', {
-        id: 'launch-error-unknown',
-        verbose: JSON.stringify(
-          {
-            cause: err.cause,
-            message: err.message,
-            name: err.name
-          },
-          null,
-          2
-        )
-      })
     }
-    return
+
+    Sentry.captureException(err)
+    renderer.send('feed-push', {
+      id: 'launch-error-unknown',
+      verbose: JSON.stringify(
+        {
+          cause: err.cause,
+          message: err.message,
+          name: err.name
+        },
+        null,
+        2
+      )
+    })
   }
 })
 ipcMain.on('stopgame', () => {

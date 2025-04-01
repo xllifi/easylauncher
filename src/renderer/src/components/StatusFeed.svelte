@@ -161,7 +161,7 @@
           max-width: 16rem;
           text-wrap: balance;
           word-wrap: break-word;
-          white-space: pre-line;
+          white-space: pre-wrap;
           pointer-events: all;
         }
 
@@ -224,6 +224,9 @@
             border-radius: 0.2rem;
             padding: 0.4rem;
             position: relative;
+            font-family: CascadiaCode;
+            font-size: 11px;
+            text-rendering: optimizeSpeed;
           }
         }
       }

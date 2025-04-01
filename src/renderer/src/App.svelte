@@ -83,9 +83,9 @@
     $appstate.minecraftPids = $appstate.minecraftPids.filter((x) => x != pid)
   })
 
-  ipc.on('feed-push', (_e, { id, additional }: { id: string; additional?: { [key: string]: string }, verbose?: string }) => {
+  ipc.on('feed-push', (_e, { id, additional, verbose }: { id: string; additional?: { [key: string]: string }, verbose?: string }) => {
     console.log(additional)
-    createNotification(id, additional)
+    createNotification(id, additional, verbose)
   })
 
   init({
