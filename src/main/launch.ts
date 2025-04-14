@@ -3,6 +3,7 @@ import { LauncherMeta, LauncherMetaModpack, SharedParams } from './types.js'
 import { gamePath, renderer } from './index.js'
 import { ChildProcessWithoutNullStreams } from 'child_process'
 import ky from 'ky'
+import * as Sentry from '@sentry/electron/main'
 
 export async function startGame(shared: SharedParams): Promise<ChildProcessWithoutNullStreams> {
   let lastUpdateTimestamp: number = 0
@@ -56,6 +57,9 @@ export async function startGame(shared: SharedParams): Promise<ChildProcessWitho
       gameOnExit(pid, exitcode) {
         console.log(`MC closed with code ${exitcode}`)
         renderer.send('close', exitcode)
+        if (exitcode) {
+          Sentry.captureException(new Error(`Exit code ${exitcode}`))
+        }
         renderer.send('rmmcpid', { pid })
       },
       gameOnError(err) {
