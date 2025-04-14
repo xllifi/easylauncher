@@ -5,6 +5,7 @@
   import * as Sentry from '@sentry/svelte'
   import type { ModalProps } from '../../lib/types/modals.d.ts'
   import { createNotification } from '../../components/StatusFeed.svelte'
+  import { ipc } from '../../main.js'
 
   let { exit = $bindable(), back = $bindable() }: ModalProps = $props()
 
@@ -12,7 +13,8 @@
 
   function send() {
     if (input != '') {
-      Sentry.captureMessage(input)
+      Sentry.captureMessage("[FE] " + input)
+      ipc.send('capture-feedback', input)
       createNotification('feedback-sent')
       exit(new MouseEvent('fake'))
     }

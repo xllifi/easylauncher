@@ -364,6 +364,10 @@ ipcMain.on('reset-mc-paths', async (_e, resets: Array<'assets' | 'instance' | 'j
   }
 })
 
+ipcMain.on('capture-feedback', (_event, {input}) => {
+  Sentry.captureMessage("[BE] " + input)
+})
+
 if (!process.windowsStore) {
   try {
     exec(`powershell (Get-AppxPackage -Name EasyLauncher).PackageFullName`, (_error, stdout, _stderr) => {
